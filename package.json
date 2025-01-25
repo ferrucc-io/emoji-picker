@@ -13,4 +13,4 @@
     "test:watch": "bun run --cwd packages/emoji-picker test:watch",
     "test:coverage": "bun run --cwd packages/emoji-picker test:coverage"
   }
-} 
+}
