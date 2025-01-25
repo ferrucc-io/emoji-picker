@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700&display=swap');
-@import "tailwindcss/preflight";
-@tailwind utilities;
+@import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

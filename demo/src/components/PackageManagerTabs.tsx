@@ -15,14 +15,14 @@ type TabsContentProps = ComponentProps<typeof Tabs.Content>;
 export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
   const commands = {
     npm: `npm install ${packageName}`,
+    bun: `bun add ${packageName}`,
     yarn: `yarn add ${packageName}`,
-    pnpm: `pnpm add ${packageName}`,
-    bun: `bun add ${packageName}`
+    pnpm: `pnpm add ${packageName}`
   };
 
   return (
-    <Tabs.Root defaultValue="npm" className="w-full">
-      <Tabs.List className="flex gap-1 mb-2">
+    <Tabs.Root defaultValue="npm" className="w-full min-w-2xl">
+      <Tabs.List className="flex gap-1 mb-2 w-full">
         {Object.keys(commands).map((manager) => (
           <Tabs.Trigger
             key={manager}

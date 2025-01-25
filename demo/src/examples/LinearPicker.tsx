@@ -1,4 +1,4 @@
-import { EmojiPicker, EmojiPickerGroup, EmojiPickerList } from '@ferrucc-io/emoji-picker';
+import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 
 export function LinearPicker() {
   return (
@@ -8,9 +8,9 @@ export function LinearPicker() {
           placeholder="Search emoji" 
         />
       </EmojiPicker.Header>
-      <EmojiPickerGroup>
-        <EmojiPickerList hideStickyHeader />
-      </EmojiPickerGroup>
+      <EmojiPicker.Group>
+        <EmojiPicker.List hideStickyHeader />
+      </EmojiPicker.Group>
     </EmojiPicker>
   );
 } 

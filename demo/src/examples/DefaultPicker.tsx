@@ -1,4 +1,4 @@
-import { EmojiPicker, EmojiPickerGroup, EmojiPickerList } from '@ferrucc-io/emoji-picker';
+import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 
 export function DefaultPicker() {
   
@@ -8,15 +8,15 @@ export function DefaultPicker() {
 
   return (
     <EmojiPicker onEmojiSelect={handleEmojiSelect}>
-      <EmojiPicker.Header >
+      <EmojiPicker.Header>
         <EmojiPicker.Input
           autoFocus
           placeholder="Search emoji"
         />
       </EmojiPicker.Header>
-      <EmojiPickerGroup>
-        <EmojiPickerList />
-      </EmojiPickerGroup>
+      <EmojiPicker.Group>
+        <EmojiPicker.List />
+      </EmojiPicker.Group>
     </EmojiPicker>
   );
 } 

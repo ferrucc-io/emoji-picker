@@ -60,13 +60,13 @@ interface EmojiPickerContextType {
 
 const EmojiPickerContext = createContext<EmojiPickerContextType | null>(null);
 
-export function useEmojiPicker() {
+const useEmojiPicker = () => {
   const context = useContext(EmojiPickerContext);
   if (!context) {
     throw new Error('useEmojiPicker must be used within an EmojiPickerProvider');
   }
   return context;
-}
+};
 
 const processedEmojiData = processEmojiData(emojiData);
 
@@ -97,46 +97,42 @@ export function EmojiPickerProvider({
     setSelectedColumn(column);
   }, []);
 
-  const handleEmojiSelect = (emoji: string) => {
+  const handleEmojiSelect = useCallback((emoji: string | null) => {
     setSelectedEmoji(emoji);
-    onEmojiSelect?.(emoji);
-  };
+    if (emoji) {
+      onEmojiSelect?.(emoji);
+    }
+  }, [onEmojiSelect]);
 
   const filteredEmojis = useMemo(() => {
-    const processedEmojis = (emojiData as EmojiGroupData[]).map((group) => ({
-      category: group.name,
-      emojis: group.emojis
-        .filter((emoji) => {
-          const { isCompatible } = isCompatibleEmoji(emoji, maxUnicodeVersion);
-          return isCompatible;
-        })
-        .map((emoji) => {
-          const { supportsSkinTone } = isCompatibleEmoji(emoji, maxUnicodeVersion);
-          const base: EmojiMetadata = {
-            emoji: emoji.emoji,
-            name: emoji.name,
-            slug: emoji.slug,
-            skin_tone_support: supportsSkinTone,
-            skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version
-          };
-          return applySkinTone(base, skinTone);
-        })
-    }));
-
     if (!search.trim()) {
-      return processedEmojis;
+      return Object.entries(emojiData).map(([category, group]) => ({
+        category,
+        emojis: ((group as unknown as EmojiGroupData).emojis)
+          .filter(emoji => {
+            const { isCompatible } = isCompatibleEmoji(emoji, maxUnicodeVersion);
+            return isCompatible;
+          })
+          .map(emoji => {
+            const { supportsSkinTone } = isCompatibleEmoji(emoji, maxUnicodeVersion);
+            const base: EmojiMetadata = {
+              emoji: emoji.emoji,
+              name: emoji.name,
+              slug: emoji.slug,
+              skin_tone_support: supportsSkinTone,
+              skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version
+            };
+            return applySkinTone(base, skinTone);
+          })
+      }));
     }
 
     const searchResults = searchEmojis(search, processedEmojiData);
-    if (searchResults.length === 0) {
-      return [];
-    }
-
     return searchResults.map(group => ({
       category: group.category,
       emojis: group.emojis.map(emoji => applySkinTone(emoji, skinTone))
     }));
-  }, [search, skinTone]);
+  }, [search, skinTone, maxUnicodeVersion]);
 
   const value = {
     search,
@@ -144,7 +140,7 @@ export function EmojiPickerProvider({
     hoveredEmoji,
     setHoveredEmoji,
     selectedEmoji,
-    setSelectedEmoji,
+    setSelectedEmoji: handleEmojiSelect,
     selectedRow,
     selectedColumn,
     setSelectedPosition,
@@ -158,10 +154,10 @@ export function EmojiPickerProvider({
   };
 
   return (
-    <EmojiPickerContext.Provider
-      value={value}
-    >
+    <EmojiPickerContext.Provider value={value}>
       {children}
     </EmojiPickerContext.Provider>
   );
-} 
+}
+
+export { useEmojiPicker }; 

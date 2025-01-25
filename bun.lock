@@ -28,7 +28,7 @@
     },
     "packages/emoji-picker": {
       "name": "@ferrucc-io/emoji-picker",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "dependencies": {
         "@tanstack/react-virtual": "^3.11.2",
         "clsx": "^2.1.1",

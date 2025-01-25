@@ -1,22 +1,14 @@
 import CopyToClipboard from 'react-copy-to-clipboard';
-import React, { useState } from 'react';
-import { Highlight, Language } from 'prism-react-renderer';
+import { useState } from 'react';
+import { Highlight } from 'prism-react-renderer';
 
 interface CodeBlockProps {
   code: string;
-  language?: Language;
+  language?: string;
   showLineNumbers?: boolean;
 }
 
-interface HighlightProps {
-  className: string;
-  style: React.CSSProperties;
-  tokens: Array<Array<{ types: string[]; content: string }>>;
-  getLineProps: (props: { line: any; key?: any }) => any;
-  getTokenProps: (props: { token: any; key?: any }) => any;
-}
-
-export function CodeBlock({ code, language = "tsx", showLineNumbers = false }: CodeBlockProps) {
+export function CodeBlock({ code, language = 'typescript', showLineNumbers = false }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -25,31 +17,39 @@ export function CodeBlock({ code, language = "tsx", showLineNumbers = false }: C
   };
 
   return (
-    <div className="relative group">
-      {/* @ts-ignore - CopyToClipboard types are incorrect but component works fine */}
-      <CopyToClipboard text={code} onCopy={handleCopy}>
-        <button 
-          className="absolute right-2 top-2 text-xs px-2 py-1 rounded-md 
-            bg-zinc-700/50 text-zinc-300 opacity-0 group-hover:opacity-100 
-            hover:bg-zinc-700 transition-all duration-200"
-        >
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
-      </CopyToClipboard>
+    <div className="relative">
       {/* @ts-ignore - Highlight types are incorrect but component works fine */}
       <Highlight
-        code={code.trim()}
+        code={code}
         language={language}
       >
-        {({ className, style, tokens, getLineProps, getTokenProps }: HighlightProps) => (
-          <pre className={`${className} p-4 rounded-lg overflow-x-auto`} style={style}>
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre
+            className={`${className} p-4 rounded-lg overflow-x-auto text-sm`}
+            style={style}
+          >
+            <div className="absolute right-2 top-2">
+              {/* @ts-ignore - CopyToClipboard types are incorrect but component works fine */}
+              <CopyToClipboard text={code} onCopy={handleCopy}>
+                <div>
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 rounded-md
+                      bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700
+                      text-zinc-600 dark:text-zinc-300 transition-colors"
+                  >
+                    {copied ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </CopyToClipboard>
+            </div>
             {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })}>
+              <div key={i} {...getLineProps({ line })}>
                 {showLineNumbers && (
-                  <span className="inline-block w-8 text-zinc-500 select-none">{i + 1}</span>
+                  <span className="inline-block w-8 text-zinc-400 select-none">{i + 1}</span>
                 )}
                 {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
+                  <span key={key} {...getTokenProps({ token })} />
                 ))}
               </div>
             ))}
