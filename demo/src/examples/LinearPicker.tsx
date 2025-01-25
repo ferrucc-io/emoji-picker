@@ -1,15 +1,13 @@
-import { ClearIcon, SearchIcon } from '../../../src/EmojiPicker/icons';
-import { EmojiPicker, EmojiPickerGroup, EmojiPickerInput, EmojiPickerList } from '../../../src';
+import { EmojiPicker, EmojiPickerGroup, EmojiPickerList } from '@ferrucc-io/emoji-picker';
 
 export function LinearPicker() {
   return (
     <EmojiPicker>
-      <EmojiPickerInput 
-        wrapperClassName="px-2 pt-1.5"
-        placeholder="Search emoji" 
-        startIcon={<SearchIcon />}
-  endIcon={<ClearIcon />}   
-      />
+      <EmojiPicker.Header className="pb-0">
+        <EmojiPicker.Input 
+          placeholder="Search emoji" 
+        />
+      </EmojiPicker.Header>
       <EmojiPickerGroup>
         <EmojiPickerList hideStickyHeader />
       </EmojiPickerGroup>

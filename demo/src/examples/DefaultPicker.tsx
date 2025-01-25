@@ -1,19 +1,19 @@
-import { ClearIcon, SearchIcon } from '../../../src/EmojiPicker/icons';
-import { EmojiPicker, EmojiPickerGroup, EmojiPickerInput, EmojiPickerList } from '../../../src';
+import { EmojiPicker, EmojiPickerGroup, EmojiPickerList } from '@ferrucc-io/emoji-picker';
 
 export function DefaultPicker() {
+  
   const handleEmojiSelect = (emoji: string) => {
     console.log('Selected emoji:', emoji);
   };
 
   return (
     <EmojiPicker onEmojiSelect={handleEmojiSelect}>
-      <EmojiPickerInput 
-        placeholder="Search emoji" 
-        className="w-full h-[28px]"
-        startIcon={<SearchIcon />}
-        endIcon={<ClearIcon />}
-      />
+      <EmojiPicker.Header >
+        <EmojiPicker.Input
+          autoFocus
+          placeholder="Search emoji"
+        />
+      </EmojiPicker.Header>
       <EmojiPickerGroup>
         <EmojiPickerList />
       </EmojiPickerGroup>

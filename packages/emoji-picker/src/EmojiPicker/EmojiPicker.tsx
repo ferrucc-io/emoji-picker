@@ -1,5 +1,7 @@
 import React from 'react';
+import { EmojiPickerInput } from './EmojiPickerInput';
 import { EmojiPickerProvider } from './EmojiPickerContext';
+import { cn } from '../utils/cn';
 
 export interface EmojiPickerProps {
   children: React.ReactNode;
@@ -8,6 +10,23 @@ export interface EmojiPickerProps {
   emojisPerRow?: number;
   emojiSize?: number;
   maxUnicodeVersion?: number;
+}
+
+interface EmojiPickerHeaderProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+function Header({ children, className = '' }: EmojiPickerHeaderProps) {
+  return (
+    <div className={cn('flex w-full items-center gap-2 px-2 pt-1.5 pb-1', className)}>
+      {children}
+    </div>
+  );
+}
+
+function Input(props: React.ComponentProps<typeof EmojiPickerInput>) {
+  return <EmojiPickerInput {...props} />;
 }
 
 export function EmojiPicker({ 
@@ -33,4 +52,7 @@ export function EmojiPicker({
       </div>
     </EmojiPickerProvider>
   );
-} 
+}
+
+EmojiPicker.Header = Header;
+EmojiPicker.Input = Input; 

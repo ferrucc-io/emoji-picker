@@ -20,10 +20,13 @@ jobs:
         run: bun install
         
       - name: Run tests
-        run: bun test
+        run: bun run --cwd packages/emoji-picker test
         
-      - name: Build
-        run: bun run build
+      - name: Build library
+        run: bun run --cwd packages/emoji-picker build
+        
+      - name: Build demo
+        run: bun run --cwd demo build
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -37,6 +40,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           
       - name: Publish to NPM
-        run: npm publish --access public
+        run: cd packages/emoji-picker && npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Deploy demo to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./demo/dist 

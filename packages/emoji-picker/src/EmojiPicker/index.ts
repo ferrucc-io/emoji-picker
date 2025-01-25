@@ -4,5 +4,7 @@ export { EmojiPickerEmpty, EmojiPickerEmptyIcon, EmojiPickerEmptyText } from './
 export { EmojiPickerGroup } from './EmojiPickerGroup';
 export { EmojiPickerList } from './EmojiPickerList';
 export { EmojiPickerPreview } from './EmojiPickerPreview';
+export { EmojiPickerContent } from './EmojiPickerContent';
 export { EmojiPickerButton } from './EmojiPickerButton';
-export { EmojiPickerSectionHeader } from './EmojiPickerSectionHeader'; 
+export { EmojiPickerSectionHeader } from './EmojiPickerSectionHeader';
+export { EmojiPickerSkinTone } from './EmojiPickerSkinTone'; 
