@@ -20,7 +20,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
 
-    "types": ["@types/react/experimental"],
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

@@ -1,15 +1,6 @@
 import { EmojiPicker } from '@ferrucc-io/emoji-picker';
-import { EmojiPickerConfig } from './types';
 
-interface LinearPickerExampleProps {
-  config: EmojiPickerConfig & {
-    emojisPerRow: number;
-    emojiSize: number;
-    containerHeight: number;
-  };
-}
-
-export function LinearPickerExample({ config }: LinearPickerExampleProps) {
+export function LinearPickerExample() {
   return (
     <EmojiPicker
       className="border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden"

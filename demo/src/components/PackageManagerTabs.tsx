@@ -1,4 +1,4 @@
-import * as Tabs from '@radix-ui/react-tabs';
+import { useState } from 'react';
 import { CodeBlock } from './CodeBlock';
 
 import type { ComponentProps } from 'react';
@@ -7,13 +7,12 @@ interface PackageManagerTabsProps {
   packageName: string;
 }
 
-type TabsRootProps = ComponentProps<typeof Tabs.Root>;
-type TabsListProps = ComponentProps<typeof Tabs.List>;
-type TabsTriggerProps = ComponentProps<typeof Tabs.Trigger>;
-type TabsContentProps = ComponentProps<typeof Tabs.Content>;
+type PackageManager = 'npm' | 'bun' | 'yarn' | 'pnpm';
 
 export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
-  const commands = {
+  const [activeTab, setActiveTab] = useState<PackageManager>('npm');
+
+  const commands: Record<PackageManager, string> = {
     npm: `npm install ${packageName}`,
     bun: `bun add ${packageName}`,
     yarn: `yarn add ${packageName}`,
@@ -21,27 +20,26 @@ export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
   };
 
   return (
-    <Tabs.Root defaultValue="npm" className="w-full min-w-2xl">
-      <Tabs.List className="flex gap-1 mb-2 w-full">
-        {Object.keys(commands).map((manager) => (
-          <Tabs.Trigger
+    <div className="w-full min-w-2xl">
+      <div className="flex gap-1 mb-2 w-full">
+        {(Object.keys(commands) as PackageManager[]).map((manager) => (
+          <button
             key={manager}
-            value={manager}
-            className="px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400
-              data-[state=active]:text-zinc-900 dark:data-[state=active]:text-zinc-50
-              data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800
-              rounded-md transition-colors"
+            onClick={() => setActiveTab(manager)}
+            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors
+              ${activeTab === manager 
+                ? 'text-zinc-900 dark:text-zinc-50 bg-zinc-100 dark:bg-zinc-800' 
+                : 'text-zinc-600 dark:text-zinc-400'
+              }`}
           >
             {manager}
-          </Tabs.Trigger>
+          </button>
         ))}
-      </Tabs.List>
+      </div>
 
-      {Object.entries(commands).map(([manager, command]) => (
-        <Tabs.Content key={manager} value={manager} className="relative">
-          <CodeBlock code={command} language="bash" />
-        </Tabs.Content>
-      ))}
-    </Tabs.Root>
+      <div className="relative">
+        <CodeBlock code={commands[activeTab]} language="bash" />
+      </div>
+    </div>
   );
 } 

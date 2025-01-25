@@ -1,15 +1,6 @@
 import { EmojiPicker } from '@ferrucc-io/emoji-picker';
-import { EmojiPickerConfig } from './types';
 
-interface DefaultPickerExampleProps {
-  config: EmojiPickerConfig & {
-    emojisPerRow: number;
-    emojiSize: number;
-    containerHeight: number;
-  };
-}
-
-export function DefaultPickerExample({ config }: DefaultPickerExampleProps) {
+export function DefaultPickerExample() {
   const handleEmojiSelect = (emoji: string) => {
     console.log('Selected emoji:', emoji);
   };

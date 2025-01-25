@@ -19,11 +19,6 @@ const TABS = [
 
 type VariantType = typeof TABS[number]['id'];
 
-const SIZE_CONFIGS = {
-  small: { emojisPerRow: 6, emojiSize: 24, containerHeight: 240 },
-  medium: { emojisPerRow: 8, emojiSize: 32, containerHeight: 320 },
-  large: { emojisPerRow: 10, emojiSize: 40, containerHeight: 400 }
-};
 
 export function Playground({ defaultConfig, code }: Omit<PlaygroundProps, 'variant'>) {
   const [config, setConfig] = useState<EmojiPickerConfig>(defaultConfig || {});
