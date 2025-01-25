@@ -1,6 +1,9 @@
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { useState } from 'react';
 import { Highlight } from 'prism-react-renderer';
+
+import type { ComponentProps } from 'react';
+
+import type { ReactNode } from 'react';
 
 interface CodeBlockProps {
   code: string;
@@ -11,9 +14,14 @@ interface CodeBlockProps {
 export function CodeBlock({ code, language = 'typescript', showLineNumbers = false }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text:', err);
+    }
   };
 
   return (
@@ -29,19 +37,15 @@ export function CodeBlock({ code, language = 'typescript', showLineNumbers = fal
             style={style}
           >
             <div className="absolute right-2 top-2">
-              {/* @ts-ignore - CopyToClipboard types are incorrect but component works fine */}
-              <CopyToClipboard text={code} onCopy={handleCopy}>
-                <div>
-                  <button
-                    type="button"
-                    className="text-xs px-2 py-1 rounded-md
-                      bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700
-                      text-zinc-600 dark:text-zinc-300 transition-colors"
-                  >
-                    {copied ? 'Copied!' : 'Copy'}
-                  </button>
-                </div>
-              </CopyToClipboard>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="text-xs px-2 py-1 rounded-md
+                  bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700
+                  text-zinc-600 dark:text-zinc-300 transition-colors"
+              >
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
             </div>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line })}>
