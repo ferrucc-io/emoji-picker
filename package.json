@@ -23,7 +23,10 @@
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build": "rm -rf dist && bun run build.ts",
     "prepublishOnly": "bun run build",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "release:patch": "bun run scripts/release.ts patch",
+    "release:minor": "bun run scripts/release.ts minor",
+    "release:major": "bun run scripts/release.ts major"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
