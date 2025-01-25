@@ -12,6 +12,5 @@ export interface EmojiPickerConfig {
 export type VariantType = 'default' | 'linear' | 'slack';
 
 export interface PlaygroundProps {
-  defaultConfig: EmojiPickerConfig;
   code: Record<VariantType, string>;
 } 

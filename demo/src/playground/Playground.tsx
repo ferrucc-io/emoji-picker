@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EmojiPickerConfig, PlaygroundProps } from './types';
+import { PlaygroundProps } from './types';
 import { SlackPickerExample } from './SlackPickerExample';
 import { LinearPickerExample } from './LinearPickerExample';
 import { DefaultPickerExample } from './DefaultPickerExample';
@@ -19,27 +19,19 @@ const TABS = [
 
 type VariantType = typeof TABS[number]['id'];
 
-
-export function Playground({ defaultConfig, code }: Omit<PlaygroundProps, 'variant'>) {
-  const [config, setConfig] = useState<EmojiPickerConfig>(defaultConfig || {});
+export function Playground({ code }: Omit<PlaygroundProps, 'variant' | 'defaultConfig'>) {
   const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
   const { theme, toggleTheme } = useTheme();
 
-  
-
   const renderPicker = () => {
-    const fullConfig = {
-      ...config
-    };
-
     switch (variant) {
       case 'linear':
-        return <LinearPickerExample config={fullConfig} />;
+        return <LinearPickerExample />;
       case 'slack':
-        return <SlackPickerExample config={fullConfig} />;
+        return <SlackPickerExample />;
       default:
-        return <DefaultPickerExample config={fullConfig} />;
+        return <DefaultPickerExample />;
     }
   };
 

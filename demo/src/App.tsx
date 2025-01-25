@@ -102,7 +102,6 @@ function App() {
           <div className="w-full">
             <Playground
               code={EXAMPLE_CODE}
-              defaultConfig={DEFAULT_CONFIGS.default}
             />
           </div>
         </div>
