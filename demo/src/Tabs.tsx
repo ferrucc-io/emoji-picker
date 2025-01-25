@@ -1,33 +1,30 @@
 import React from 'react';
 
-interface Tab {
-  id: string;
+interface Tab<T extends string> {
+  id: T;
   label: string;
-  className?: string;
 }
 
-interface TabsProps {
-  tabs: Tab[];
-  activeTab: string;
-  onTabChange: (tabId: string) => void;
+interface TabsProps<T extends string> {
+  tabs: readonly Tab<T>[];
+  activeTab: T;
+  onTabChange: (tab: T) => void;
 }
 
-export function Tabs({ tabs, activeTab, onTabChange }: TabsProps) {
+export function Tabs<T extends string>({ tabs, activeTab, onTabChange }: TabsProps<T>) {
   return (
-    <div className="flex gap-1 p-1 bg-zinc-100 dark:bg-zinc-800 rounded-lg">
-      {tabs.map((tab) => (
+    <div className="flex gap-1 p-1 bg-zinc-100 dark:bg-zinc-900 rounded-lg">
+      {tabs.map(({ id, label }) => (
         <button
-          key={tab.id}
-          onClick={() => onTabChange(tab.id)}
-          className={`
-            flex-1 px-3 py-1.5 text-sm font-medium rounded-md transition-colors
-            ${activeTab === tab.id
-              ? 'bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 shadow-sm'
-              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50'
-            }
-          `}
+          key={id}
+          onClick={() => onTabChange(id)}
+          className={`px-3 py-1.5 text-sm font-medium rounded transition-colors ${
+            activeTab === id
+              ? 'bg-white text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+          }`}
         >
-          {tab.label}
+          {label}
         </button>
       ))}
     </div>

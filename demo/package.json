@@ -1,0 +1,33 @@
+{
+  "name": "@ferrucc-io/emoji-picker-demo",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "bunx --bun vite",
+    "build:types": "bunx --bun tsc",
+    "build": "bun run build:types && bunx --bun vite build",
+    "preview": "bunx --bun vite preview",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@ferrucc-io/emoji-picker": "workspace:*",
+    "prism-react-renderer": "^2.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^18.2.55",
+    "@types/react-copy-to-clipboard": "^5.0.7",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "gh-pages": "^6.1.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4"
+  },
+  "resolutions": {
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
+  }
+}

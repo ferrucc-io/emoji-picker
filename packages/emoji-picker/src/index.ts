@@ -1,4 +1,4 @@
-export * from './EmojiPicker';
+export { EmojiPicker } from './EmojiPicker/EmojiPicker';
 export * from './EmojiPicker/EmojiPickerButton';
 export * from './EmojiPicker/EmojiPickerContext';
 export * from './EmojiPicker/EmojiPickerEmpty';

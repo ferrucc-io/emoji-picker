@@ -20,6 +20,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     setSelectedPosition,
     setHoveredEmoji,
     setSelectedEmoji,
+    search
   } = useEmojiPicker();
 
   // Find next/previous emoji row
@@ -41,9 +42,52 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     }
   };
 
+  // Find first emoji row
+  const findFirstEmojiRow = (): number => {
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].type === 'emojis') {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  // Focus first emoji when search query changes and there are results
+  useEffect(() => {
+    if (search.trim() && rows.length > 0) {
+      const firstRow = findFirstEmojiRow();
+      if (firstRow !== -1) {
+        setSelectedPosition(firstRow, 0);
+        const firstRowData = rows[firstRow];
+        if (firstRowData?.type === 'emojis' && firstRowData.content[0]) {
+          setHoveredEmoji(firstRowData.content[0]);
+          virtualizer.scrollToIndex(firstRow, { align: 'center' });
+        }
+      }
+    }
+  }, [search, rows]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!rows.length || selectedRow === -1 || selectedColumn === -1) return;
+      if (!rows.length) return;
+
+      // If no emoji is selected and arrow keys are pressed, select the first emoji
+      if (selectedRow === -1 || selectedColumn === -1) {
+        if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+          const firstRow = findFirstEmojiRow();
+          if (firstRow !== -1) {
+            e.preventDefault();
+            setSelectedPosition(firstRow, 0);
+            const firstRowData = rows[firstRow];
+            if (firstRowData?.type === 'emojis' && firstRowData.content[0]) {
+              setHoveredEmoji(firstRowData.content[0]);
+              virtualizer.scrollToIndex(firstRow, { align: 'center' });
+            }
+          }
+          return;
+        }
+        return;
+      }
 
       const currentRow = rows[selectedRow];
       if (!currentRow || currentRow.type !== 'emojis') return;
@@ -121,5 +165,5 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [rows, selectedRow, selectedColumn, setSelectedPosition, setHoveredEmoji, virtualizer, setSelectedEmoji]);
+  }, [rows, selectedRow, selectedColumn, setSelectedPosition, setHoveredEmoji, setSelectedEmoji, virtualizer]);
 } 

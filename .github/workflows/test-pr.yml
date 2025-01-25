@@ -20,4 +20,10 @@ jobs:
         run: bun install
         
       - name: Run tests
-        run: bun test 
+        run: bun run --cwd packages/emoji-picker test
+        
+      - name: Build library
+        run: bun run --cwd packages/emoji-picker build
+        
+      - name: Build demo
+        run: bun run --cwd demo build 

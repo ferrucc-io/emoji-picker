@@ -61,7 +61,6 @@ export function EmojiCategories({
     paddingEnd: 8,
   });
 
-  // Add keyboard navigation
   useEmojiKeyboardNavigation({ rows, virtualizer });
 
   const stickyHeader = useMemo(() => {

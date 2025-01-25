@@ -3,9 +3,9 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-
 @layer base {
   :root {
+    color-scheme: light dark;
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
