@@ -1,4 +1,4 @@
-import type { BuildConfig } from 'bun'
+import type { BuildConfig } from 'bun';
 import { spawnSync } from 'child_process';
 
 const defaultBuildConfig: BuildConfig = {
@@ -6,22 +6,22 @@ const defaultBuildConfig: BuildConfig = {
   outdir: './dist',
   external: ['react', 'react-dom'],
   minify: true,
-  root: './src'
-}
+  root: './src',
+};
 
 // Build JS bundles
 await Promise.all([
   Bun.build({
     ...defaultBuildConfig,
     format: 'esm',
-    naming: "[name].js",
+    naming: '[name].js',
   }),
   Bun.build({
     ...defaultBuildConfig,
     format: 'cjs',
-    naming: "[name].cjs",
-  })
-])
+    naming: '[name].cjs',
+  }),
+]);
 
 // Generate type declarations
-spawnSync('tsc', ['--project', 'tsconfig.build.json'], { stdio: 'inherit' }) 
+spawnSync('tsc', ['--project', 'tsconfig.build.json'], { stdio: 'inherit' });

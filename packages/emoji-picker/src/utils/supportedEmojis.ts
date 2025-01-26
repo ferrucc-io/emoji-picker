@@ -43,19 +43,19 @@ export function filterSupportedEmojis(emojiGroups: EmojiGroup[]): GroupedEmojis[
   if (!Array.isArray(emojiGroups)) {
     return [];
   }
-  
+
   return emojiGroups
-    .map(group => ({
+    .map((group) => ({
       category: group.name,
       emojis: group.emojis
-        .filter(emoji => isCompatibleEmoji(emoji).isCompatible)
-        .map(emoji => ({
+        .filter((emoji) => isCompatibleEmoji(emoji).isCompatible)
+        .map((emoji) => ({
           emoji: emoji.emoji,
           name: emoji.name,
           slug: emoji.slug,
           skin_tone_support: isCompatibleSkinTone(emoji),
-          skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version
-        }))
+          skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
+        })),
     }))
-    .filter(category => category.emojis.length > 0);
-} 
+    .filter((category) => category.emojis.length > 0);
+}

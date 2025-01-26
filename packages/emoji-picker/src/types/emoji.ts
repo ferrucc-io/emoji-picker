@@ -40,4 +40,4 @@ export type EmojiData = {
   skin_tone_support_unicode_version?: string;
   unicode_version: string;
   emoji_version: string;
-}; 
+};

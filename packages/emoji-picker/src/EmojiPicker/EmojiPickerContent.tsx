@@ -15,10 +15,8 @@ export function EmojiPickerContent() {
         <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
           {hoveredEmoji.name}
         </span>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">
-          :{hoveredEmoji.slug}:
-        </span>
+        <span className="text-xs text-zinc-500 dark:text-zinc-400">:{hoveredEmoji.slug}:</span>
       </div>
     </div>
   );
-} 
+}

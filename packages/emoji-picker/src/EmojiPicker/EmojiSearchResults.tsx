@@ -7,44 +7,36 @@ import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation'
 
 import type { EmojiMetadata } from '../types/emoji';
 
-type Row = 
-  | { type: 'header'; content: string }
-  | { type: 'emojis'; content: EmojiMetadata[] };
+type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
 
 interface EmojiSearchResultsProps {
   hideStickyHeader?: boolean;
   containerHeight?: number;
 }
 
-export function EmojiSearchResults({ 
+export function EmojiSearchResults({
   hideStickyHeader = false,
-  containerHeight = 364
+  containerHeight = 364,
 }: EmojiSearchResultsProps) {
-  const { 
-    filteredEmojis,
-    selectedRow,
-    selectedColumn,
-    emojisPerRow,
-    emojiSize
-  } = useEmojiPicker();
+  const { filteredEmojis, selectedRow, selectedColumn, emojisPerRow, emojiSize } = useEmojiPicker();
   const parentRef = useRef<HTMLDivElement>(null);
 
   // Create rows from search results
   const rows = useMemo<Row[]>(() => {
-    const searchResults = filteredEmojis.flatMap(category => category.emojis);
+    const searchResults = filteredEmojis.flatMap((category) => category.emojis);
     const rows: Row[] = [];
 
     // Add single "Search results" header
     rows.push({
       type: 'header',
-      content: 'Search results'
+      content: 'Search results',
     });
 
     // Add emoji rows
     for (let i = 0; i < searchResults.length; i += emojisPerRow) {
       rows.push({
         type: 'emojis',
-        content: searchResults.slice(i, i + emojisPerRow)
+        content: searchResults.slice(i, i + emojisPerRow),
       });
     }
 
@@ -59,14 +51,14 @@ export function EmojiSearchResults({
       return row?.type === 'header' ? 32 : emojiSize;
     },
     isHeader: (row: Row) => row.type === 'header',
-    hideStickyHeader
+    hideStickyHeader,
   });
 
   useEmojiKeyboardNavigation({ rows, virtualizer });
 
   return (
-    <div 
-      ref={parentRef} 
+    <div
+      ref={parentRef}
       className="overflow-y-auto relative outline-none"
       style={{
         height: `${containerHeight}px`,
@@ -83,21 +75,25 @@ export function EmojiSearchResults({
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const row = rows[virtualRow.index];
           const isSelectedRow = virtualRow.index === selectedRow;
-          
+
           return (
             <div
               key={virtualRow.index}
               data-type={row.type}
               style={{
-                ...(isSticky(virtualRow.index) ? {
-                  zIndex: 1,
-                } : {}),
-                ...(isActiveSticky(virtualRow.index) ? {
-                  position: 'sticky',
-                } : {
-                  position: 'absolute',
-                  transform: `translateY(${virtualRow.start}px)`,
-                }),
+                ...(isSticky(virtualRow.index)
+                  ? {
+                      zIndex: 1,
+                    }
+                  : {}),
+                ...(isActiveSticky(virtualRow.index)
+                  ? {
+                      position: 'sticky',
+                    }
+                  : {
+                      position: 'absolute',
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }),
                 top: 0,
                 left: 0,
                 width: '100%',
@@ -107,10 +103,13 @@ export function EmojiSearchResults({
               {row.type === 'header' ? (
                 <EmojiPickerHeader content={row.content} emojiSize={emojiSize} />
               ) : (
-                <div className={`grid grid-cols-${emojisPerRow} px-2`} style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}>
+                <div
+                  className={`grid grid-cols-${emojisPerRow} px-2`}
+                  style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}
+                >
                   {row.content.map((emojiData, index) => (
-                    <EmojiPickerButton 
-                      key={index} 
+                    <EmojiPickerButton
+                      key={index}
                       emoji={emojiData}
                       isSelected={isSelectedRow && index === selectedColumn}
                       rowIndex={virtualRow.index}
@@ -126,4 +125,4 @@ export function EmojiSearchResults({
       </div>
     </div>
   );
-} 
+}

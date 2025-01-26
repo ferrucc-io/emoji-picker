@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useEmojiPicker } from '../EmojiPicker/EmojiPickerContext';
 
 import type { EmojiMetadata } from '../types/emoji';
-type Row = 
-  | { type: 'header'; content: string }
-  | { type: 'emojis'; content: EmojiMetadata[] };
+type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
 
 interface UseEmojiKeyboardNavigationProps {
   rows: Row[];
@@ -14,43 +12,46 @@ interface UseEmojiKeyboardNavigationProps {
 }
 
 export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboardNavigationProps) {
-  const { 
+  const {
     selectedRow,
     selectedColumn,
     setSelectedPosition,
     setHoveredEmoji,
     setSelectedEmoji,
-    search
+    search,
   } = useEmojiPicker();
 
   // Find next/previous emoji row
-  const findNextEmojiRow = (currentRow: number, direction: 'up' | 'down'): number => {
-    let nextRow = currentRow;
-    
-    while (true) {
-      nextRow = direction === 'up' ? nextRow - 1 : nextRow + 1;
-      
-      // Check bounds
-      if (nextRow < 0 || nextRow >= rows.length) {
-        return currentRow;
+  const findNextEmojiRow = useCallback(
+    (currentRow: number, direction: 'up' | 'down'): number => {
+      let nextRow = currentRow;
+
+      while (true) {
+        nextRow = direction === 'up' ? nextRow - 1 : nextRow + 1;
+
+        // Check bounds
+        if (nextRow < 0 || nextRow >= rows.length) {
+          return currentRow;
+        }
+
+        // Found next emoji row
+        if (rows[nextRow].type === 'emojis') {
+          return nextRow;
+        }
       }
-      
-      // Found next emoji row
-      if (rows[nextRow].type === 'emojis') {
-        return nextRow;
-      }
-    }
-  };
+    },
+    [rows]
+  );
 
   // Find first emoji row
-  const findFirstEmojiRow = (): number => {
+  const findFirstEmojiRow = useCallback((): number => {
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].type === 'emojis') {
         return i;
       }
     }
     return -1;
-  };
+  }, [rows]);
 
   // Focus first emoji when search query changes and there are results
   useEffect(() => {
@@ -65,7 +66,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
         }
       }
     }
-  }, [search, rows]);
+  }, [search, rows, findFirstEmojiRow, setSelectedPosition, setHoveredEmoji, virtualizer]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -104,7 +105,8 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
             const prevRow = findNextEmojiRow(newRow, 'up');
             if (prevRow !== newRow) {
               newRow = prevRow;
-              const prevRowEmojis = (rows[prevRow] as { type: 'emojis'; content: EmojiMetadata[] }).content;
+              const prevRowEmojis = (rows[prevRow] as { type: 'emojis'; content: EmojiMetadata[] })
+                .content;
               newColumn = prevRowEmojis.length - 1;
             }
           }
@@ -127,7 +129,8 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
           const prevRow = findNextEmojiRow(newRow, 'up');
           if (prevRow !== newRow) {
             newRow = prevRow;
-            const prevRowEmojis = (rows[prevRow] as { type: 'emojis'; content: EmojiMetadata[] }).content;
+            const prevRowEmojis = (rows[prevRow] as { type: 'emojis'; content: EmojiMetadata[] })
+              .content;
             newColumn = Math.min(newColumn, prevRowEmojis.length - 1);
           }
           break;
@@ -136,7 +139,8 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
           const nextRow = findNextEmojiRow(newRow, 'down');
           if (nextRow !== newRow) {
             newRow = nextRow;
-            const nextRowEmojis = (rows[nextRow] as { type: 'emojis'; content: EmojiMetadata[] }).content;
+            const nextRowEmojis = (rows[nextRow] as { type: 'emojis'; content: EmojiMetadata[] })
+              .content;
             newColumn = Math.min(newColumn, nextRowEmojis.length - 1);
           }
           break;
@@ -163,7 +167,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [rows, selectedRow, selectedColumn, setSelectedPosition, setHoveredEmoji, setSelectedEmoji, virtualizer]);
-} 
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [rows, selectedRow, selectedColumn, findFirstEmojiRow, findNextEmojiRow]);
+}

@@ -21,4 +21,4 @@ export function SearchIcon({ className, ...props }: SearchIconProps) {
       />
     </svg>
   );
-} 
+}

@@ -9,12 +9,12 @@ interface UseVirtualizedListOptions<T> {
   hideStickyHeader?: boolean;
 }
 
-export function useVirtualizedList<T>({ 
-  rows, 
-  getScrollElement, 
+export function useVirtualizedList<T>({
+  rows,
+  getScrollElement,
   estimateSize,
   isHeader,
-  hideStickyHeader = false
+  hideStickyHeader = false,
 }: UseVirtualizedListOptions<T>) {
   const activeStickyIndexRef = useRef(0);
 
@@ -29,7 +29,8 @@ export function useVirtualizedList<T>({
   }, [rows, isHeader, hideStickyHeader]);
 
   const isSticky = (index: number) => stickyIndexes.includes(index);
-  const isActiveSticky = (index: number) => !hideStickyHeader && activeStickyIndexRef.current === index;
+  const isActiveSticky = (index: number) =>
+    !hideStickyHeader && activeStickyIndexRef.current === index;
 
   const virtualizer = useVirtualizer({
     count: rows.length,
@@ -42,22 +43,18 @@ export function useVirtualizedList<T>({
         return defaultRangeExtractor(range);
       }
 
-      activeStickyIndexRef.current = [...stickyIndexes]
-        .reverse()
-        .find((index) => range.startIndex >= index) ?? 0;
+      activeStickyIndexRef.current =
+        [...stickyIndexes].reverse().find((index) => range.startIndex >= index) ?? 0;
 
-      const next = new Set([
-        activeStickyIndexRef.current,
-        ...defaultRangeExtractor(range)
-      ]);
+      const next = new Set([activeStickyIndexRef.current, ...defaultRangeExtractor(range)]);
 
       return [...next].sort((a, b) => a - b);
-    }
+    },
   });
 
   return {
     virtualizer,
     isSticky,
-    isActiveSticky
+    isActiveSticky,
   };
-} 
+}

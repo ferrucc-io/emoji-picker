@@ -7,7 +7,6 @@ import type { ReactNode } from 'react';
 interface EmojiPickerInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   placeholder?: string;
-  startIcon?: ReactNode;
   endIcon?: ReactNode;
   onClear?: () => void;
   className?: string;
@@ -17,7 +16,6 @@ interface EmojiPickerInputProps
 
 export function EmojiPickerInput({
   placeholder,
-  startIcon,
   endIcon,
   onClear,
   className,
@@ -60,24 +58,18 @@ export function EmojiPickerInput({
           'focus:outline-none focus:ring-1 focus:ring-indigo-500',
           !hideIcon && 'pl-7',
           hideIcon && 'pl-2',
-          (endIcon || search) ? 'pr-7' : 'pr-2',
+          endIcon || search ? 'pr-7' : 'pr-2',
           className
         )}
       />
       {search && (
         <div className="absolute right-2 flex items-center">
           {endIcon ? (
-            <button
-              onClick={handleClear}
-              className="h-4 w-4"
-            >
+            <button onClick={handleClear} className="h-4 w-4">
               {endIcon}
             </button>
           ) : (
-            <button
-              onClick={handleClear}
-              className="h-4 w-4"
-            >
+            <button onClick={handleClear} className="h-4 w-4">
               <ClearIcon />
             </button>
           )}
@@ -85,4 +77,4 @@ export function EmojiPickerInput({
       )}
     </div>
   );
-} 
+}

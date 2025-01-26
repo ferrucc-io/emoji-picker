@@ -15,4 +15,4 @@ export function EmojiPickerHeader({ content, emojiSize }: EmojiPickerHeaderProps
       </div>
     </div>
   );
-} 
+}
