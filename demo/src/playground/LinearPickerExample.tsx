@@ -1,4 +1,4 @@
-import { EmojiPicker } from '@ferrucc-io/emoji-picker';
+import { EmojiPicker } from "@ferrucc-io/emoji-picker";
 
 export function LinearPickerExample() {
   return (
@@ -8,18 +8,15 @@ export function LinearPickerExample() {
       emojiSize={28}
     >
       <EmojiPicker.Header className="p-2 pb-0">
-        <EmojiPicker.Input 
-          placeholder="Search emoji" 
+        <EmojiPicker.Input
+          placeholder="Search emoji"
           autoFocus={true}
           className="focus:ring-2 focus:ring-inset ring-1 ring-transparent"
         />
       </EmojiPicker.Header>
       <EmojiPicker.Group>
-        <EmojiPicker.List 
-          hideStickyHeader={true}
-          containerHeight={400}
-        />
+        <EmojiPicker.List hideStickyHeader={true} containerHeight={400} />
       </EmojiPicker.Group>
     </EmojiPicker>
   );
-} 
+}

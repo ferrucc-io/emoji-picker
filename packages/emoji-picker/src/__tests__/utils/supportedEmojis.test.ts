@@ -17,7 +17,7 @@ describe('filterSupportedEmojis', () => {
             skin_tone_support: true,
             skin_tone_support_unicode_version: '8.0',
             unicode_version: '6.0',
-            emoji_version: '6.0'
+            emoji_version: '6.0',
           },
           {
             emoji: '🫨',
@@ -25,10 +25,10 @@ describe('filterSupportedEmojis', () => {
             slug: 'shaking_face',
             skin_tone_support: false,
             unicode_version: '15.1',
-            emoji_version: '15.1'
-          }
-        ]
-      }
+            emoji_version: '15.1',
+          },
+        ],
+      },
     ];
 
     const result = filterSupportedEmojis(mockEmojiGroups);
@@ -42,10 +42,10 @@ describe('filterSupportedEmojis', () => {
             name: 'waving hand',
             slug: 'waving_hand',
             skin_tone_support: true,
-            skin_tone_support_unicode_version: '8.0'
-          }
-        ]
-      }
+            skin_tone_support_unicode_version: '8.0',
+          },
+        ],
+      },
     ]);
   });
 
@@ -61,10 +61,10 @@ describe('filterSupportedEmojis', () => {
             slug: 'shaking_face',
             skin_tone_support: false,
             unicode_version: '15.1',
-            emoji_version: '15.1'
-          }
-        ]
-      }
+            emoji_version: '15.1',
+          },
+        ],
+      },
     ];
 
     const result = filterSupportedEmojis(mockEmojiGroups);
@@ -85,7 +85,7 @@ describe('filterSupportedEmojis', () => {
             skin_tone_support: true,
             skin_tone_support_unicode_version: '8.0',
             unicode_version: '6.0',
-            emoji_version: '6.0'
+            emoji_version: '6.0',
           },
           {
             emoji: '❤️',
@@ -93,10 +93,10 @@ describe('filterSupportedEmojis', () => {
             slug: 'red_heart',
             skin_tone_support: false,
             unicode_version: '6.0',
-            emoji_version: '6.0'
-          }
-        ]
-      }
+            emoji_version: '6.0',
+          },
+        ],
+      },
     ];
 
     const result = filterSupportedEmojis(mockEmojiGroups);
@@ -110,17 +110,17 @@ describe('filterSupportedEmojis', () => {
             name: 'waving hand',
             slug: 'waving_hand',
             skin_tone_support: true,
-            skin_tone_support_unicode_version: '8.0'
+            skin_tone_support_unicode_version: '8.0',
           },
           {
             emoji: '❤️',
             name: 'red heart',
             slug: 'red_heart',
             skin_tone_support: false,
-            skin_tone_support_unicode_version: undefined
-          }
-        ]
-      }
+            skin_tone_support_unicode_version: undefined,
+          },
+        ],
+      },
     ]);
   });
 
@@ -128,4 +128,4 @@ describe('filterSupportedEmojis', () => {
     const result = filterSupportedEmojis({} as any);
     expect(result).toEqual([]);
   });
-}); 
+});

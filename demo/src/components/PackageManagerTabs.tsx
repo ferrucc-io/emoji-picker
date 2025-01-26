@@ -1,28 +1,42 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps } from "react";
 
 interface PackageManagerTabsProps {
   packageName: string;
 }
 
-type PackageManager = 'npm' | 'bun' | 'yarn' | 'pnpm';
+type PackageManager = "npm" | "bun" | "yarn" | "pnpm";
 
-function ClipboardIcon(props: ComponentProps<'svg'>) {
+function ClipboardIcon(props: ComponentProps<"svg">) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className={`lucide lucide-copy ${props.className}`}><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={`lucide lucide-copy ${props.className}`}
+    >
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </svg>
   );
 }
 
 export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
-  const [activeTab, setActiveTab] = useState<PackageManager>('npm');
+  const [activeTab, setActiveTab] = useState<PackageManager>("npm");
   const [copied, setCopied] = useState(false);
 
   const commands: Record<PackageManager, string> = {
     npm: `npm install ${packageName}`,
     bun: `bun add ${packageName}`,
     yarn: `yarn add ${packageName}`,
-    pnpm: `pnpm add ${packageName}`
+    pnpm: `pnpm add ${packageName}`,
   };
 
   const handleCopy = async () => {
@@ -31,7 +45,7 @@ export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text:', err);
+      console.error("Failed to copy text:", err);
     }
   };
 
@@ -46,8 +60,8 @@ export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
                 onClick={() => setActiveTab(manager)}
                 className={`px-2 py-1.5 text-xs rounded-md transition-colors ${
                   activeTab === manager
-                    ? 'bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50'
+                    ? "bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
+                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50"
                 }`}
               >
                 {manager}
@@ -64,15 +78,16 @@ export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
         <button
           onClick={handleCopy}
           className={`absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md transition-colors
-            ${copied 
-              ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' 
-              : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800'
+            ${
+              copied
+                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
             }`}
         >
           <ClipboardIcon className={`w-3 h-3`} />
-          {copied ? 'Done' : 'Copy'}
+          {copied ? "Done" : "Copy"}
         </button>
       </div>
     </div>
   );
-} 
+}

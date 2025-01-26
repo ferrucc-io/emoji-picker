@@ -19,6 +19,14 @@ jobs:
       - name: Install dependencies
         run: bun install
         
+      - name: Check formatting
+        run: |
+          bun run --cwd packages/emoji-picker format:check
+          bun run --cwd demo format:check
+        
+      - name: Run linting
+        run: bun run --cwd packages/emoji-picker lint
+        
       - name: Run tests
         run: bun run --cwd packages/emoji-picker test
         

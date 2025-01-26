@@ -10,9 +10,13 @@
     "dist"
   ],
   "exports": {
-    "types": "./dist/index.d.ts",
-    "import": "./dist/index.js",
-    "require": "./dist/index.cjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "sideEffects": false,
   "scripts": {
@@ -22,12 +26,18 @@
     "test:coverage": "bun test --coverage",
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
-    "build": "rm -rf dist && bun run build:types && bun build -c bunfig.toml",
+    "build:esm": "bun build ./src/index.ts --outfile ./dist/index.js --external react --external react-dom",
+    "build:cjs": "bun build ./src/index.ts --outfile ./dist/index.cjs --format cjs --external react --external react-dom",
+    "build": "rm -rf dist && bun run build:types && bun run build:esm && bun run build:cjs",
     "prepublishOnly": "cp ../../README.md . && bun run build",
     "clean": "rm -rf dist",
     "release:patch": "bun run scripts/release.ts patch",
     "release:minor": "bun run scripts/release.ts minor",
-    "release:major": "bun run scripts/release.ts major"
+    "release:major": "bun run scripts/release.ts major",
+    "lint": "bunx --bun eslint . --ext .ts,.tsx",
+    "format": "bunx --bun prettier --write .",
+    "format:check": "bunx --bun prettier --check .",
+    "prepack": "bun run build"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
@@ -39,7 +49,14 @@
     "sharp": "^0.33.2",
     "vite": "^6.0.11",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.2.5"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -71,5 +88,11 @@
   "bugs": {
     "url": "https://github.com/ferrucc-io/emoji-picker/issues"
   },
-  "homepage": "https://emoji.ferrucc.io"
+  "homepage": "https://emoji.ferrucc.io",
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

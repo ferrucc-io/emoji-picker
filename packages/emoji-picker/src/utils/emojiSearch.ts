@@ -1,7 +1,12 @@
 import { filterSupportedEmojis } from './supportedEmojis';
 import { isCompatibleEmoji } from './emojiFilters';
 
-import type { EmojiData, EmojiGroupData as EmojiGroup, EmojiMetadata, EmojiDataItem } from '../types/emoji';
+import type {
+  EmojiData,
+  EmojiGroupData as EmojiGroup,
+  EmojiMetadata,
+  EmojiDataItem,
+} from '../types/emoji';
 
 type GroupedEmojis = {
   category: string;
@@ -10,7 +15,7 @@ type GroupedEmojis = {
 
 export const processEmojiData = (emojiData: any): EmojiData[] => {
   const processed: EmojiData[] = [];
-  
+
   // Process each category
   for (const group of Object.values(emojiData)) {
     if (!group || typeof group !== 'object') continue;
@@ -21,8 +26,15 @@ export const processEmojiData = (emojiData: any): EmojiData[] => {
     // Process emojis in this group
     for (const emoji of Object.values(emojis)) {
       if (!emoji || typeof emoji !== 'object') continue;
-      
-      const { emoji: char, name, skin_tone_support, skin_tone_support_unicode_version, unicode_version, emoji_version } = emoji as any;
+
+      const {
+        emoji: char,
+        name,
+        skin_tone_support,
+        skin_tone_support_unicode_version,
+        unicode_version,
+        emoji_version,
+      } = emoji as any;
       if (char && name) {
         processed.push({
           emoji: char,
@@ -31,7 +43,7 @@ export const processEmojiData = (emojiData: any): EmojiData[] => {
           skin_tone_support: !!skin_tone_support,
           skin_tone_support_unicode_version,
           unicode_version,
-          emoji_version
+          emoji_version,
         });
       }
     }
@@ -46,25 +58,25 @@ export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
   }
 
   const groups: EmojiGroup[] = [];
-  
+
   for (const group of Object.values(emojiData)) {
     if (!group || typeof group !== 'object') continue;
-    
+
     const { name, slug, emojis } = group as any;
     if (!name || !emojis || typeof emojis !== 'object') continue;
 
     const emojiItems: EmojiDataItem[] = [];
     for (const emoji of Object.values(emojis)) {
       if (!emoji || typeof emoji !== 'object') continue;
-      
-      const { 
-        emoji: char, 
-        name: emojiName, 
+
+      const {
+        emoji: char,
+        name: emojiName,
         slug: emojiSlug,
         skin_tone_support,
         skin_tone_support_unicode_version,
         unicode_version,
-        emoji_version
+        emoji_version,
       } = emoji as any;
 
       if (char && emojiName) {
@@ -75,7 +87,7 @@ export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
           skin_tone_support: !!skin_tone_support,
           skin_tone_support_unicode_version,
           unicode_version: unicode_version || '',
-          emoji_version: emoji_version || ''
+          emoji_version: emoji_version || '',
         });
       }
     }
@@ -84,7 +96,7 @@ export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
       groups.push({
         name,
         slug: slug || name.toLowerCase().replace(/\s+/g, '_'),
-        emojis: emojiItems
+        emojis: emojiItems,
       });
     }
   }
@@ -92,10 +104,7 @@ export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
   return filterSupportedEmojis(groups);
 };
 
-export const searchEmojis = (
-  searchTerm: string,
-  processedData: EmojiData[]
-): GroupedEmojis[] => {
+export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): GroupedEmojis[] => {
   // Return empty array for empty search
   if (!searchTerm.trim()) {
     return [];
@@ -103,16 +112,17 @@ export const searchEmojis = (
 
   const normalizedSearch = searchTerm.toLowerCase();
   const matchingEmojis = processedData.filter(
-    emoji => emoji.name.includes(normalizedSearch) && 
-    isCompatibleEmoji({
-      emoji: emoji.emoji,
-      name: emoji.name,
-      unicode_version: emoji.unicode_version || '',
-      emoji_version: emoji.emoji_version || '',
-      skin_tone_support: emoji.skin_tone_support,
-      skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
-      slug: emoji.name.replace(/\s+/g, '_')
-    }).isCompatible
+    (emoji) =>
+      emoji.name.includes(normalizedSearch) &&
+      isCompatibleEmoji({
+        emoji: emoji.emoji,
+        name: emoji.name,
+        unicode_version: emoji.unicode_version || '',
+        emoji_version: emoji.emoji_version || '',
+        skin_tone_support: emoji.skin_tone_support,
+        skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
+        slug: emoji.name.replace(/\s+/g, '_'),
+      }).isCompatible
   );
 
   if (matchingEmojis.length === 0) {
@@ -121,14 +131,14 @@ export const searchEmojis = (
 
   // Group matching emojis by category
   const groupedResults = new Map<string, EmojiMetadata[]>();
-  
-  matchingEmojis.forEach(emoji => {
+
+  matchingEmojis.forEach((emoji) => {
     const metadata: EmojiMetadata = {
       emoji: emoji.emoji,
       name: emoji.name,
       slug: emoji.name.replace(/\s+/g, '_'),
       skin_tone_support: emoji.skin_tone_support,
-      skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version
+      skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
     };
 
     if (!groupedResults.has(emoji.group)) {
@@ -139,6 +149,6 @@ export const searchEmojis = (
 
   return Array.from(groupedResults.entries()).map(([category, emojis]) => ({
     category,
-    emojis
+    emojis,
   }));
-}; 
+};

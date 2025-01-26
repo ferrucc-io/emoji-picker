@@ -1,232 +1,234 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Emoji Color Generator</title>
-  <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.2.1-alpha.1/dist/vibrant.min.js"></script>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f7f7f7;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 20px;
-      padding: 0 20px;
-    }
-    .sidebar {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 20px;
-      height: fit-content;
-    }
-    .main {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    #status {
-      margin-bottom: 20px;
-      padding: 12px;
-      border-radius: 6px;
-      background: #f3f3f3;
-      font-size: 14px;
-    }
-    .preview-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
-      padding: 0 20px;
-    }
-    .preview-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px;
-      border-radius: 6px;
-      background: #f9f9f9;
-    }
-    .preview-emoji {
-      display: none;
-    }
-    .preview-color {
-      display: none;
-    }
-    .preview-hover {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-    .preview-hex {
-      font-size: 13px;
-      color: #666;
-      font-family: monospace;
-    }
-    .progress-bar {
-      height: 4px;
-      background: #eee;
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-    .progress-fill {
-      height: 100%;
-      background: #34d399;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-    .preview-item.skin-tone-variant {
-      background: #f3f3f3;
-    }
-    .preview-item .variant-indicator {
-      font-size: 11px;
-      color: #666;
-      margin-left: auto;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="sidebar">
-      <div id="status">Loading emoji data...</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
+  <head>
+    <title>Emoji Color Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.2.1-alpha.1/dist/vibrant.min.js"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f7f7f7;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 20px;
+        padding: 0 20px;
+      }
+      .sidebar {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+      }
+      .main {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      #status {
+        margin-bottom: 20px;
+        padding: 12px;
+        border-radius: 6px;
+        background: #f3f3f3;
+        font-size: 14px;
+      }
+      .preview-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+        padding: 0 20px;
+      }
+      .preview-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 6px;
+        background: #f9f9f9;
+      }
+      .preview-emoji {
+        display: none;
+      }
+      .preview-color {
+        display: none;
+      }
+      .preview-hover {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+      .preview-hex {
+        font-size: 13px;
+        color: #666;
+        font-family: monospace;
+      }
+      .progress-bar {
+        height: 4px;
+        background: #eee;
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .progress-fill {
+        height: 100%;
+        background: #34d399;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+      .preview-item.skin-tone-variant {
+        background: #f3f3f3;
+      }
+      .preview-item .variant-indicator {
+        font-size: 11px;
+        color: #666;
+        margin-left: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <div id="status">Loading emoji data...</div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="preview-list"></div>
       </div>
     </div>
-    <div class="main">
-      <div class="preview-list"></div>
-    </div>
-  </div>
-  <canvas id="canvas" style="display: none;"></canvas>
+    <canvas id="canvas" style="display: none"></canvas>
 
-  <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 64;
-    canvas.height = 64;
+    <script>
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 64;
+      canvas.height = 64;
 
-    const results = {};
-    const status = document.getElementById('status');
-    const progressFill = document.querySelector('.progress-fill');
-    const previewList = document.querySelector('.preview-list');
+      const results = {};
+      const status = document.getElementById('status');
+      const progressFill = document.querySelector('.progress-fill');
+      const previewList = document.querySelector('.preview-list');
 
-    function createPreviewItem(emoji, color, isSkinToneVariant) {
-      const item = document.createElement('div');
-      item.className = 'preview-item' + (isSkinToneVariant ? ' skin-tone-variant' : '');
-      
-      const emojiSpan = document.createElement('span');
-      emojiSpan.className = 'preview-emoji';
-      emojiSpan.textContent = emoji;
-      
-      const colorDiv = document.createElement('div');
-      colorDiv.className = 'preview-color';
-      colorDiv.style.backgroundColor = color;
-      
-      const previewHover = document.createElement('div');
-      previewHover.className = 'preview-hover';
-      previewHover.style.backgroundColor = color;
-      previewHover.textContent = emoji;
-      
-      const hexSpan = document.createElement('span');
-      hexSpan.className = 'preview-hex';
-      hexSpan.textContent = color;
+      function createPreviewItem(emoji, color, isSkinToneVariant) {
+        const item = document.createElement('div');
+        item.className = 'preview-item' + (isSkinToneVariant ? ' skin-tone-variant' : '');
 
-      if (isSkinToneVariant) {
-        const variantSpan = document.createElement('span');
-        variantSpan.className = 'variant-indicator';
-        variantSpan.textContent = '(variant)';
-        item.appendChild(variantSpan);
-      }
-      
-      item.append(emojiSpan, colorDiv, previewHover, hexSpan);
-      return item;
-    }
+        const emojiSpan = document.createElement('span');
+        emojiSpan.className = 'preview-emoji';
+        emojiSpan.textContent = emoji;
 
-    async function getEmojiColor(emoji, data) {
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      ctx.font = '48px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';
-      ctx.fillStyle = 'black';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(emoji, canvas.width/2, canvas.height/2);
+        const colorDiv = document.createElement('div');
+        colorDiv.className = 'preview-color';
+        colorDiv.style.backgroundColor = color;
 
-      try {
-        const dataUrl = canvas.toDataURL('image/png');
-        const palette = await Vibrant.from(dataUrl).getPalette();
-        const color = palette.Vibrant?.hex;
-        if (color) {
-          const colorWithOpacity = color + '1f';
-          previewList.appendChild(createPreviewItem(emoji, colorWithOpacity, data.skin_tone_variant));
-          return colorWithOpacity;
+        const previewHover = document.createElement('div');
+        previewHover.className = 'preview-hover';
+        previewHover.style.backgroundColor = color;
+        previewHover.textContent = emoji;
+
+        const hexSpan = document.createElement('span');
+        hexSpan.className = 'preview-hex';
+        hexSpan.textContent = color;
+
+        if (isSkinToneVariant) {
+          const variantSpan = document.createElement('span');
+          variantSpan.className = 'variant-indicator';
+          variantSpan.textContent = '(variant)';
+          item.appendChild(variantSpan);
         }
-      } catch (error) {
-        console.error(`Error processing ${emoji}:`, error);
+
+        item.append(emojiSpan, colorDiv, previewHover, hexSpan);
+        return item;
       }
-      return null;
-    }
 
-    async function processEmojis() {
-      const response = await fetch('/emoji-data');
-      const emojiData = await response.json();
-      
-      status.textContent = 'Processing emojis...';
-      
-      let processed = 0;
-      const total = Object.keys(emojiData).length;
+      async function getEmojiColor(emoji, data) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      for (const [emoji, data] of Object.entries(emojiData)) {
-        processed++;
-        const color = await getEmojiColor(emoji, data);
-        if (color) {
-          results[emoji] = color;
+        ctx.font = '48px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(emoji, canvas.width / 2, canvas.height / 2);
+
+        try {
+          const dataUrl = canvas.toDataURL('image/png');
+          const palette = await Vibrant.from(dataUrl).getPalette();
+          const color = palette.Vibrant?.hex;
+          if (color) {
+            const colorWithOpacity = color + '1f';
+            previewList.appendChild(
+              createPreviewItem(emoji, colorWithOpacity, data.skin_tone_variant)
+            );
+            return colorWithOpacity;
+          }
+        } catch (error) {
+          console.error(`Error processing ${emoji}:`, error);
         }
-        const progress = (processed / total) * 100;
-        progressFill.style.width = `${progress}%`;
-        status.textContent = `Processed ${processed} of ${total} emojis`;
-        await new Promise(resolve => setTimeout(resolve, 10));
+        return null;
       }
 
-      const output = `// Auto-generated file - do not edit directly
+      async function processEmojis() {
+        const response = await fetch('/emoji-data');
+        const emojiData = await response.json();
+
+        status.textContent = 'Processing emojis...';
+
+        let processed = 0;
+        const total = Object.keys(emojiData).length;
+
+        for (const [emoji, data] of Object.entries(emojiData)) {
+          processed++;
+          const color = await getEmojiColor(emoji, data);
+          if (color) {
+            results[emoji] = color;
+          }
+          const progress = (processed / total) * 100;
+          progressFill.style.width = `${progress}%`;
+          status.textContent = `Processed ${processed} of ${total} emojis`;
+          await new Promise((resolve) => setTimeout(resolve, 10));
+        }
+
+        const output = `// Auto-generated file - do not edit directly
 export const emojiColors: Record<string, string> = ${JSON.stringify(results, null, 2)};`;
-      
-      try {
-        const saveResponse = await fetch('/save', {
-          method: 'POST',
-          body: output
-        });
-        
-        if (saveResponse.ok) {
-          status.textContent = `✨ Done! Generated colors for ${total} emojis`;
-          status.style.background = '#d1fae5';
-        } else {
-          throw new Error('Failed to save');
-        }
-      } catch (error) {
-        status.textContent = 'Error saving colors';
-        status.style.background = '#fee2e2';
-      }
-    }
 
-    processEmojis().catch(error => {
-      console.error(error);
-      status.textContent = 'Error: ' + error.message;
-      status.style.background = '#fee2e2';
-    });
-  </script>
-</body>
-</html> 
+        try {
+          const saveResponse = await fetch('/save', {
+            method: 'POST',
+            body: output,
+          });
+
+          if (saveResponse.ok) {
+            status.textContent = `✨ Done! Generated colors for ${total} emojis`;
+            status.style.background = '#d1fae5';
+          } else {
+            throw new Error('Failed to save');
+          }
+        } catch (error) {
+          status.textContent = 'Error saving colors';
+          status.style.background = '#fee2e2';
+        }
+      }
+
+      processEmojis().catch((error) => {
+        console.error(error);
+        status.textContent = 'Error: ' + error.message;
+        status.style.background = '#fee2e2';
+      });
+    </script>
+  </body>
+</html>

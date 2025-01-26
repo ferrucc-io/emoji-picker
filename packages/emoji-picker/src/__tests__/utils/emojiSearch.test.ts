@@ -3,90 +3,90 @@ import { groupEmojisByCategory, processEmojiData, searchEmojis } from '../../uti
 
 describe('Emoji Search', () => {
   const mockEmojiData = {
-    "Smileys & Emotion": {
-      name: "Smileys & Emotion",
-      slug: "smileys_emotion",
+    'Smileys & Emotion': {
+      name: 'Smileys & Emotion',
+      slug: 'smileys_emotion',
       emojis: {
-        "grinning": {
-          emoji: "😀",
-          name: "grinning face",
-          slug: "grinning_face",
-          unicode_version: "6.1",
-          emoji_version: "6.0",
-          skin_tone_support: false
+        grinning: {
+          emoji: '😀',
+          name: 'grinning face',
+          slug: 'grinning_face',
+          unicode_version: '6.1',
+          emoji_version: '6.0',
+          skin_tone_support: false,
         },
-        "grin": {
-          emoji: "😁",
-          name: "beaming face with smiling eyes",
-          slug: "beaming_face_with_smiling_eyes",
-          unicode_version: "6.0",
-          emoji_version: "6.0",
-          skin_tone_support: false
+        grin: {
+          emoji: '😁',
+          name: 'beaming face with smiling eyes',
+          slug: 'beaming_face_with_smiling_eyes',
+          unicode_version: '6.0',
+          emoji_version: '6.0',
+          skin_tone_support: false,
         },
-        "new_emoji": {
-          emoji: "🫨",
-          name: "shaking face",
-          slug: "shaking_face",
-          unicode_version: "15.1",
-          emoji_version: "15.1",
-          skin_tone_support: false
-        }
-      }
-    }
+        new_emoji: {
+          emoji: '🫨',
+          name: 'shaking face',
+          slug: 'shaking_face',
+          unicode_version: '15.1',
+          emoji_version: '15.1',
+          skin_tone_support: false,
+        },
+      },
+    },
   };
 
-  test("processEmojiData processes emoji data correctly", () => {
+  test('processEmojiData processes emoji data correctly', () => {
     const processed = processEmojiData(mockEmojiData);
     expect(processed).toHaveLength(3);
     expect(processed[0]).toEqual({
-      emoji: "😀",
-      name: "grinning face",
-      group: "Smileys & Emotion",
+      emoji: '😀',
+      name: 'grinning face',
+      group: 'Smileys & Emotion',
       skin_tone_support: false,
       skin_tone_support_unicode_version: undefined,
-      unicode_version: "6.1",
-      emoji_version: "6.0"
+      unicode_version: '6.1',
+      emoji_version: '6.0',
     });
   });
 
-  test("groupEmojisByCategory groups emojis correctly", () => {
+  test('groupEmojisByCategory groups emojis correctly', () => {
     const result = groupEmojisByCategory(mockEmojiData);
     expect(result).toHaveLength(1);
-    expect(result[0].category).toBe("Smileys & Emotion");
+    expect(result[0].category).toBe('Smileys & Emotion');
     expect(result[0].emojis).toHaveLength(2); // Should only include compatible emojis
-    expect(result[0].emojis[0].emoji).toBe("😀");
-    expect(result[0].emojis[1].emoji).toBe("😁");
+    expect(result[0].emojis[0].emoji).toBe('😀');
+    expect(result[0].emojis[1].emoji).toBe('😁');
   });
 
-  test("searchEmojis finds emojis by name", () => {
+  test('searchEmojis finds emojis by name', () => {
     const processed = processEmojiData(mockEmojiData);
-    const results = searchEmojis("grinning", processed);
+    const results = searchEmojis('grinning', processed);
     expect(results).toHaveLength(1);
-    expect(results[0].emojis[0].emoji).toBe("😀");
+    expect(results[0].emojis[0].emoji).toBe('😀');
   });
 
-  test("searchEmojis finds emojis by partial match", () => {
+  test('searchEmojis finds emojis by partial match', () => {
     const processed = processEmojiData(mockEmojiData);
-    const results = searchEmojis("beam", processed);
+    const results = searchEmojis('beam', processed);
     expect(results).toHaveLength(1);
-    expect(results[0].emojis[0].emoji).toBe("😁");
+    expect(results[0].emojis[0].emoji).toBe('😁');
   });
 
-  test("searchEmojis returns empty array for no matches", () => {
+  test('searchEmojis returns empty array for no matches', () => {
     const processed = processEmojiData(mockEmojiData);
-    const results = searchEmojis("xyz", processed);
+    const results = searchEmojis('xyz', processed);
     expect(results).toHaveLength(0);
   });
 
-  test("searchEmojis returns empty array for empty search", () => {
+  test('searchEmojis returns empty array for empty search', () => {
     const processed = processEmojiData(mockEmojiData);
-    const results = searchEmojis("", processed);
+    const results = searchEmojis('', processed);
     expect(results).toHaveLength(0);
   });
 
-  test("searchEmojis does not return emojis that are not compatible with version 15.0", () => {
+  test('searchEmojis does not return emojis that are not compatible with version 15.0', () => {
     const processed = processEmojiData(mockEmojiData);
-    const results = searchEmojis("shaking", processed);
+    const results = searchEmojis('shaking', processed);
     expect(results).toHaveLength(0);
   });
-}); 
+});

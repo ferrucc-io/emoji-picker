@@ -9,7 +9,10 @@
     "build:stats": "bun run scripts/updateNpmStats.ts",
     "build": "bun run build:stats && bun run build:types && bunx --bun vite build",
     "preview": "bunx --bun vite preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "lint": "bunx --bun eslint . --ext .ts,.tsx",
+    "format": "bunx --bun prettier --write .",
+    "format:check": "bunx --bun prettier --check ."
   },
   "dependencies": {
     "@ferrucc-io/emoji-picker": "workspace:*",
@@ -22,8 +25,15 @@
     "@types/react": "^18.2.55",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "gh-pages": "^6.1.1",
+    "prettier": "^3.2.5",
     "typescript": "^5.3.3",
     "vite": "^5.1.4"
   },

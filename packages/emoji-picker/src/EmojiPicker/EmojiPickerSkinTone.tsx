@@ -16,7 +16,7 @@ export function EmojiPickerSkinTone() {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const { skinTone, setSkinTone } = useEmojiPicker();
 
-  const currentTone = skinTones.find(t => t.tone === skinTone) || skinTones[0];
+  const currentTone = skinTones.find((t) => t.tone === skinTone) || skinTones[0];
 
   if (isPickerOpen) {
     return (
@@ -43,11 +43,11 @@ export function EmojiPickerSkinTone() {
   }
 
   return (
-    <button 
+    <button
       className="text-md font-semibold text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-3 py-1.5 transition-colors"
       onClick={() => setIsPickerOpen(true)}
     >
       {currentTone.emoji}
     </button>
   );
-} 
+}

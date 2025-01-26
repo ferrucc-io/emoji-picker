@@ -1,4 +1,4 @@
-import type { SkinTone } from "@/types/emoji";
+import type { SkinTone } from '@/types/emoji';
 
 export interface EmojiMetadata {
   emoji: string;
@@ -36,17 +36,20 @@ export function applySkinTone(emoji: EmojiMetadata, skinTone: SkinTone): EmojiMe
     const basePart = part.replace(/\p{Emoji_Modifier}/gu, '');
 
     if (/\p{Emoji_Modifier_Base}/u.test(basePart)) {
-      return basePart.replace(/(\p{Extended_Pictographic}+)(\uFE0F?)/u, `$1${skinTonMap[skinTone]}`);
+      return basePart.replace(
+        /(\p{Extended_Pictographic}+)(\uFE0F?)/u,
+        `$1${skinTonMap[skinTone]}`
+      );
     }
     return part;
   });
 
   const newEmoji = modifiedParts.join(zwj);
-  
+
   return {
     ...emoji,
     emoji: newEmoji,
     name: `${emoji.name}`,
-    slug: `${emoji.slug}`
+    slug: `${emoji.slug}`,
   };
 }

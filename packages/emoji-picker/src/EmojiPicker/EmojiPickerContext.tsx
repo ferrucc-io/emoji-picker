@@ -6,15 +6,6 @@ import { applySkinTone } from '../utils/applySkinTone';
 
 import type { EmojiMetadata, SkinTone } from '../types/emoji';
 
-interface EmojiDataRaw {
-  name: string;
-  slug: string;
-  unicode_version: string;
-  emoji_version: string;
-  skin_tone_support: boolean;
-  skin_tone_support_unicode_version?: string;
-}
-
 interface EmojiDataItem {
   emoji: string;
   skin_tone_support: boolean;
@@ -97,40 +88,43 @@ export function EmojiPickerProvider({
     setSelectedColumn(column);
   }, []);
 
-  const handleEmojiSelect = useCallback((emoji: string | null) => {
-    setSelectedEmoji(emoji);
-    if (emoji) {
-      onEmojiSelect?.(emoji);
-    }
-  }, [onEmojiSelect]);
+  const handleEmojiSelect = useCallback(
+    (emoji: string | null) => {
+      setSelectedEmoji(emoji);
+      if (emoji) {
+        onEmojiSelect?.(emoji);
+      }
+    },
+    [onEmojiSelect]
+  );
 
   const filteredEmojis = useMemo(() => {
     if (!search.trim()) {
       return Object.entries(emojiData).map(([category, group]) => ({
         category,
-        emojis: ((group as unknown as EmojiGroupData).emojis)
-          .filter(emoji => {
+        emojis: (group as unknown as EmojiGroupData).emojis
+          .filter((emoji) => {
             const { isCompatible } = isCompatibleEmoji(emoji, maxUnicodeVersion);
             return isCompatible;
           })
-          .map(emoji => {
+          .map((emoji) => {
             const { supportsSkinTone } = isCompatibleEmoji(emoji, maxUnicodeVersion);
             const base: EmojiMetadata = {
               emoji: emoji.emoji,
               name: emoji.name,
               slug: emoji.slug,
               skin_tone_support: supportsSkinTone,
-              skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version
+              skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
             };
             return applySkinTone(base, skinTone);
-          })
+          }),
       }));
     }
 
     const searchResults = searchEmojis(search, processedEmojiData);
-    return searchResults.map(group => ({
+    return searchResults.map((group) => ({
       category: group.category,
-      emojis: group.emojis.map(emoji => applySkinTone(emoji, skinTone))
+      emojis: group.emojis.map((emoji) => applySkinTone(emoji, skinTone)),
     }));
   }, [search, skinTone, maxUnicodeVersion]);
 
@@ -153,11 +147,7 @@ export function EmojiPickerProvider({
     setSkinTone,
   };
 
-  return (
-    <EmojiPickerContext.Provider value={value}>
-      {children}
-    </EmojiPickerContext.Provider>
-  );
+  return <EmojiPickerContext.Provider value={value}>{children}</EmojiPickerContext.Provider>;
 }
 
-export { useEmojiPicker }; 
+export { useEmojiPicker };

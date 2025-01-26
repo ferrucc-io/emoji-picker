@@ -24,9 +24,7 @@ interface EmojiPickerHeaderProps {
 
 function Header({ children, className = '' }: EmojiPickerHeaderProps) {
   return (
-    <div className={cn('flex w-full items-center gap-2 px-2 pt-2 pb-1', className)}>
-      {children}
-    </div>
+    <div className={cn('flex w-full items-center gap-2 px-2 pt-2 pb-1', className)}>{children}</div>
   );
 }
 
@@ -34,22 +32,22 @@ function Input(props: React.ComponentProps<typeof EmojiPickerInput>) {
   return <EmojiPickerInput {...props} />;
 }
 
-export function EmojiPicker({ 
-  children, 
-  className = '', 
+export function EmojiPicker({
+  children,
+  className = '',
   onEmojiSelect,
   emojisPerRow = 12,
   emojiSize = 28,
-  maxUnicodeVersion = 15.0
+  maxUnicodeVersion = 15.0,
 }: EmojiPickerProps) {
   return (
-    <EmojiPickerProvider 
+    <EmojiPickerProvider
       onEmojiSelect={onEmojiSelect}
       emojisPerRow={emojisPerRow}
       emojiSize={emojiSize}
       maxUnicodeVersion={maxUnicodeVersion}
     >
-      <div 
+      <div
         tabIndex={0}
         className={cn(
           'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-full outline-none focus:ring-1 focus:ring-indigo-500',
@@ -68,4 +66,4 @@ EmojiPicker.Group = EmojiPickerGroup;
 EmojiPicker.List = EmojiPickerList;
 EmojiPicker.Preview = EmojiPickerPreview;
 EmojiPicker.Content = EmojiPickerContent;
-EmojiPicker.SkinTone = EmojiPickerSkinTone; 
+EmojiPicker.SkinTone = EmojiPickerSkinTone;

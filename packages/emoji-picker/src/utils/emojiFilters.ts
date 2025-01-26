@@ -36,14 +36,17 @@ export const isCompatibleSkinTone = (emoji: SkinToneData, maxVersion: number = 1
   return true;
 };
 
-export const isCompatibleEmoji = (emoji: EmojiDataItem, maxVersion: number = 15.0): { isCompatible: boolean; supportsSkinTone: boolean } => {
+export const isCompatibleEmoji = (
+  emoji: EmojiDataItem,
+  maxVersion: number = 15.0
+): { isCompatible: boolean; supportsSkinTone: boolean } => {
   const version = parseFloat(emoji.unicode_version);
   if (isNaN(version) || version > maxVersion) {
     return { isCompatible: false, supportsSkinTone: false };
   }
 
-  return { 
-    isCompatible: true, 
-    supportsSkinTone: isCompatibleSkinTone({ ...emoji }, maxVersion)
+  return {
+    isCompatible: true,
+    supportsSkinTone: isCompatibleSkinTone({ ...emoji }, maxVersion),
   };
-}; 
+};

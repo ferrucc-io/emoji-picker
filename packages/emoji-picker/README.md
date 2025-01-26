@@ -49,10 +49,10 @@ The component accepts several props for customization:
 
 ```tsx
 interface EmojiPickerProps {
-  emojisPerRow?: number;      // Number of emojis per row
-  emojiSize?: number;         // Size of each emoji in pixels
-  containerHeight?: number;    // Height of the emoji container
-  hideIcon?: boolean;         // Hide the search icon
+  emojisPerRow?: number; // Number of emojis per row
+  emojiSize?: number; // Size of each emoji in pixels
+  containerHeight?: number; // Height of the emoji container
+  hideIcon?: boolean; // Hide the search icon
   onEmojiSelect?: (emoji: string) => void; // Callback when emoji is selected
 }
 ```
@@ -60,6 +60,7 @@ interface EmojiPickerProps {
 ## Examples
 
 ### Default Style
+
 ```tsx
 <EmojiPicker onEmojiSelect={handleEmojiSelect}>
   <EmojiPicker.Header>
@@ -72,6 +73,7 @@ interface EmojiPickerProps {
 ```
 
 ### Linear Style
+
 ```tsx
 <EmojiPicker>
   <EmojiPicker.Header className="pb-0">
@@ -84,29 +86,19 @@ interface EmojiPickerProps {
 ```
 
 ### Slack Style
+
 ```tsx
-<EmojiPicker 
-  className="font-['Lato'] w-[300px] border-none"
-  emojisPerRow={9}
-  emojiSize={36}
->
+<EmojiPicker className="font-['Lato'] w-[300px] border-none" emojisPerRow={9} emojiSize={36}>
   <EmojiPicker.Header>
-    <EmojiPicker.Input 
-      placeholder="Search all emoji" 
-      hideIcon
-    />
+    <EmojiPicker.Input placeholder="Search all emoji" hideIcon />
   </EmojiPicker.Header>
   <EmojiPicker.Group>
-    <EmojiPicker.List containerHeight={320} />          
+    <EmojiPicker.List containerHeight={320} />
   </EmojiPicker.Group>
   <EmojiPicker.Preview>
     {({ previewedEmoji }) => (
       <>
-        {previewedEmoji ? 
-          <EmojiPicker.Content />
-          :
-          <button>Add Emoji</button>
-        }
+        {previewedEmoji ? <EmojiPicker.Content /> : <button>Add Emoji</button>}
         <EmojiPicker.SkinTone />
       </>
     )}
@@ -118,10 +110,10 @@ interface EmojiPickerProps {
 
 This project was created using `bun init` in bun v1.2.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
-
 ## Contributing
 
 This project is structured as a monorepo with two main parts:
+
 - `packages/emoji-picker`: The main package containing the emoji picker component
 - `demo`: A demo application showcasing different uses of the component
 
