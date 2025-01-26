@@ -1,6 +1,6 @@
 {
   "name": "@ferrucc-io/emoji-picker",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "A beautiful and modern emoji picker for React",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -23,7 +23,7 @@
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
     "build": "rm -rf dist && bun run build:types && bun build src/index.ts --outdir ./dist",
-    "prepublishOnly": "bun run build",
+    "prepublishOnly": "cp ../../README.md . && bun run build",
     "clean": "rm -rf dist",
     "release:patch": "bun run scripts/release.ts patch",
     "release:minor": "bun run scripts/release.ts minor",
