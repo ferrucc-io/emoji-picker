@@ -36,6 +36,7 @@
     "release:major": "bun run scripts/release.ts major",
     "lint": "bunx --bun eslint . --ext .ts,.tsx",
     "format": "bunx --bun prettier --write .",
+    "format:check": "bunx --bun prettier --check .",
     "prepack": "bun run build"
   },
   "devDependencies": {

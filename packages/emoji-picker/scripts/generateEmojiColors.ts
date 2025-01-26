@@ -8,10 +8,11 @@ import { isCompatibleEmoji } from '../src/utils/emojiFilters';
 const skinToneModifiers = ['🏻', '🏼', '🏽', '🏾', '🏿'];
 
 // Filter emojis that are too recent and add skin tone variants
-function filterEmojis(emojiData: Record<string, any>): Record<string, any> {
+export function filterEmojis(emojiData: Record<string, any>): Record<string, any> {
   const filteredEntries = Object.entries(emojiData)
     .filter(([emoji, data]) => {
-      return isCompatibleEmoji({ emoji, ...data });
+      const { isCompatible } = isCompatibleEmoji({ emoji, ...data });
+      return isCompatible;
     })
     .flatMap(([emoji, data]) => {
       if (data.skin_tone_support) {

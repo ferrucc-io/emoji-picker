@@ -169,5 +169,15 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [rows, selectedRow, selectedColumn, findFirstEmojiRow, findNextEmojiRow]);
+  }, [
+    rows,
+    selectedRow,
+    selectedColumn,
+    findFirstEmojiRow,
+    findNextEmojiRow,
+    setSelectedPosition,
+    setHoveredEmoji,
+    setSelectedEmoji,
+    virtualizer,
+  ]);
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useTheme } from './ThemeContext';
+import React from "react";
+import { useTheme } from "./ThemeContext";
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -10,7 +10,7 @@ export function ThemeToggle() {
       className="p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:text-zinc-50 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? (
+      {theme === "light" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -43,4 +43,4 @@ export function ThemeToggle() {
       )}
     </button>
   );
-} 
+}

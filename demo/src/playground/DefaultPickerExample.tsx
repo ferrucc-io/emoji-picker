@@ -1,8 +1,8 @@
-import { EmojiPicker } from '@ferrucc-io/emoji-picker';
+import { EmojiPicker } from "@ferrucc-io/emoji-picker";
 
 export function DefaultPickerExample() {
   const handleEmojiSelect = (emoji: string) => {
-    console.log('Selected emoji:', emoji);
+    console.log("Selected emoji:", emoji);
   };
 
   return (
@@ -13,16 +13,11 @@ export function DefaultPickerExample() {
       emojiSize={28}
     >
       <EmojiPicker.Header>
-        <EmojiPicker.Input
-          autoFocus={true}
-          placeholder="Search emoji"
-        />
+        <EmojiPicker.Input autoFocus={true} placeholder="Search emoji" />
       </EmojiPicker.Header>
       <EmojiPicker.Group>
-        <EmojiPicker.List 
-          containerHeight={400}
-        />
+        <EmojiPicker.List containerHeight={400} />
       </EmojiPicker.Group>
     </EmojiPicker>
   );
-} 
+}
