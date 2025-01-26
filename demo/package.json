@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "bunx --bun vite",
     "build:types": "bunx --bun tsc",
-    "build": "bun run build:types && bunx --bun vite build",
+    "build:stats": "bun run scripts/updateNpmStats.ts",
+    "build": "bun run build:stats && bun run build:types && bunx --bun vite build",
     "preview": "bunx --bun vite preview",
     "deploy": "gh-pages -d dist"
   },
