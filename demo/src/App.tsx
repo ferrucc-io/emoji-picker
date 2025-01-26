@@ -22,7 +22,7 @@ const EXAMPLE_CODE = {
   </EmojiPicker.Group>
 </EmojiPicker>`,
   slack: `<EmojiPicker 
-  className="w-[300px] border-none"
+  className="font-['Lato'] w-[300px] border-none"
   emojisPerRow={9}
   emojiSize={36}
 >
