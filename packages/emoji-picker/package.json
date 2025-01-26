@@ -22,7 +22,7 @@
     "test:coverage": "bun test --coverage",
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
-    "build": "rm -rf dist && bun run build:types && bun build src/index.ts --outdir ./dist",
+    "build": "rm -rf dist && bun run build:types && bun build",
     "prepublishOnly": "cp ../../README.md . && bun run build",
     "clean": "rm -rf dist",
     "release:patch": "bun run scripts/release.ts patch",
@@ -37,7 +37,9 @@
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.3.4",
     "sharp": "^0.33.2",
-    "vite": "^6.0.11"
+    "vite": "^6.0.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",

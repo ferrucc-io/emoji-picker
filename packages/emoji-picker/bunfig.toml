@@ -1,0 +1,7 @@
+[build]
+entrypoints = ["./src/index.ts"]
+external = ["react", "react-dom"]
+target = "browser"
+format = "esm"
+minify = true
+sourcemap = true 
