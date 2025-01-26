@@ -1,25 +1,11 @@
-<div align="center">
-  <h1>Emoji Picker</h1>
-  <p>A composable React emoji picker component with Tailwind styling</p>
-</div>
+# Emoji Picker - React Emoji picker component
 
-<div align="center">
-  
-[![npm version](https://img.shields.io/npm/v/@ferrucc-io/emoji-picker.svg?style=flat)](https://www.npmjs.com/package/@ferrucc-io/emoji-picker)
-[![npm downloads](https://img.shields.io/npm/dm/@ferrucc-io/emoji-picker.svg?style=flat)](https://www.npmjs.com/package/@ferrucc-io/emoji-picker)
-[![License](https://img.shields.io/npm/l/@ferrucc-io/emoji-picker.svg?style=flat)](https://github.com/ferrucc-io/emojicn/blob/main/LICENSE)
-  
-</div>
+This is a composable React component that allows your users to pick an emoji. Styled with Tailwind and supports custom styling.
 
-<div align="center">
-  <img src="./public/emoji-picker-repo-asset.png" alt="Emojicn Demo" width="600" />
-</div>
+This component is heavily inspired by ShadCN and works well alongside it.
 
-<div align="center">
-  <h3>
-    <a href="https://emoji.ferrucc.io">Live Demo</a>
-  </h3>
-</div>
+![Emojicn](./public/emoji.png)
+[Live Demo](https://emoji.ferrucc.io)
 
 ## Installation
 
