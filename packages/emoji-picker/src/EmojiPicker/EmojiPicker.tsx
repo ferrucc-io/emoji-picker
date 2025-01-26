@@ -52,7 +52,7 @@ export function EmojiPicker({
       <div 
         tabIndex={0}
         className={cn(
-          'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-[400px] overflow-hidden outline-none focus:ring-1 focus:ring-indigo-500',
+          'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-[400px] outline-none focus:ring-1 focus:ring-indigo-500',
           className
         )}
       >
