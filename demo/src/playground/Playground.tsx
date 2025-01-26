@@ -37,15 +37,15 @@ export function Playground({ code }: Omit<PlaygroundProps, 'variant' | 'defaultC
 
   return (
     <div className="w-full border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
-      <div className="flex items-center gap-2 p-4 bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="flex flex-col items-start md:flex-row md:items-center gap-2 px-2 py-1.5 bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-start justify-center gap-2">
-          <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 py-1.5">Style:</span>
+          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 py-1.5">Style:</span>
           <div className="flex gap-1">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setVariant(tab.id as typeof variant)}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                className={`px-2 py-1.5 text-xs rounded-md transition-colors ${
                   variant === tab.id
                     ? 'bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50'
@@ -56,15 +56,15 @@ export function Playground({ code }: Omit<PlaygroundProps, 'variant' | 'defaultC
             ))}
           </div>
         </div>
-        <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800 mx-2" />
+        <div className="hidden md:block h-8 w-px bg-zinc-200 dark:bg-zinc-800 mx-2" />
         <div className="flex items-start justify-center gap-2">
-          <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 py-1.5">Theme:</span>
+          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 py-1.5">Theme:</span>
           <div className="flex gap-1">
             {THEMES.map(({ value, label }) => (
               <button
                 key={value}
                 onClick={toggleTheme}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                className={`px-2 py-1.5 text-xs rounded-md transition-colors ${
                   theme === value
                     ? 'bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100'
                     : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50'
