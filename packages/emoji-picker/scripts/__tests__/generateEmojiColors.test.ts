@@ -29,29 +29,29 @@ describe('emoji color generation', () => {
 
   test('filterEmojis function filters and adds skin tone variants correctly', () => {
     const mockEmojiData = {
-      '👋': { 
+      '👋': {
         name: 'waving hand',
         unicode_version: '1.0',
         emoji_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
       },
-      '🌟': { 
+      '🌟': {
         name: 'glowing star',
         unicode_version: '1.0',
         emoji_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
       },
-      '🤖': { 
+      '🤖': {
         name: 'robot',
         unicode_version: '15.1',
         emoji_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
       },
     };
 
     const filtered = filterEmojis(mockEmojiData);
-    
+
     // Should include base emoji and 5 skin tone variants for '👋'
     expect(Object.keys(filtered)).toContain('👋');
     expect(Object.keys(filtered)).toContain('👋🏻');
@@ -59,10 +59,10 @@ describe('emoji color generation', () => {
     expect(Object.keys(filtered)).toContain('👋🏽');
     expect(Object.keys(filtered)).toContain('👋🏾');
     expect(Object.keys(filtered)).toContain('👋🏿');
-    
+
     // Should include '🌟' as is
     expect(Object.keys(filtered)).toContain('🌟');
-    
+
     // Should not include too recent emoji
     expect(Object.keys(filtered)).not.toContain('🤖');
   });
