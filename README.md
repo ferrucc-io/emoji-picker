@@ -2,7 +2,7 @@
 
 This is a composable React component that allows your users to pick an emoji. Styled with Tailwind and supports custom styling.
 
-This component's goal is to be heavily inspired by how ShadCN does things and to work well alongside it.
+This component is heavily inspired by ShadCN and works well alongside it.
 
 ![Emojicn](./public/emoji.png)
 [Live Demo](https://emoji.ferrucc.io)
