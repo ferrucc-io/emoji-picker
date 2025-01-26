@@ -26,14 +26,11 @@ jobs:
         run: bun install
         
       - name: Run tests
-        run: bun run --cwd packages/emoji-picker test
+        run: bun run test
         
-      - name: Build library
-        run: bun run --cwd packages/emoji-picker build
-        
-      - name: Build demo
-        run: bun run --cwd demo build
-        
+      - name: Build library & demo
+        run: bun run build
+          
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
