@@ -2,9 +2,9 @@ import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 
 export function SlackPickerExample() {
   return (
-    <div className="rounded-[8px] border border-zinc-300 dark:border-zinc-600 overflow-hidden shadow-sm font-['Lato'] pt-1 max-w-[300px]">
+    <div className="rounded-[8px] border border-zinc-300 dark:border-zinc-600 overflow-hidden shadow-sm pt-1 max-w-[300px]">
       <EmojiPicker 
-        className="w-[300px] border-none"
+        className="font-['Lato'] w-[300px] border-none"
         emojisPerRow={9}
         emojiSize={36}
       >
