@@ -10,6 +10,8 @@
     "build": "bun run --cwd packages/emoji-picker build && bun run --cwd demo build",
     "deploy": "bun run build && bun run --cwd demo deploy",
     "test": "bun --cwd packages/emoji-picker test",
+    "format": "bun --cwd packages/emoji-picker format",
+    "lint": "bun --cwd packages/emoji-picker lint",
     "test:watch": "bun --cwd packages/emoji-picker test --watch",
     "test:coverage": "bun --cwd packages/emoji-picker test --coverage",
     "release:patch": "bun run --cwd packages/emoji-picker release:patch",

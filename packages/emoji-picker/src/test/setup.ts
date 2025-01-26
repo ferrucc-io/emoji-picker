@@ -7,4 +7,4 @@ expect.extend(matchers);
 // Automatically cleanup after each test
 afterEach(() => {
   cleanup();
-}); 
+});
