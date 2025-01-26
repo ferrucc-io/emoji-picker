@@ -122,7 +122,7 @@ function App() {
               <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
                 <h3 className="text-lg font-medium mb-2 text-zinc-900 dark:text-zinc-50">🎨 Unstyled & Composable</h3>
                 <p className="text-zinc-600 dark:text-zinc-300">
-                  Built with Tailwind CSS. Every component is unstyled by default and fully customizable.
+                  Built with Tailwind CSS. Every component is minimally styled by default and fully customizable.
                 </p>
               </div>
               <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
