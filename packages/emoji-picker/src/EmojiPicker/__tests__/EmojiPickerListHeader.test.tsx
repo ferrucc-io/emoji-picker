@@ -27,7 +27,6 @@ describe("EmojiPickerListHeader", () => {
     );
     
     const headerContainer = container.firstChild as HTMLElement;
-    const className = headerContainer.className;
     
     const expectedClasses = [
       "relative",
