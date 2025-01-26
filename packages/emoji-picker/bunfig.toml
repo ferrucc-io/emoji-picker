@@ -1,5 +1,6 @@
 [build]
 entrypoints = ["./src/index.ts"]
+outdir = "./dist"
 external = ["react", "react-dom"]
 target = "browser"
 format = "esm"

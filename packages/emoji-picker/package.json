@@ -22,7 +22,7 @@
     "test:coverage": "bun test --coverage",
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
-    "build": "rm -rf dist && bun run build:types && bun build",
+    "build": "rm -rf dist && bun run build:types && bun build -c bunfig.toml",
     "prepublishOnly": "cp ../../README.md . && bun run build",
     "clean": "rm -rf dist",
     "release:patch": "bun run scripts/release.ts patch",
