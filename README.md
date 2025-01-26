@@ -52,7 +52,7 @@ Then in your project you can use the component like this:
 
 ## Features
 
-- 🎨 **Unstyled & Composable**: Built with Tailwind CSS. Every component is unstyled by default and fully customizable.
+- 🎨 **Unstyled & Composable**: Built with Tailwind CSS. Every component is minimally styled by default and fully customizable.
 - ⚡️ **Fast & Lightweight**: Virtualized list for smooth scrolling. Only renders emojis in view.
 - 🎯 **Accessible**: Full keyboard navigation support. ARIA labels and proper semantic markup.
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
