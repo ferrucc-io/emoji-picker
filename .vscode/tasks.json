@@ -52,6 +52,13 @@
         "clear": true
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Release: Patch",
+      "type": "shell",
+      "command": "bun run release:patch",
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 } 
