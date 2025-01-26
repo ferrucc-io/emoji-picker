@@ -21,17 +21,16 @@ jobs:
         
       - name: Check formatting
         run: |
-          bun run --cwd packages/emoji-picker format:check
-          bun run --cwd demo format:check
+          bun run format:check
         
       - name: Run linting
-        run: bun run --cwd packages/emoji-picker lint
+        run: bun run lint
         
       - name: Run tests
-        run: bun run --cwd packages/emoji-picker test
+        run: bun run test
         
       - name: Build library
-        run: bun run --cwd packages/emoji-picker build
+        run: bun run build
         
       - name: Build demo
-        run: bun run --cwd demo build 
+        run: bun run build

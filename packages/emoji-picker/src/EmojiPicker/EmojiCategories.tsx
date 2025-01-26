@@ -1,6 +1,6 @@
 import emojiData from 'unicode-emoji-json/data-by-group.json';
 import { useMemo, useRef } from 'react';
-import { EmojiPickerHeader } from './EmojiPickerHeader';
+import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { filterSupportedEmojis } from '../utils/supportedEmojis';
@@ -105,7 +105,7 @@ export function EmojiCategories({
               }}
             >
               {row.type === 'header' ? (
-                <EmojiPickerHeader content={row.content} emojiSize={emojiSize} />
+                <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
               ) : (
                 <div
                   className={`grid grid-cols-${emojisPerRow} px-2`}

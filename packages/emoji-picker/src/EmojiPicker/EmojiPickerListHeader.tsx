@@ -1,11 +1,11 @@
 import React from 'react';
 
-interface EmojiPickerHeaderProps {
+interface EmojiPickerListHeaderProps {
   content: string;
   emojiSize: number;
 }
 
-export function EmojiPickerHeader({ content, emojiSize }: EmojiPickerHeaderProps) {
+export function EmojiPickerListHeader({ content, emojiSize }: EmojiPickerListHeaderProps) {
   const textSize = emojiSize > 32 ? 'text-sm' : 'text-xs';
 
   return (

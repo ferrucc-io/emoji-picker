@@ -40,23 +40,26 @@
     "prepack": "bun run build"
   },
   "devDependencies": {
+    "@happy-dom/global-registrator": "^16.7.3",
     "@tailwindcss/vite": "^4.0.0",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
     "@types/bun": "latest",
     "@types/node-emoji": "^2.1.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
-    "@vitejs/plugin-react": "^4.3.4",
-    "sharp": "^0.33.2",
-    "vite": "^6.0.11",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sharp": "^0.33.2",
+    "vite": "^6.0.11"
   },
   "peerDependencies": {
     "react": "^18.2.0",

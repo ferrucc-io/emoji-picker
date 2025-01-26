@@ -1,5 +1,5 @@
 import { useMemo, useRef } from 'react';
-import { EmojiPickerHeader } from './EmojiPickerHeader';
+import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
@@ -101,7 +101,7 @@ export function EmojiSearchResults({
               }}
             >
               {row.type === 'header' ? (
-                <EmojiPickerHeader content={row.content} emojiSize={emojiSize} />
+                <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
               ) : (
                 <div
                   className={`grid grid-cols-${emojisPerRow} px-2`}
