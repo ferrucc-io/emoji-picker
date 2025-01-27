@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAtom } from 'jotai';
 import { EmojiPickerSkinTone } from './EmojiPickerSkinTone';
 import { EmojiPickerPreview } from './EmojiPickerPreview';
 import { EmojiPickerList } from './EmojiPickerList';
@@ -7,6 +8,7 @@ import { EmojiPickerGroup } from './EmojiPickerGroup';
 import { EmojiPickerProvider } from './EmojiPickerContext';
 import { EmojiPickerContent } from './EmojiPickerContent';
 import { cn } from '../utils/cn';
+import { selectedEmojiAtom } from '../atoms/emoji';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
@@ -40,9 +42,16 @@ export function EmojiPicker({
   emojiSize = 28,
   maxUnicodeVersion = 15.0,
 }: EmojiPickerProps) {
+  const [selectedEmoji] = useAtom(selectedEmojiAtom);
+
+  useEffect(() => {
+    if (selectedEmoji && onEmojiSelect) {
+      onEmojiSelect(selectedEmoji);
+    }
+  }, [selectedEmoji, onEmojiSelect]);
+
   return (
     <EmojiPickerProvider
-      onEmojiSelect={onEmojiSelect}
       emojisPerRow={emojisPerRow}
       emojiSize={emojiSize}
       maxUnicodeVersion={maxUnicodeVersion}

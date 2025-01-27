@@ -1,52 +1,9 @@
-import emojiData from 'unicode-emoji-json/data-by-group.json';
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { processEmojiData, searchEmojis } from '../utils/emojiSearch';
-import { isCompatibleEmoji } from '../utils/emojiFilters';
-import { applySkinTone } from '../utils/applySkinTone';
-
-import type { EmojiMetadata, SkinTone } from '../types/emoji';
-
-interface EmojiDataItem {
-  emoji: string;
-  skin_tone_support: boolean;
-  skin_tone_support_unicode_version?: string;
-  name: string;
-  slug: string;
-  unicode_version: string;
-  emoji_version: string;
-}
-
-interface EmojiGroupData {
-  name: string;
-  slug: string;
-  emojis: EmojiDataItem[];
-}
-
-export type EmojiData = {
-  emoji: string;
-  name: string;
-  group: string;
-  skin_tone_support: boolean;
-  skin_tone_support_unicode_version?: string;
-};
+import React, { createContext, useContext, useMemo } from 'react';
 
 interface EmojiPickerContextType {
-  search: string;
-  setSearch: (search: string) => void;
-  hoveredEmoji: EmojiMetadata | null;
-  setHoveredEmoji: (emoji: EmojiMetadata | null) => void;
-  selectedEmoji: string | null;
-  setSelectedEmoji: (emoji: string | null) => void;
-  selectedRow: number;
-  selectedColumn: number;
-  setSelectedPosition: (row: number, column: number) => void;
-  filteredEmojis: { category: string; emojis: EmojiMetadata[] }[];
-  onEmojiSelect?: (emoji: string) => void;
   emojisPerRow: number;
   emojiSize: number;
   maxUnicodeVersion: number;
-  skinTone: SkinTone;
-  setSkinTone: (tone: SkinTone) => void;
 }
 
 const EmojiPickerContext = createContext<EmojiPickerContextType | null>(null);
@@ -59,11 +16,8 @@ const useEmojiPicker = () => {
   return context;
 };
 
-const processedEmojiData = processEmojiData(emojiData);
-
 interface EmojiPickerProviderProps {
   children: React.ReactNode;
-  onEmojiSelect?: (emoji: string) => void;
   emojisPerRow?: number;
   emojiSize?: number;
   maxUnicodeVersion: number;
@@ -71,81 +25,20 @@ interface EmojiPickerProviderProps {
 
 export function EmojiPickerProvider({
   children,
-  onEmojiSelect,
   emojisPerRow = 8,
   emojiSize = 32,
   maxUnicodeVersion = 15.0,
 }: EmojiPickerProviderProps) {
-  const [search, setSearch] = useState('');
-  const [hoveredEmoji, setHoveredEmoji] = useState<EmojiMetadata | null>(null);
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
-  const [selectedRow, setSelectedRow] = useState(-1);
-  const [selectedColumn, setSelectedColumn] = useState(-1);
-  const [skinTone, setSkinTone] = useState<SkinTone>('default');
 
-  const setSelectedPosition = useCallback((row: number, column: number) => {
-    setSelectedRow(row);
-    setSelectedColumn(column);
-  }, []);
 
-  const handleEmojiSelect = useCallback(
-    (emoji: string | null) => {
-      setSelectedEmoji(emoji);
-      if (emoji) {
-        onEmojiSelect?.(emoji);
-      }
-    },
-    [onEmojiSelect]
+  const value = useMemo(
+    () => ({
+      emojisPerRow,
+      emojiSize,
+      maxUnicodeVersion,
+    }),
+    [emojisPerRow, emojiSize, maxUnicodeVersion]
   );
-
-  const filteredEmojis = useMemo(() => {
-    if (!search.trim()) {
-      return Object.entries(emojiData).map(([category, group]) => ({
-        category,
-        emojis: (group as unknown as EmojiGroupData).emojis
-          .filter((emoji) => {
-            const { isCompatible } = isCompatibleEmoji(emoji, maxUnicodeVersion);
-            return isCompatible;
-          })
-          .map((emoji) => {
-            const { supportsSkinTone } = isCompatibleEmoji(emoji, maxUnicodeVersion);
-            const base: EmojiMetadata = {
-              emoji: emoji.emoji,
-              name: emoji.name,
-              slug: emoji.slug,
-              skin_tone_support: supportsSkinTone,
-              skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
-            };
-            return applySkinTone(base, skinTone);
-          }),
-      }));
-    }
-
-    const searchResults = searchEmojis(search, processedEmojiData);
-    return searchResults.map((group) => ({
-      category: group.category,
-      emojis: group.emojis.map((emoji) => applySkinTone(emoji, skinTone)),
-    }));
-  }, [search, skinTone, maxUnicodeVersion]);
-
-  const value = {
-    search,
-    setSearch,
-    hoveredEmoji,
-    setHoveredEmoji,
-    selectedEmoji,
-    setSelectedEmoji: handleEmojiSelect,
-    selectedRow,
-    selectedColumn,
-    setSelectedPosition,
-    filteredEmojis,
-    onEmojiSelect,
-    emojisPerRow,
-    emojiSize,
-    maxUnicodeVersion,
-    skinTone,
-    setSkinTone,
-  };
 
   return <EmojiPickerContext.Provider value={value}>{children}</EmojiPickerContext.Provider>;
 }

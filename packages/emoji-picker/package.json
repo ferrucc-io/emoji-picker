@@ -70,6 +70,7 @@
   "dependencies": {
     "@tanstack/react-virtual": "^3.11.2",
     "clsx": "^2.1.1",
+    "jotai": "^2.11.1",
     "node-emoji": "^2.1.3",
     "tailwind-merge": "^2.6.0",
     "unicode-emoji-json": "^0.8.0"
