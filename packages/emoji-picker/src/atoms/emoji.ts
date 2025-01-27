@@ -12,14 +12,10 @@ export const searchAtom = atom<string>('');
 export const skinToneAtom = atom<SkinTone>('default');
 
 // Create a single shared selected state atom to avoid per-button instances
-const selectedStateAtom = atom(
-  (get) => get(selectedEmojiAtom)
-);
+const selectedStateAtom = atom((get) => get(selectedEmojiAtom));
 
 // Create separate atoms for different concerns to avoid unnecessary re-renders
-export const skinToneOnlyAtom = atom(
-  (get) => get(skinToneAtom)
-);
+export const skinToneOnlyAtom = atom((get) => get(skinToneAtom));
 
 export const isEmojiSelectedAtom = (rowIndex: number, columnIndex: number) =>
   atom((get) => {
@@ -48,7 +44,7 @@ const defaultEmojis = Object.entries(emojiData).map(([category, group]) => ({
 // Derived atom for filtered emojis with memoization
 export const filteredEmojisAtom = atom((get) => {
   const search = get(searchAtom);
-  
+
   if (!search.trim()) {
     return defaultEmojis;
   }
@@ -62,5 +58,5 @@ export const filteredEmojisAtom = atom((get) => {
 export const combinedEmojiStateAtom = atom((get) => ({
   hoveredEmoji: get(hoveredEmojiAtom),
   selectedEmoji: get(selectedEmojiAtom),
-  skinTone: get(skinToneAtom)
-})); 
+  skinTone: get(skinToneAtom),
+}));

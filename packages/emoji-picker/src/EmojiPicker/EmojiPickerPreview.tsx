@@ -11,17 +11,18 @@ interface EmojiPickerPreviewProps {
   className?: string;
 }
 
-export const EmojiPickerPreview = React.memo(function EmojiPickerPreview({ 
-  children, 
-  className 
+export const EmojiPickerPreview = React.memo(function EmojiPickerPreview({
+  children,
+  className,
 }: EmojiPickerPreviewProps) {
   const { emojiSize } = useEmojiPicker();
   const [hoveredEmoji] = useAtom(hoveredEmojiAtom);
   const skinTone = useAtomValue(skinToneAtom);
-  
-  const previewedEmoji = useMemo(() => 
-    hoveredEmoji ? applySkinTone(hoveredEmoji, skinTone) : null
-  , [hoveredEmoji, skinTone]);
+
+  const previewedEmoji = useMemo(
+    () => (hoveredEmoji ? applySkinTone(hoveredEmoji, skinTone) : null),
+    [hoveredEmoji, skinTone]
+  );
 
   const containerHeight = Math.max(emojiSize * 1.1, 44); // Minimum height of 44px for better UX
 

@@ -29,8 +29,6 @@ export function EmojiPickerProvider({
   emojiSize = 32,
   maxUnicodeVersion = 15.0,
 }: EmojiPickerProviderProps) {
-
-
   const value = useMemo(
     () => ({
       emojisPerRow,

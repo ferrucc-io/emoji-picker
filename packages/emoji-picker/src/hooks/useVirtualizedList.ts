@@ -43,7 +43,7 @@ export function useVirtualizedList<T>({
         return defaultRangeExtractor(range);
       }
 
-      const activeIndex = stickyIndexes.findLast(index => range.startIndex >= index) ?? 0;
+      const activeIndex = stickyIndexes.findLast((index) => range.startIndex >= index) ?? 0;
       activeStickyIndexRef.current = activeIndex;
 
       const defaultRange = defaultRangeExtractor(range);

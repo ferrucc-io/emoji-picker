@@ -16,29 +16,29 @@ const skinTones: Array<{ emoji: string; tone: SkinTone }> = [
 export function EmojiPickerSkinTone() {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [skinTone, setSkinTone] = useAtom(skinToneAtom);
-  
+
   const currentTone = skinTones.find((t) => t.tone === skinTone) || skinTones[0];
 
   if (isPickerOpen) {
-  return (
+    return (
       <div>
         <div className="flex flex-wrap gap-0.5 p-1 rounded-sm">
-        {skinTones.map((tone) => (
-          <button
-            key={tone.tone}
+          {skinTones.map((tone) => (
+            <button
+              key={tone.tone}
               className="hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
               onClick={() => {
                 setSkinTone(tone.tone);
                 setIsPickerOpen(false);
               }}
-          >
+            >
               <span className="text-lg">{tone.emoji}</span>
-          </button>
-        ))}
-      </div>
+            </button>
+          ))}
+        </div>
         <div className="text-[10px] text-zinc-500 dark:text-zinc-400 text-center">
           Choose your default skin tone
-    </div>
+        </div>
       </div>
     );
   }

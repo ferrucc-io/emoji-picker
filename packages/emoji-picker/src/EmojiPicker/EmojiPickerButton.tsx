@@ -40,18 +40,18 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   const setHoveredEmoji = useSetAtom(hoveredEmojiAtom);
   const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
   const setSelectedPosition = useSetAtom(selectedPositionAtom);
-  
+
   const selectedAtom = useMemo(
     () => isEmojiSelectedAtom(rowIndex, columnIndex),
     [rowIndex, columnIndex]
   );
   const isSelected = useAtomValue(selectedAtom);
-  
+
   const skinTone = useAtomValue(skinToneOnlyAtom);
 
   // Only apply skin tone if supported and memoize the result
   const emojiWithSkinTone = useMemo(
-    () => emoji.skin_tone_support ? applySkinTone(emoji, skinTone) : emoji,
+    () => (emoji.skin_tone_support ? applySkinTone(emoji, skinTone) : emoji),
     [emoji, skinTone]
   );
 
@@ -68,7 +68,7 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   const handleMouseLeave = useCallback(() => {
     setHoveredEmoji(null);
   }, [setHoveredEmoji]);
-  
+
   const handleClick = useCallback(() => {
     // Batch updates together
     queueMicrotask(() => {
@@ -78,12 +78,16 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   }, [emojiWithSkinTone.emoji, rowIndex, columnIndex, setSelectedPosition, setSelectedEmoji]);
 
   // Memoize the button style to prevent recalculation
-  const buttonStyle = useMemo(() => ({
-    '--emoji-hover-color': hoverColor,
-    width: `${size}px`,
-    height: `${size}px`,
-    fontSize: `${Math.floor(size * 0.7)}px`,
-  } as React.CSSProperties), [hoverColor, size]);
+  const buttonStyle = useMemo(
+    () =>
+      ({
+        '--emoji-hover-color': hoverColor,
+        width: `${size}px`,
+        height: `${size}px`,
+        fontSize: `${Math.floor(size * 0.7)}px`,
+      }) as React.CSSProperties,
+    [hoverColor, size]
+  );
 
   return (
     <button
