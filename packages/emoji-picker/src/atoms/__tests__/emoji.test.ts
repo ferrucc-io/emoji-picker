@@ -87,7 +87,8 @@ describe('Emoji Atoms', () => {
     filtered.forEach((group) => {
       group.emojis.forEach((emoji: EmojiMetadata) => {
         expect(
-          emoji.name.toLowerCase().includes('grinning') || emoji.slug.toLowerCase().includes('grinning')
+          emoji.name.toLowerCase().includes('grinning') ||
+            emoji.slug.toLowerCase().includes('grinning')
         ).toBe(true);
       });
     });
