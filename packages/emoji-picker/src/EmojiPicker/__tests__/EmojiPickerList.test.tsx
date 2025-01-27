@@ -5,11 +5,8 @@ import { mockEmojiData, mockFilteredEmojis } from './testData';
 import { EmojiPickerList } from '../EmojiPickerList';
 import { EmojiPickerProvider } from '../EmojiPickerContext';
 
-import type { EmojiMetadata } from '../../types/emoji';
-
 // Create writable test atoms
 const testSearchAtom = atom('');
-const testFilteredEmojisAtom = atom(mockFilteredEmojis);
 
 // Mock the virtualizer
 const mockVirtualizer = {

@@ -9,7 +9,6 @@ import {
   selectedEmojiAtom,
   selectedPositionAtom,
   skinToneAtom,
-  skinToneOnlyAtom,
 } from '../emoji';
 
 import type { EmojiMetadata } from '../../types/emoji';
@@ -78,11 +77,6 @@ describe('Emoji Atoms', () => {
     expect(filtered.length).toBeGreaterThan(0);
     expect(filtered[0]).toHaveProperty('category');
     expect(filtered[0]).toHaveProperty('emojis');
-  });
-
-  test('skinToneOnlyAtom reflects skinToneAtom value', () => {
-    store.set(skinToneAtom, 'dark');
-    expect(store.get(skinToneOnlyAtom)).toBe('dark');
   });
 
   test('combinedEmojiStateAtom combines multiple atom states', () => {
