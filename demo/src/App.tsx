@@ -1,8 +1,11 @@
-import { useTheme } from "./ThemeContext";
-import { Playground } from "./playground";
-import { NPM_MONTHLY_DOWNLOADS } from "./constants/npmStats";
-import { PackageManagerTabs } from "./components/PackageManagerTabs";
-import { NpmDownloadsPill } from "./components/NpmDownloadsPill";
+import { useTheme } from './ThemeContext';
+import { Playground } from './playground';
+import { NPM_MONTHLY_DOWNLOADS } from './constants/npmStats';
+import { TailwindSetupTabs } from './components/TailwindSetupTabs';
+import { PackageManagerTabs } from './components/PackageManagerTabs';
+import { NpmDownloadsPill } from './components/NpmDownloadsPill';
+import { Features } from './components/Features';
+import { FAQ } from './components/FAQ';
 
 const EXAMPLE_CODE = {
   default: `<EmojiPicker onEmojiSelect={handleEmojiSelect}>
@@ -120,137 +123,15 @@ function App() {
             Installation
           </h2>
           <PackageManagerTabs packageName="@ferrucc-io/emojipicker" />
+          <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+            Tailwind Setup
+          </h3>
+          <TailwindSetupTabs />
         </div>
 
         <div className="flex flex-col items-start gap-8 w-full mt-8">
-          <section className="w-full">
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4">
-              Features
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <h3 className="text-lg font-medium mb-2 text-zinc-900 dark:text-zinc-50">
-                  🎨 Unstyled & Composable
-                </h3>
-                <p className="text-zinc-600 dark:text-zinc-300">
-                  Built with Tailwind CSS. Every component is minimally styled
-                  by default and fully customizable.
-                </p>
-              </div>
-              <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <h3 className="text-lg font-medium mb-2 text-zinc-900 dark:text-zinc-50">
-                  ⚡️ Fast & Lightweight
-                </h3>
-                <p className="text-zinc-600 dark:text-zinc-300">
-                  Virtualized list for smooth scrolling. Only renders emojis in
-                  view.
-                </p>
-              </div>
-              <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <h3 className="text-lg font-medium mb-2 text-zinc-900 dark:text-zinc-50">
-                  🎯 Accessible
-                </h3>
-                <p className="text-zinc-600 dark:text-zinc-300">
-                  Full keyboard navigation support. ARIA labels and proper
-                  semantic markup.
-                </p>
-              </div>
-              <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <h3 className="text-lg font-medium mb-2 text-zinc-900 dark:text-zinc-50">
-                  🌈 Dominant Color Hover
-                </h3>
-                <p className="text-zinc-600 dark:text-zinc-300">
-                  Built-in dominant color hover for supported emojis.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="w-full">
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4">
-              FAQ
-            </h2>
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">
-                  What are the peer dependencies?
-                </h3>
-                <p className="mt-2 text-zinc-600 dark:text-zinc-300">
-                  React ≥0.14.0, React DOM ≥0.14.0, Tailwind CSS ≥3.0.0, and
-                  TypeScript ≥5.7.3
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">
-                  Is it customizable?
-                </h3>
-                <p className="mt-2 text-zinc-600 dark:text-zinc-300">
-                  Yes! The component is unstyled by default and uses Tailwind
-                  CSS for styling. You can customize the appearance using
-                  Tailwind classes or your own CSS.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">
-                  How does keyboard navigation work?
-                </h3>
-                <p className="mt-2 text-zinc-600 dark:text-zinc-300">
-                  Use arrow keys to navigate through emojis, Enter to select,
-                  and Escape to clear search. Tab and Shift+Tab to move between
-                  interactive elements.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">
-                  Does it support all emojis?
-                </h3>
-                <p className="mt-2 text-zinc-600 dark:text-zinc-300">
-                  Yes, it includes all emojis up to Unicode 15.0. You can filter
-                  out newer emojis using the maxUnicodeVersion prop for better
-                  compatibility. It should also with newer emojis versions, but
-                  I haven't tested it yet.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">
-                  What is the license?
-                </h3>
-                <p className="mt-2 text-zinc-600 dark:text-zinc-300">
-                  MIT. See the{" "}
-                  <a
-                    href="https://github.com/ferrucc-io/emoji-picker/blob/master/LICENSE"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    LICENSE
-                  </a>{" "}
-                  file for more details.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">
-                  Where can I find more examples?
-                </h3>
-                <p className="mt-2 text-zinc-600 dark:text-zinc-300">
-                  Check out the examples above or visit our{" "}
-                  <a
-                    href="https://github.com/ferrucc-io/emoji-picker"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    GitHub repository
-                  </a>{" "}
-                  for more examples and documentation.
-                </p>
-              </div>
-            </div>
-          </section>
+          <Features />
+          <FAQ />
         </div>
       </div>
     </div>
