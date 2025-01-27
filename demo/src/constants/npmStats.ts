@@ -1,2 +1,2 @@
-// This value will be replaced during build time
-export const NPM_MONTHLY_DOWNLOADS = 0;
+// This value is updated during build time
+export const NPM_MONTHLY_DOWNLOADS = 275;

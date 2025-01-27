@@ -1,32 +1,12 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { ClipboardButton } from './ClipboardButton';
 
 import type { ComponentProps } from "react";
-
 interface PackageManagerTabsProps {
   packageName: string;
 }
 
 type PackageManager = "npm" | "bun" | "yarn" | "pnpm";
-
-function ClipboardIcon(props: ComponentProps<"svg">) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={`lucide lucide-copy ${props.className}`}
-    >
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-    </svg>
-  );
-}
 
 export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
   const [activeTab, setActiveTab] = useState<PackageManager>("npm");
@@ -75,18 +55,9 @@ export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
         <pre className="text-sm font-mono text-zinc-900 dark:text-zinc-100 overflow-x-auto pr-24">
           {commands[activeTab]}
         </pre>
-        <button
-          onClick={handleCopy}
-          className={`absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md transition-colors
-            ${
-              copied
-                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
-            }`}
-        >
-          <ClipboardIcon className={`w-3 h-3`} />
-          {copied ? "Done" : "Copy"}
-        </button>
+        <div className="absolute right-2 top-2">
+          <ClipboardButton text={commands[activeTab]} />
+        </div>
       </div>
     </div>
   );

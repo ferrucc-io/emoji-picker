@@ -50,6 +50,23 @@ Then in your project you can use the component like this:
 </EmojiPicker>
 ```
 
+Finally, import the component styles in your Tailwind configuration:
+
+```tsx
+// If you're using Tailwind v4.x
+// In your CSS file containing your tailwind configuration
+// Add this line:
+@source "../node_modules/@ferrucc-io/emoji-picker";
+
+// If you're using Tailwind v3.x
+// In your tailwind.config.ts
+"content": [
+  // Keep the existing content array
+  // Add this line:
+  "./node_modules/@ferrucc-io/emoji-picker/dist/**/*.{js,jsx,ts,tsx}",
+],
+```
+
 ## Features
 
 - 🎨 **Unstyled & Composable**: Built with Tailwind CSS. Every component is minimally styled by default and fully customizable.
