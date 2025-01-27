@@ -80,7 +80,6 @@ describe('Emoji Atoms', () => {
     expect(filtered[0]).toHaveProperty('emojis');
   });
 
-
   test('skinToneOnlyAtom reflects skinToneAtom value', () => {
     store.set(skinToneAtom, 'dark');
     expect(store.get(skinToneOnlyAtom)).toBe('dark');
