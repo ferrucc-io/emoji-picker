@@ -46,7 +46,7 @@ describe('EmojiPickerList', () => {
   });
 
   test('renders EmojiSearchResults when search is not empty', () => {
-    store.set(testSearchAtom, 'smile');
+    store.set(testSearchAtom, 'grinning');
     const { container } = renderWithProviders(<EmojiPickerList />);
 
     // Should find exactly one "Search results" header
