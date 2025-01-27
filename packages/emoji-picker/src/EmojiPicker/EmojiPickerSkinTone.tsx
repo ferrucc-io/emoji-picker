@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useEmojiPicker } from './EmojiPickerContext';
+import { useAtom } from 'jotai';
+import { skinToneAtom } from '../atoms/emoji';
 
 import type { SkinTone } from '../types/emoji';
 
@@ -14,7 +15,7 @@ const skinTones: Array<{ emoji: string; tone: SkinTone }> = [
 
 export function EmojiPickerSkinTone() {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const { skinTone, setSkinTone } = useEmojiPicker();
+  const [skinTone, setSkinTone] = useAtom(skinToneAtom);
 
   const currentTone = skinTones.find((t) => t.tone === skinTone) || skinTones[0];
 

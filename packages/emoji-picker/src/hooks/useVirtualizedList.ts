@@ -36,19 +36,21 @@ export function useVirtualizedList<T>({
     count: rows.length,
     getScrollElement,
     estimateSize,
-    overscan: 3,
+    overscan: 5,
     paddingEnd: 8,
     rangeExtractor: (range) => {
       if (hideStickyHeader) {
         return defaultRangeExtractor(range);
       }
 
-      activeStickyIndexRef.current =
-        [...stickyIndexes].reverse().find((index) => range.startIndex >= index) ?? 0;
+      const activeIndex = stickyIndexes.findLast((index) => range.startIndex >= index) ?? 0;
+      activeStickyIndexRef.current = activeIndex;
 
-      const next = new Set([activeStickyIndexRef.current, ...defaultRangeExtractor(range)]);
-
-      return [...next].sort((a, b) => a - b);
+      const defaultRange = defaultRangeExtractor(range);
+      if (defaultRange.includes(activeIndex)) {
+        return defaultRange;
+      }
+      return [activeIndex, ...defaultRange];
     },
   });
 

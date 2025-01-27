@@ -1,5 +1,6 @@
 import emojiData from 'unicode-emoji-json/data-by-group.json';
-import { useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
+import { useAtomValue } from 'jotai';
 import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
@@ -7,6 +8,7 @@ import { filterSupportedEmojis } from '../utils/supportedEmojis';
 import { applySkinTone } from '../utils/applySkinTone';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation';
+import { skinToneAtom } from '../atoms/emoji';
 
 import type { EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
 type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
@@ -18,11 +20,12 @@ interface EmojiCategoriesProps {
 
 const emojiCategories = filterSupportedEmojis(emojiData as EmojiGroup[]);
 
-export function EmojiCategories({
+function EmojiCategoriesBase({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiCategoriesProps) {
-  const { selectedRow, selectedColumn, emojisPerRow, emojiSize, skinTone } = useEmojiPicker();
+  const { emojisPerRow, emojiSize } = useEmojiPicker();
+  const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -78,7 +81,6 @@ export function EmojiCategories({
       >
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const row = rows[virtualRow.index];
-          const isSelectedRow = virtualRow.index === selectedRow;
 
           return (
             <div
@@ -115,7 +117,6 @@ export function EmojiCategories({
                     <EmojiPickerButton
                       key={index}
                       emoji={emojiData}
-                      isSelected={isSelectedRow && index === selectedColumn}
                       rowIndex={virtualRow.index}
                       columnIndex={index}
                       size={emojiSize}
@@ -130,3 +131,5 @@ export function EmojiCategories({
     </div>
   );
 }
+
+export const EmojiCategories = React.memo(EmojiCategoriesBase);

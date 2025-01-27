@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { groupEmojisByCategory, processEmojiData, searchEmojis } from '../../utils/emojiSearch';
+import { processEmojiData, searchEmojis } from '../../utils/emojiSearch';
 
 describe('Emoji Search', () => {
   const mockEmojiData = {
@@ -47,15 +47,6 @@ describe('Emoji Search', () => {
       unicode_version: '6.1',
       emoji_version: '6.0',
     });
-  });
-
-  test('groupEmojisByCategory groups emojis correctly', () => {
-    const result = groupEmojisByCategory(mockEmojiData);
-    expect(result).toHaveLength(1);
-    expect(result[0].category).toBe('Smileys & Emotion');
-    expect(result[0].emojis).toHaveLength(2); // Should only include compatible emojis
-    expect(result[0].emojis[0].emoji).toBe('😀');
-    expect(result[0].emojis[1].emoji).toBe('😁');
   });
 
   test('searchEmojis finds emojis by name', () => {

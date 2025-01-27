@@ -1,5 +1,11 @@
 import { useCallback, useEffect } from 'react';
-import { useEmojiPicker } from '../EmojiPicker/EmojiPickerContext';
+import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  hoveredEmojiAtom,
+  searchAtom,
+  selectedEmojiAtom,
+  selectedPositionAtom,
+} from '../atoms/emoji';
 
 import type { EmojiMetadata } from '../types/emoji';
 type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
@@ -12,16 +18,15 @@ interface UseEmojiKeyboardNavigationProps {
 }
 
 export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboardNavigationProps) {
-  const {
-    selectedRow,
-    selectedColumn,
-    setSelectedPosition,
-    setHoveredEmoji,
-    setSelectedEmoji,
-    search,
-  } = useEmojiPicker();
+  const setSelectedPosition = useSetAtom(selectedPositionAtom);
+  const setHoveredEmoji = useSetAtom(hoveredEmojiAtom);
+  const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
+  const search = useAtomValue(searchAtom);
+  const selectedPosition = useAtomValue(selectedPositionAtom);
 
-  // Find next/previous emoji row
+  const selectedRow = selectedPosition?.row ?? -1;
+  const selectedColumn = selectedPosition?.column ?? -1;
+
   const findNextEmojiRow = useCallback(
     (currentRow: number, direction: 'up' | 'down'): number => {
       let nextRow = currentRow;
@@ -58,7 +63,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     if (search.trim() && rows.length > 0) {
       const firstRow = findFirstEmojiRow();
       if (firstRow !== -1) {
-        setSelectedPosition(firstRow, 0);
+        setSelectedPosition({ row: firstRow, column: 0 });
         const firstRowData = rows[firstRow];
         if (firstRowData?.type === 'emojis' && firstRowData.content[0]) {
           setHoveredEmoji(firstRowData.content[0]);
@@ -68,24 +73,22 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     }
   }, [search, rows, findFirstEmojiRow, setSelectedPosition, setHoveredEmoji, virtualizer]);
 
+  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!rows.length) return;
-
-      // If no emoji is selected and arrow keys are pressed, select the first emoji
-      if (selectedRow === -1 || selectedColumn === -1) {
-        if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      if (!selectedPosition) {
+        // If nothing is selected and arrow keys are pressed, select the first emoji
+        if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
+          e.preventDefault();
           const firstRow = findFirstEmojiRow();
           if (firstRow !== -1) {
-            e.preventDefault();
-            setSelectedPosition(firstRow, 0);
             const firstRowData = rows[firstRow];
             if (firstRowData?.type === 'emojis' && firstRowData.content[0]) {
+              setSelectedPosition({ row: firstRow, column: 0 });
               setHoveredEmoji(firstRowData.content[0]);
               virtualizer.scrollToIndex(firstRow, { align: 'center' });
             }
           }
-          return;
         }
         return;
       }
@@ -93,87 +96,74 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
       const currentRow = rows[selectedRow];
       if (!currentRow || currentRow.type !== 'emojis') return;
 
-      let newRow = selectedRow;
-      let newColumn = selectedColumn;
+      const maxColumns = currentRow.content.length;
 
       switch (e.key) {
-        case 'ArrowLeft':
-          if (newColumn > 0) {
-            newColumn--;
-          } else {
-            // Move to end of previous row if possible
-            const prevRow = findNextEmojiRow(newRow, 'up');
-            if (prevRow !== newRow) {
-              newRow = prevRow;
-              const prevRowEmojis = (rows[prevRow] as { type: 'emojis'; content: EmojiMetadata[] })
-                .content;
-              newColumn = prevRowEmojis.length - 1;
+        case 'ArrowUp': {
+          e.preventDefault();
+          const nextRow = findNextEmojiRow(selectedRow, 'up');
+          if (nextRow !== selectedRow) {
+            const nextRowData = rows[nextRow];
+            if (nextRowData?.type === 'emojis') {
+              const nextColumn = Math.min(selectedColumn, nextRowData.content.length - 1);
+              setSelectedPosition({ row: nextRow, column: nextColumn });
+              setHoveredEmoji(nextRowData.content[nextColumn]);
+              virtualizer.scrollToIndex(nextRow, { align: 'center' });
             }
           }
           break;
-
-        case 'ArrowRight':
-          if (newColumn < currentRow.content.length - 1) {
-            newColumn++;
-          } else {
-            // Move to start of next row if possible
-            const nextRow = findNextEmojiRow(newRow, 'down');
-            if (nextRow !== newRow) {
-              newRow = nextRow;
-              newColumn = 0;
+        }
+        case 'ArrowDown': {
+          e.preventDefault();
+          const nextRow = findNextEmojiRow(selectedRow, 'down');
+          if (nextRow !== selectedRow) {
+            const nextRowData = rows[nextRow];
+            if (nextRowData?.type === 'emojis') {
+              const nextColumn = Math.min(selectedColumn, nextRowData.content.length - 1);
+              setSelectedPosition({ row: nextRow, column: nextColumn });
+              setHoveredEmoji(nextRowData.content[nextColumn]);
+              virtualizer.scrollToIndex(nextRow, { align: 'center' });
             }
           }
           break;
-
-        case 'ArrowUp':
-          const prevRow = findNextEmojiRow(newRow, 'up');
-          if (prevRow !== newRow) {
-            newRow = prevRow;
-            const prevRowEmojis = (rows[prevRow] as { type: 'emojis'; content: EmojiMetadata[] })
-              .content;
-            newColumn = Math.min(newColumn, prevRowEmojis.length - 1);
+        }
+        case 'ArrowLeft': {
+          e.preventDefault();
+          if (selectedColumn > 0) {
+            const nextColumn = selectedColumn - 1;
+            setSelectedPosition({ row: selectedRow, column: nextColumn });
+            setHoveredEmoji(currentRow.content[nextColumn]);
           }
           break;
-
-        case 'ArrowDown':
-          const nextRow = findNextEmojiRow(newRow, 'down');
-          if (nextRow !== newRow) {
-            newRow = nextRow;
-            const nextRowEmojis = (rows[nextRow] as { type: 'emojis'; content: EmojiMetadata[] })
-              .content;
-            newColumn = Math.min(newColumn, nextRowEmojis.length - 1);
+        }
+        case 'ArrowRight': {
+          e.preventDefault();
+          if (selectedColumn < maxColumns - 1) {
+            const nextColumn = selectedColumn + 1;
+            setSelectedPosition({ row: selectedRow, column: nextColumn });
+            setHoveredEmoji(currentRow.content[nextColumn]);
           }
           break;
-
+        }
         case 'Enter':
-        case ' ':
-          if (currentRow.content[newColumn]) {
-            setSelectedEmoji(currentRow.content[newColumn].emoji);
+        case ' ': {
+          e.preventDefault();
+          const emoji = currentRow.content[selectedColumn];
+          if (emoji) {
+            setSelectedEmoji(emoji.emoji);
           }
           break;
-
-        default:
-          return;
-      }
-
-      if (newRow !== selectedRow || newColumn !== selectedColumn) {
-        e.preventDefault();
-        setSelectedPosition(newRow, newColumn);
-        const newRowData = rows[newRow];
-        if (newRowData?.type === 'emojis' && newRowData.content[newColumn]) {
-          setHoveredEmoji(newRowData.content[newColumn]);
-          virtualizer.scrollToIndex(newRow, { align: 'center' });
         }
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [
     rows,
     selectedRow,
     selectedColumn,
-    findFirstEmojiRow,
+    selectedPosition,
     findNextEmojiRow,
     setSelectedPosition,
     setHoveredEmoji,

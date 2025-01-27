@@ -1,12 +1,13 @@
 import { useMemo, useRef } from 'react';
+import { useAtomValue } from 'jotai';
 import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation';
+import { filteredEmojisAtom } from '../atoms/emoji';
 
 import type { EmojiMetadata } from '../types/emoji';
-
 type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
 
 interface EmojiSearchResultsProps {
@@ -18,7 +19,10 @@ export function EmojiSearchResults({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiSearchResultsProps) {
-  const { filteredEmojis, selectedRow, selectedColumn, emojisPerRow, emojiSize } = useEmojiPicker();
+  const { emojisPerRow, emojiSize } = useEmojiPicker();
+
+  const filteredEmojis = useAtomValue(filteredEmojisAtom);
+
   const parentRef = useRef<HTMLDivElement>(null);
 
   // Create rows from search results
@@ -74,7 +78,6 @@ export function EmojiSearchResults({
       >
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const row = rows[virtualRow.index];
-          const isSelectedRow = virtualRow.index === selectedRow;
 
           return (
             <div
@@ -111,7 +114,6 @@ export function EmojiSearchResults({
                     <EmojiPickerButton
                       key={index}
                       emoji={emojiData}
-                      isSelected={isSelectedRow && index === selectedColumn}
                       rowIndex={virtualRow.index}
                       columnIndex={index}
                       size={emojiSize}

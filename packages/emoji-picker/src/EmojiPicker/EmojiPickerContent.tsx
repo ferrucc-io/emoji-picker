@@ -1,8 +1,11 @@
 import React from 'react';
+import { useAtom } from 'jotai';
 import { useEmojiPicker } from './EmojiPickerContext';
+import { hoveredEmojiAtom } from '../atoms/emoji';
 
 export function EmojiPickerContent() {
-  const { hoveredEmoji, emojiSize } = useEmojiPicker();
+  const { emojiSize } = useEmojiPicker();
+  const [hoveredEmoji] = useAtom(hoveredEmojiAtom);
 
   if (!hoveredEmoji) {
     return null;
