@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useAtom } from 'jotai';
 import { ClearIcon, SearchIcon } from './icons';
 import { cn } from '../utils/cn';
@@ -15,7 +15,7 @@ interface EmojiPickerInputProps
   autoFocus?: boolean;
 }
 
-export function EmojiPickerInput({
+export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputProps>(({
   placeholder,
   endIcon,
   onClear,
@@ -23,7 +23,7 @@ export function EmojiPickerInput({
   hideIcon = false,
   autoFocus = false,
   ...props
-}: EmojiPickerInputProps) {
+}, ref) => {
   const [search, setSearch] = useAtom(searchAtom);
 
   const handleClear = () => {
@@ -46,6 +46,7 @@ export function EmojiPickerInput({
       )}
       <input
         {...props}
+        ref={ref}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -78,4 +79,6 @@ export function EmojiPickerInput({
       )}
     </div>
   );
-}
+});
+
+EmojiPickerInput.displayName = 'EmojiPickerInput';
