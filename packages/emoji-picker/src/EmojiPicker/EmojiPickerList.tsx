@@ -6,7 +6,7 @@ import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiCategories } from './EmojiCategories';
 import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
 
-interface EmojiPickerListProps {
+export interface EmojiPickerListProps {
   hideStickyHeader?: boolean;
   containerHeight?: number;
 }
