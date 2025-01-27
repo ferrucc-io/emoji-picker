@@ -1,4 +1,4 @@
-import React, { Profiler, ProfilerOnRenderCallback } from 'react';
+import React from 'react';
 import { useAtomValue } from 'jotai';
 import { EmojiSearchResults } from './EmojiSearchResults';
 import { EmojiPickerEmpty, EmojiPickerEmptyIcon, EmojiPickerEmptyText } from './EmojiPickerEmpty';
@@ -10,22 +10,6 @@ export interface EmojiPickerListProps {
   hideStickyHeader?: boolean;
   containerHeight?: number;
 }
-
-const onRenderCallback: ProfilerOnRenderCallback = (
-  id,
-  phase,
-  actualDuration,
-  baseDuration,
-  startTime,
-  commitTime
-) => {
-  console.log(`[${id}] ${phase}:`, {
-    actualDuration,
-    baseDuration,
-    startTime,
-    commitTime,
-  });
-};
 
 function EmojiPickerListBase({
   hideStickyHeader = false,
@@ -55,11 +39,7 @@ function EmojiPickerListBase({
     <EmojiCategories hideStickyHeader={hideStickyHeader} containerHeight={containerHeight} />
   );
 
-  return (
-    <Profiler id="EmojiPickerList" onRender={onRenderCallback}>
-      {content}
-    </Profiler>
-  );
+  return content;
 }
 
 function propsAreEqual(prevProps: EmojiPickerListProps, nextProps: EmojiPickerListProps) {

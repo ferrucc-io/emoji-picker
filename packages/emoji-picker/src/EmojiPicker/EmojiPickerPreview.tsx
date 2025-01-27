@@ -6,7 +6,7 @@ import { applySkinTone } from '../utils/applySkinTone';
 import { hoveredEmojiAtom, skinToneAtom } from '../atoms/emoji';
 
 import type { EmojiMetadata } from '../types/emoji';
-interface EmojiPickerPreviewProps {
+export interface EmojiPickerPreviewProps {
   children: (props: { previewedEmoji: EmojiMetadata | null }) => React.ReactNode;
   className?: string;
 }

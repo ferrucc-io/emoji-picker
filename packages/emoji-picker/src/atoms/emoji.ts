@@ -11,9 +11,6 @@ export const selectedPositionAtom = atom<{ row: number; column: number } | null>
 export const searchAtom = atom<string>('');
 export const skinToneAtom = atom<SkinTone>('default');
 
-// Create a single shared selected state atom to avoid per-button instances
-const selectedStateAtom = atom((get) => get(selectedEmojiAtom));
-
 // Create separate atoms for different concerns to avoid unnecessary re-renders
 export const skinToneOnlyAtom = atom((get) => get(skinToneAtom));
 

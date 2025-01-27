@@ -100,6 +100,7 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      data-emoji={emojiWithSkinTone.emoji}
     >
       {emojiWithSkinTone.emoji}
     </button>
