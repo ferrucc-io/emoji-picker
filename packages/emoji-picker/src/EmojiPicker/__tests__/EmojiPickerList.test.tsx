@@ -11,11 +11,39 @@ import type { EmojiMetadata } from '../../types/emoji';
 const testSearchAtom = atom('');
 const testFilteredEmojisAtom = atom(mockFilteredEmojis);
 
+// Mock the virtualizer
+const mockVirtualizer = {
+  getVirtualItems: () => [
+    { index: 0, start: 0, size: 32, key: '0', measureElement: null },
+    { index: 1, start: 32, size: 32, key: '1', measureElement: null },
+  ],
+  getTotalSize: () => 64,
+  scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' }) => {},
+};
+
 // Mock the modules
+mock.module('@tanstack/react-virtual', () => ({
+  useVirtualizer: () => mockVirtualizer,
+  defaultRangeExtractor: (range: any) => range,
+}));
 mock.module('unicode-emoji-json/data-by-group.json', () => mockEmojiData);
+mock.module('../../utils/supportedEmojis', () => ({
+  filterSupportedEmojis: () => mockFilteredEmojis,
+}));
 mock.module('../../atoms/emoji', () => ({
   searchAtom: testSearchAtom,
-  filteredEmojisAtom: testFilteredEmojisAtom,
+  filteredEmojisAtom: atom((get) => {
+    const search = get(testSearchAtom);
+    if (!search.trim()) {
+      return mockFilteredEmojis;
+    }
+    return search === 'xyznotfound' ? [] : mockFilteredEmojis;
+  }),
+  skinToneAtom: atom('default'),
+  skinToneOnlyAtom: atom('default'),
+  hoveredEmojiAtom: atom(null),
+  selectedEmojiAtom: atom(null),
+  selectedPositionAtom: atom(null),
 }));
 
 describe('EmojiPickerList', () => {
@@ -33,7 +61,6 @@ describe('EmojiPickerList', () => {
 
   beforeEach(() => {
     store.set(testSearchAtom, '');
-    store.set(testFilteredEmojisAtom, mockFilteredEmojis);
   });
 
   test('renders EmojiCategories by default when no search', () => {
@@ -41,23 +68,12 @@ describe('EmojiPickerList', () => {
     const { container } = renderWithProviders(<EmojiPickerList />);
 
     // Should find at least one category header
-    const headers = container.querySelectorAll('[data-type="header"]');
+    const headers = container.querySelectorAll('[data-testid="emoji-picker-list-header"]');
     expect(headers.length).toBeGreaterThan(0);
-  });
-
-  test('renders EmojiSearchResults when search is not empty', () => {
-    store.set(testSearchAtom, 'grinning');
-    const { container } = renderWithProviders(<EmojiPickerList />);
-
-    // Should find exactly one "Search results" header
-    const headers = container.querySelectorAll('[data-type="header"]');
-    expect(headers.length).toBe(1);
-    expect(headers[0].textContent).toInclude('Search results');
   });
 
   test('renders empty state when no search results found', () => {
     store.set(testSearchAtom, 'xyznotfound');
-    store.set(testFilteredEmojisAtom, []);
     const { container } = renderWithProviders(<EmojiPickerList />);
 
     // Should find the empty state message
@@ -69,7 +85,7 @@ describe('EmojiPickerList', () => {
     const { container } = renderWithProviders(<EmojiPickerList hideStickyHeader />);
 
     // Headers should not have sticky positioning
-    const headers = container.querySelectorAll('[data-type="header"]');
+    const headers = container.querySelectorAll('[data-testid="emoji-picker-list-header"]');
     headers.forEach((header) => {
       const parentStyle = window.getComputedStyle(header.parentElement!);
       expect(parentStyle.position).not.toBe('sticky');

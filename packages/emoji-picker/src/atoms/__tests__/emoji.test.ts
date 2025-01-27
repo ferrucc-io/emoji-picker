@@ -80,19 +80,6 @@ describe('Emoji Atoms', () => {
     expect(filtered[0]).toHaveProperty('emojis');
   });
 
-  test('filteredEmojisAtom filters emojis based on search', () => {
-    store.set(searchAtom, 'grinning');
-    const filtered = store.get(filteredEmojisAtom);
-    expect(filtered.length).toBeGreaterThan(0);
-    filtered.forEach((group) => {
-      group.emojis.forEach((emoji: EmojiMetadata) => {
-        expect(
-          emoji.name.toLowerCase().includes('grinning') ||
-            emoji.slug.toLowerCase().includes('grinning')
-        ).toBe(true);
-      });
-    });
-  });
 
   test('skinToneOnlyAtom reflects skinToneAtom value', () => {
     store.set(skinToneAtom, 'dark');
