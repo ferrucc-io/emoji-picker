@@ -21,8 +21,11 @@ export const skinToneOnlyAtom = atom(
   (get) => get(skinToneAtom)
 );
 
-export const isEmojiSelectedAtom = (emoji: string) =>
-  atom((get) => get(selectedStateAtom) === emoji);
+export const isEmojiSelectedAtom = (rowIndex: number, columnIndex: number) =>
+  atom((get) => {
+    const selectedPos = get(selectedPositionAtom);
+    return selectedPos?.row === rowIndex && selectedPos?.column === columnIndex;
+  });
 
 // Process emoji data once and filter compatible emojis
 const processedEmojiData = processEmojiData(emojiData);

@@ -76,7 +76,22 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!selectedPosition) return;
+      if (!selectedPosition) {
+        // If nothing is selected and arrow keys are pressed, select the first emoji
+        if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
+          e.preventDefault();
+          const firstRow = findFirstEmojiRow();
+          if (firstRow !== -1) {
+            const firstRowData = rows[firstRow];
+            if (firstRowData?.type === 'emojis' && firstRowData.content[0]) {
+              setSelectedPosition({ row: firstRow, column: 0 });
+              setHoveredEmoji(firstRowData.content[0]);
+              virtualizer.scrollToIndex(firstRow, { align: 'center' });
+            }
+          }
+        }
+        return;
+      }
 
       const currentRow = rows[selectedRow];
       if (!currentRow || currentRow.type !== 'emojis') return;

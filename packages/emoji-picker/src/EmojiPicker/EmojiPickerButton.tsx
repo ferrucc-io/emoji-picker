@@ -1,4 +1,4 @@
-import React, { Profiler, ProfilerOnRenderCallback, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { emojiColors } from '../utils/emojiColors';
 import { applySkinTone } from '../utils/applySkinTone';
@@ -31,22 +31,6 @@ function buttonPropsAreEqual(prevProps: EmojiPickerButtonProps, nextProps: Emoji
   );
 }
 
-const onRenderCallback: ProfilerOnRenderCallback = (
-  id,
-  phase,
-  actualDuration,
-  baseDuration,
-  startTime,
-  commitTime
-) => {
-  console.log(`[${id}] ${phase}:`, {
-    actualDuration,
-    baseDuration,
-    startTime,
-    commitTime,
-  });
-};
-
 const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   emoji,
   rowIndex,
@@ -57,11 +41,12 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
   const setSelectedPosition = useSetAtom(selectedPositionAtom);
   
-  // Use memoized selected atom to prevent recreation
-  const selectedAtom = useMemo(() => isEmojiSelectedAtom(emoji.emoji), [emoji.emoji]);
+  const selectedAtom = useMemo(
+    () => isEmojiSelectedAtom(rowIndex, columnIndex),
+    [rowIndex, columnIndex]
+  );
   const isSelected = useAtomValue(selectedAtom);
   
-  // Use separate skin tone atom to prevent unnecessary re-renders
   const skinTone = useAtomValue(skinToneOnlyAtom);
 
   // Only apply skin tone if supported and memoize the result
@@ -101,21 +86,19 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   } as React.CSSProperties), [hoverColor, size]);
 
   return (
-    <Profiler id="EmojiPickerButton" onRender={onRenderCallback}>
-      <button
-        className={`aspect-square focus:ring-[var(--emoji-hover-color)] focus:ring-2 flex items-center justify-center text-sm rounded-lg ${
-          isSelected
-            ? 'bg-[var(--emoji-hover-color)]'
-            : 'hover:bg-[var(--emoji-hover-color)] focus:bg-[var(--emoji-hover-color)]'
-        } flex-shrink-0`}
-        style={buttonStyle}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-      >
-        {emojiWithSkinTone.emoji}
-      </button>
-    </Profiler>
+    <button
+      className={`aspect-square focus:ring-[var(--emoji-hover-color)] focus:ring-2 flex items-center justify-center text-sm rounded-lg ${
+        isSelected
+          ? 'bg-[var(--emoji-hover-color)]'
+          : 'hover:bg-[var(--emoji-hover-color)] focus:bg-[var(--emoji-hover-color)]'
+      } flex-shrink-0`}
+      style={buttonStyle}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+    >
+      {emojiWithSkinTone.emoji}
+    </button>
   );
 }, buttonPropsAreEqual);
 
