@@ -100,7 +100,7 @@ function App() {
           <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
             Installation
           </h2>
-          <PackageManagerTabs packageName="@ferrucc-io/emojipicker" />
+          <PackageManagerTabs packageName="@ferrucc-io/emoji-picker" />
           <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-50 mb-2">
             Tailwind Setup
           </h3>
