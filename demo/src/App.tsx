@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useTheme } from './ThemeContext';
 import { Playground } from './playground';
+import { Hero } from './Hero';
 import { NPM_MONTHLY_DOWNLOADS } from './constants/npmStats';
 import { TailwindSetupTabs } from './components/TailwindSetupTabs';
 import { PackageManagerTabs } from './components/PackageManagerTabs';
@@ -53,21 +55,10 @@ const EXAMPLE_CODE = {
 </EmojiPicker>`,
 };
 
-const DEFAULT_CONFIGS = {
-  default: {},
-  linear: {
-    hideStickyHeader: true,
-  },
-  slack: {
-    emojisPerRow: 9,
-    emojiSize: 36,
-    containerHeight: 320,
-    hideIcon: true,
-  },
-};
 
 function App() {
   const { theme } = useTheme();
+  const [selectedEmoji, setSelectedEmoji] = useState("⌘");
 
   return (
     <div
@@ -75,20 +66,7 @@ function App() {
     >
       <div className="max-w-2xl w-full mx-auto flex flex-col items-center gap-8">
         <div className="flex flex-col-reverse gap-6 md:flex-row md:justify-between items-start w-full">
-          <div className="flex flex-col items-start gap-4 text-center">
-            <div className="flex items-center gap-2">
-              <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-                ⌘
-              </h1>
-              <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-                Emoji Picker
-              </h1>
-            </div>
-            <p className="text-lg text-zinc-600 dark:text-zinc-300 text-left">
-              A fast, composable, unstyled emoji picker made with Tailwind &
-              React
-            </p>
-          </div>
+          <Hero selectedEmoji={selectedEmoji} />
           <div className="flex w-full md:w-auto justify-end md:justify-start items-center gap-2 bg-secondary/50 rounded-lg p-1">
             <NpmDownloadsPill
               packageName="@ferrucc-io/emoji-picker"
@@ -114,7 +92,7 @@ function App() {
 
         <div className="flex flex-col items-center gap-6 w-full">
           <div className="w-full">
-            <Playground code={EXAMPLE_CODE} />
+            <Playground code={EXAMPLE_CODE} onEmojiSelect={setSelectedEmoji} />
           </div>
         </div>
 

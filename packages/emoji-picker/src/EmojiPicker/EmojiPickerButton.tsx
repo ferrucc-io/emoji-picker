@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
+import { useEmojiPicker } from './EmojiPickerContext';
 import { emojiColors } from '../utils/emojiColors';
 import { applySkinTone } from '../utils/applySkinTone';
 import {
   hoveredEmojiAtom,
   isEmojiSelectedAtom,
-  selectedEmojiAtom,
   selectedPositionAtom,
   skinToneOnlyAtom,
 } from '../atoms/emoji';
@@ -38,16 +38,15 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   size = 28,
 }: EmojiPickerButtonProps) {
   const setHoveredEmoji = useSetAtom(hoveredEmojiAtom);
-  const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
   const setSelectedPosition = useSetAtom(selectedPositionAtom);
+  const skinTone = useAtomValue(skinToneOnlyAtom);
+  const { onEmojiSelect } = useEmojiPicker();
 
   const selectedAtom = useMemo(
     () => isEmojiSelectedAtom(rowIndex, columnIndex),
     [rowIndex, columnIndex]
   );
   const isSelected = useAtomValue(selectedAtom);
-
-  const skinTone = useAtomValue(skinToneOnlyAtom);
 
   // Only apply skin tone if supported and memoize the result
   const emojiWithSkinTone = useMemo(
@@ -70,12 +69,11 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   }, [setHoveredEmoji]);
 
   const handleClick = useCallback(() => {
-    // Batch updates together
-    queueMicrotask(() => {
-      setSelectedPosition({ row: rowIndex, column: columnIndex });
-      setSelectedEmoji(emojiWithSkinTone.emoji);
-    });
-  }, [emojiWithSkinTone.emoji, rowIndex, columnIndex, setSelectedPosition, setSelectedEmoji]);
+    setSelectedPosition({ row: rowIndex, column: columnIndex });
+    if (onEmojiSelect) {
+      onEmojiSelect(emojiWithSkinTone.emoji);
+    }
+  }, [emojiWithSkinTone.emoji, rowIndex, columnIndex, setSelectedPosition, onEmojiSelect]);
 
   // Memoize the button style to prevent recalculation
   const buttonStyle = useMemo(

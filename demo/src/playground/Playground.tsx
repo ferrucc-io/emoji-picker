@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { PlaygroundProps } from "./types";
-import { SlackPickerExample } from "./SlackPickerExample";
-import { LinearPickerExample } from "./LinearPickerExample";
-import { DefaultPickerExample } from "./DefaultPickerExample";
-import { useTheme } from "../ThemeContext";
-import { CodeBlock } from "../components/CodeBlock";
+import React, { useState } from 'react';
+import { PlaygroundProps } from './types';
+import { SlackPickerExample } from './SlackPickerExample';
+import { LinearPickerExample } from './LinearPickerExample';
+import { DefaultPickerExample } from './DefaultPickerExample';
+import { useTheme } from '../ThemeContext';
+import { CodeBlock } from '../components/CodeBlock';
 
 const THEMES = [
   { value: "light", label: "Light" },
@@ -21,6 +21,7 @@ type VariantType = (typeof TABS)[number]["id"];
 
 export function Playground({
   code,
+  onEmojiSelect,
 }: Omit<PlaygroundProps, "variant" | "defaultConfig">) {
   const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
   const [variant, setVariant] = useState<VariantType>("default");
@@ -29,11 +30,11 @@ export function Playground({
   const renderPicker = () => {
     switch (variant) {
       case "linear":
-        return <LinearPickerExample />;
+        return <LinearPickerExample onEmojiSelect={onEmojiSelect} />;
       case "slack":
-        return <SlackPickerExample />;
+        return <SlackPickerExample onEmojiSelect={onEmojiSelect} />;
       default:
-        return <DefaultPickerExample />;
+        return <DefaultPickerExample onEmojiSelect={onEmojiSelect} />;
     }
   };
 

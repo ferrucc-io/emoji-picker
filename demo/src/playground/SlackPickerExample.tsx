@@ -1,12 +1,17 @@
-import { EmojiPicker } from "@ferrucc-io/emoji-picker";
+import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 
-export function SlackPickerExample() {
+interface SlackPickerExampleProps {
+  onEmojiSelect: (emoji: string) => void;
+}
+
+export function SlackPickerExample({ onEmojiSelect }: SlackPickerExampleProps) {
   return (
     <div className="rounded-[8px] border border-zinc-300 dark:border-zinc-600 overflow-hidden shadow-sm flex flex-col items-center">
       <EmojiPicker
         className="font-['Lato'] w-[380px] border-none"
         emojisPerRow={9}
         emojiSize={36}
+        onEmojiSelect={onEmojiSelect}
       >
         <EmojiPicker.Header className="w-full px-4 pt-4">
           <EmojiPicker.Input

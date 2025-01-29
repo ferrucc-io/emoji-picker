@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Provider, useAtom } from 'jotai';
+import React, { useEffect, useState } from 'react';
+import { Provider } from 'jotai';
 import { EmojiPickerSkinTone } from './EmojiPickerSkinTone';
 import { EmojiPickerPreview } from './EmojiPickerPreview';
 import { EmojiPickerList } from './EmojiPickerList';
@@ -8,7 +8,6 @@ import { EmojiPickerGroup } from './EmojiPickerGroup';
 import { EmojiPickerProvider } from './EmojiPickerContext';
 import { EmojiPickerContent } from './EmojiPickerContent';
 import { cn } from '../utils/cn';
-import { selectedEmojiAtom } from '../atoms/emoji';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
@@ -42,13 +41,13 @@ export function EmojiPicker({
   emojiSize = 28,
   maxUnicodeVersion = 15.0,
 }: EmojiPickerProps) {
-  const [selectedEmoji] = useAtom(selectedEmojiAtom);
+  const [localSelectedEmoji, setLocalSelectedEmoji] = useState<string | null>(null);
 
   useEffect(() => {
-    if (selectedEmoji && onEmojiSelect) {
-      onEmojiSelect(selectedEmoji);
+    if (localSelectedEmoji && onEmojiSelect) {
+      onEmojiSelect(localSelectedEmoji);
     }
-  }, [selectedEmoji, onEmojiSelect]);
+  }, [localSelectedEmoji, onEmojiSelect]);
 
   return (
     <Provider>
@@ -56,14 +55,15 @@ export function EmojiPicker({
         emojisPerRow={emojisPerRow}
         emojiSize={emojiSize}
         maxUnicodeVersion={maxUnicodeVersion}
-        >
+        onEmojiSelect={setLocalSelectedEmoji}
+      >
         <div
           tabIndex={0}
           className={cn(
             'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-full outline-none focus:ring-1 focus:ring-indigo-500',
             className
           )}
-          >
+        >
           {children}
         </div>
       </EmojiPickerProvider>
