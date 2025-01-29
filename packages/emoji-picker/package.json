@@ -26,8 +26,8 @@
     "test:coverage": "bun test --coverage",
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
-    "build:esm": "bun build ./src/index.ts --outfile ./dist/index.js --external react --external react-dom --jsx-runtime automatic",
-    "build:cjs": "bun build ./src/index.ts --outfile ./dist/index.cjs --format cjs --external react --external react-dom --jsx-runtime automatic",
+    "build:esm": "bun build ./src/index.ts --outfile ./dist/index.js --external react --external react-dom --external react/jsx-runtime --jsx-runtime automatic",
+    "build:cjs": "bun build ./src/index.ts --outfile ./dist/index.cjs --format cjs --external react --external react-dom --external react/jsx-runtime --jsx-runtime automatic",
     "build": "rm -rf dist && bun run build:types && bun run build:esm && bun run build:cjs",
     "prepublishOnly": "cp ../../README.md . && bun run build",
     "clean": "rm -rf dist",
@@ -59,13 +59,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sharp": "^0.33.2",
-    "vite": "^6.0.11"
+    "vite": "^6.0.11",
+    "typescript": ">=5.0.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwindcss": ">=3.0.0",
-    "typescript": ">=5.0.0"
+    "tailwindcss": ">=3.0.0"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.11.2",
