@@ -14,6 +14,9 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "scripts",
-    "src/__tests__"
+    "src/__tests__",
+    "**/__tests__/**",
+    "src/test",
+    "src/EmojiPicker/__tests__"
   ]
 }
