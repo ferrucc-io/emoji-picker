@@ -74,23 +74,9 @@ Finally, import the component styles in your Tailwind configuration:
 - 🎯 **Accessible**: Full keyboard navigation support. ARIA labels and proper semantic markup.
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
 
-## Props & Customization
 
-The component accepts several props for customization:
 
-```tsx
-interface EmojiPickerProps {
-  emojisPerRow?: number;      // Number of emojis per row
-  emojiSize?: number;         // Size of each emoji in pixels
-  containerHeight?: number;    // Height of the emoji container
-  hideIcon?: boolean;         // Hide the search icon
-  onEmojiSelect?: (emoji: string) => void; // Callback when emoji is selected
-}
-```
-
-## Examples
-
-### Default Style
+## Default Style
 ```tsx
 <EmojiPicker onEmojiSelect={handleEmojiSelect}>
   <EmojiPicker.Header>
@@ -101,6 +87,27 @@ interface EmojiPickerProps {
   </EmojiPicker.Group>
 </EmojiPicker>
 ```
+
+### Props & Customization
+
+The base component accepts several props for customization:
+
+```tsx
+interface EmojiPickerProps {
+  emojisPerRow?: number;      // Number of emojis per row
+  emojiSize?: number;         // Size of each emoji in pixels
+  containerHeight?: number;    // Height of the emoji container
+  maxUnicodeVersion?: number; // Maximum Unicode version to include in the list of emojis (we default to 15.0)
+  onEmojiSelect?: (emoji: string) => void; // Callback when emoji is selected
+}
+```
+
+## Examples
+
+The main idea behind the component is to be able to support as many different styles as possible. The first version we made supports building a picker that looks like the ones in Slack and Linear.
+
+In the future it would be great to support more styles like the ones in Discord, Whatsapp, Notion etc.
+
 
 ### Linear Style
 ```tsx
