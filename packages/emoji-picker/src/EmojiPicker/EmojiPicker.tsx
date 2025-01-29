@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useAtom } from 'jotai';
+import { Provider, useAtom } from 'jotai';
 import { EmojiPickerSkinTone } from './EmojiPickerSkinTone';
 import { EmojiPickerPreview } from './EmojiPickerPreview';
 import { EmojiPickerList } from './EmojiPickerList';
@@ -51,21 +51,23 @@ export function EmojiPicker({
   }, [selectedEmoji, onEmojiSelect]);
 
   return (
-    <EmojiPickerProvider
-      emojisPerRow={emojisPerRow}
-      emojiSize={emojiSize}
-      maxUnicodeVersion={maxUnicodeVersion}
-    >
-      <div
-        tabIndex={0}
-        className={cn(
-          'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-full outline-none focus:ring-1 focus:ring-indigo-500',
-          className
-        )}
-      >
-        {children}
-      </div>
-    </EmojiPickerProvider>
+    <Provider>
+      <EmojiPickerProvider
+        emojisPerRow={emojisPerRow}
+        emojiSize={emojiSize}
+        maxUnicodeVersion={maxUnicodeVersion}
+        >
+        <div
+          tabIndex={0}
+          className={cn(
+            'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-full outline-none focus:ring-1 focus:ring-indigo-500',
+            className
+          )}
+          >
+          {children}
+        </div>
+      </EmojiPickerProvider>
+    </Provider>
   );
 }
 
