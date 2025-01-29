@@ -6,7 +6,7 @@ interface FAQItem {
 const FAQ_ITEMS: FAQItem[] = [
   {
     question: "What are the peer dependencies?",
-    answer: "React ≥0.14.0, React DOM ≥0.14.0, Tailwind CSS ≥3.0.0, and TypeScript ≥5.7.3",
+    answer: "React ≥0.14.0, React DOM ≥0.14.0 and Tailwind CSS ≥3.0.0",
   },
   {
     question: "Is it customizable?",
