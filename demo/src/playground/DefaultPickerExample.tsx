@@ -1,14 +1,14 @@
-import { EmojiPicker } from "@ferrucc-io/emoji-picker";
+import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 
-export function DefaultPickerExample() {
-  const handleEmojiSelect = (emoji: string) => {
-    console.log("Selected emoji:", emoji);
-  };
+interface DefaultPickerExampleProps {
+  onEmojiSelect: (emoji: string) => void;
+}
 
+export function DefaultPickerExample({ onEmojiSelect }: DefaultPickerExampleProps) {
   return (
     <EmojiPicker
       className="border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden"
-      onEmojiSelect={handleEmojiSelect}
+      onEmojiSelect={onEmojiSelect}
       emojisPerRow={12}
       emojiSize={28}
     >

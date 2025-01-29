@@ -1,2 +1,2 @@
 export { Playground } from "./Playground";
-export type { EmojiPickerConfig, PlaygroundProps } from "./types";
+export type { PlaygroundProps } from "./types";

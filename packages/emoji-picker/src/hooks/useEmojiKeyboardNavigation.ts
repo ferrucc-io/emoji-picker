@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
+import { useEmojiPicker } from '../EmojiPicker/EmojiPickerContext';
 import {
   hoveredEmojiAtom,
   searchAtom,
@@ -23,6 +24,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
   const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
   const search = useAtomValue(searchAtom);
   const selectedPosition = useAtomValue(selectedPositionAtom);
+  const { onEmojiSelect } = useEmojiPicker();
 
   const selectedRow = selectedPosition?.row ?? -1;
   const selectedColumn = selectedPosition?.column ?? -1;
@@ -151,6 +153,9 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
           const emoji = currentRow.content[selectedColumn];
           if (emoji) {
             setSelectedEmoji(emoji.emoji);
+            if (onEmojiSelect) {
+              onEmojiSelect(emoji.emoji);
+            }
           }
           break;
         }
@@ -169,5 +174,6 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     setHoveredEmoji,
     setSelectedEmoji,
     virtualizer,
+    onEmojiSelect,
   ]);
 }
