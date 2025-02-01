@@ -127,11 +127,13 @@ export function Playground({
       </div>
 
       <div className="bg-white dark:bg-zinc-950">
-        <div className="py-4 md:p-4 flex justify-center gap-4">
+        <div className={`py-4 md:p-4 ${activeTab === 'preview' ? 'flex justify-center' : 'w-full'} gap-4`}>
           {activeTab === "preview" ? (
             renderPicker()
           ) : (
-            <CodeBlock code={code[variant]} language="tsx" showLineNumbers />
+            <div className="w-full overflow-x-auto">
+              <CodeBlock code={code[variant]} language="tsx" showLineNumbers />
+            </div>
           )}
         </div>
       </div>

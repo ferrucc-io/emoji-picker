@@ -16,32 +16,34 @@ export function CodeBlock({
 }: CodeBlockProps) {
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {/* @ts-ignore - Highlight types are incorrect but component works fine */}
       <Highlight code={code} language={language}>
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre
-            className={`${className} p-4 rounded-lg overflow-x-auto text-sm`}
-            style={style}
-          >
+          <div className="relative">
             {!hideCopyButton && (
-              <div className="absolute right-2 top-2">
+              <div className="sticky right-2 top-2 float-right z-10">
                 <ClipboardButton text={code} />
               </div>
             )}
-            {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line })}>
-                {showLineNumbers && (
-                  <span className="inline-block w-8 text-zinc-400 select-none">
-                    {i + 1}
-                  </span>
-                )}
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token })} />
-                ))}
-              </div>
-            ))}
-          </pre>
+            <pre
+              className={`${className} p-4 rounded-lg text-sm whitespace-pre-wrap break-words`}
+              style={style}
+            >
+              {tokens.map((line, i) => (
+                <div key={i} {...getLineProps({ line })}>
+                  {showLineNumbers && (
+                    <span className="inline-block w-8 text-zinc-400 select-none">
+                      {i + 1}
+                    </span>
+                  )}
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token })} />
+                  ))}
+                </div>
+              ))}
+            </pre>
+          </div>
         )}
       </Highlight>
     </div>
