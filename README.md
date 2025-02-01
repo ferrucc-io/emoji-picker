@@ -181,13 +181,8 @@ To get started with development:
 # Install dependencies for all packages
 bun install
 
-# Build the emoji picker package
-cd packages/emoji-picker
-bun run build
-
-# Run the demo app
-cd ../demo
-bun run dev
+# Run the development server
+bun dev
 ```
 
 ### Updating Emoji Colors
