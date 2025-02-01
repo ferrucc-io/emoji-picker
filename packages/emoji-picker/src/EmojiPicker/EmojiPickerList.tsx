@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAtomValue } from 'jotai';
 import { EmojiSearchResults } from './EmojiSearchResults';
+import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { EmojiPickerEmpty, EmojiPickerEmptyIcon, EmojiPickerEmptyText } from './EmojiPickerEmpty';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiCategories } from './EmojiCategories';
@@ -21,12 +22,11 @@ function EmojiPickerListBase({
 
   const content = search.trim() ? (
     filteredEmojis.length === 0 ? (
-      <div className="flex flex-col items-start justify-start h-full pt-1">
-        <div
-          className={`${emojiSize > 32 ? 'text-sm' : 'text-xs'} font-medium text-zinc-500 dark:text-zinc-400 px-3 py-1.5`}
-        >
-          Search results
-        </div>
+      <div className="flex flex-col items-start justify-start h-full">
+        <EmojiPickerListHeader
+          emojiSize={emojiSize}
+          content="Search results"
+        />
         <EmojiPickerEmpty>
           <EmojiPickerEmptyIcon />
           <EmojiPickerEmptyText />
