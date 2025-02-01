@@ -1,5 +1,5 @@
-import { join } from "path";
-import { writeFileSync } from "fs";
+import { join } from 'path';
+import { writeFileSync } from 'fs';
 
 async function updateNpmStats() {
   try {
@@ -12,7 +12,7 @@ async function updateNpmStats() {
 export const NPM_MONTHLY_DOWNLOADS = ${data.downloads};`;
 
     writeFileSync(
-      join(process.cwd(), "src/constants/npmStats.ts"),
+      join(process.cwd(), "demo/src/constants/npmStats.ts"),
       statsContent,
     );
 
