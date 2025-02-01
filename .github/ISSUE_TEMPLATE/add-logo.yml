@@ -1,0 +1,50 @@
+name: Add Logo to Social Proof
+description: Request to add your company logo to the social proof section
+title: "Add Logo: [Company Name]"
+labels: ["social-proof", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for using emoji-picker! We'd love to showcase your company in our social proof section.
+  - type: input
+    id: company
+    attributes:
+      label: Company Name
+      description: What's your company's name?
+      placeholder: "Example: Acme Inc."
+    validations:
+      required: true
+  - type: input
+    id: website
+    attributes:
+      label: Company Website
+      description: Your company's website URL
+      placeholder: "https://example.com"
+    validations:
+      required: true
+  - type: textarea
+    id: logo
+    attributes:
+      label: Logo SVG
+      description: Please provide your company logo as an SVG component (similar to the June logo in social-proof/june.tsx)
+      placeholder: |
+        ```tsx
+        export const CompanyLogo: React.FC = () => (
+          <svg>
+            <!-- Your SVG content here -->
+          </svg>
+        );
+        ```
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our project's code of conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
+        - label: I confirm I have the rights to use and share this logo
+          required: true 
