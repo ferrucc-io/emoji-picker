@@ -23,10 +23,7 @@ function EmojiPickerListBase({
   const content = search.trim() ? (
     filteredEmojis.length === 0 ? (
       <div className="flex flex-col items-start justify-start h-full">
-        <EmojiPickerListHeader
-          emojiSize={emojiSize}
-          content="Search results"
-        />
+        <EmojiPickerListHeader emojiSize={emojiSize} content="Search results" />
         <EmojiPickerEmpty>
           <EmojiPickerEmptyIcon />
           <EmojiPickerEmptyText />
