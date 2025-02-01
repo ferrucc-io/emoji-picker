@@ -39,8 +39,8 @@ export function Playground({
   };
 
   return (
-    <div className="w-full border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
-      <div className="flex flex-col items-start md:flex-row md:items-center gap-2 px-2 py-1.5 bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+    <div className="w-full border border-zinc-200 dark:border-zinc-800 md:rounded-lg overflow-hidden">
+      <div className="flex flex-col px-2 items-start md:flex-row md:items-center gap-2 md:px-2 py-1.5 bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-start justify-center gap-2">
           <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 py-1.5">
             Style:
@@ -127,7 +127,7 @@ export function Playground({
       </div>
 
       <div className="bg-white dark:bg-zinc-950">
-        <div className="p-4 flex justify-center gap-4">
+        <div className="py-4 md:p-4 flex justify-center gap-4">
           {activeTab === "preview" ? (
             renderPicker()
           ) : (

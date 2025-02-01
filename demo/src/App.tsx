@@ -62,10 +62,10 @@ function App() {
 
   return (
     <div
-      className={`min-h-screen w-full pt-4 pb-20 md:py-20 px-4 flex flex-col items-center bg-white dark:bg-zinc-950 ${theme === "dark" ? "dark" : ""}`}
+      className={`min-h-screen w-full pt-4 pb-20 md:py-20 flex flex-col items-center bg-white dark:bg-zinc-950 ${theme === "dark" ? "dark" : ""}`}
     >
-      <div className="max-w-2xl w-full mx-auto flex flex-col items-center gap-8">
-        <div className="flex flex-col-reverse gap-6 md:flex-row md:justify-between items-start w-full">
+      <div className="max-w-2xl w-full md:mx-auto flex flex-col items-center gap-8">
+        <div className="flex flex-col-reverse gap-6 md:flex-row md:justify-between items-start w-full px-4">
           <Hero selectedEmoji={selectedEmoji} />
           <div className="flex w-full md:w-auto justify-end md:justify-start items-center gap-2 bg-secondary/50 rounded-lg p-1">
             <NpmDownloadsPill
@@ -96,7 +96,7 @@ function App() {
           </div>
         </div>
 
-        <div className="flex flex-col items-start gap-4 w-full">
+        <div className="flex flex-col items-start gap-4 w-full px-4">
           <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
             Installation
           </h2>
@@ -107,7 +107,7 @@ function App() {
           <TailwindSetupTabs />
         </div>
 
-        <div className="flex flex-col items-start gap-8 w-full mt-8">
+        <div className="flex flex-col items-start gap-8 w-full mt-8 px-4">
           <Features />
           <FAQ />
         </div>
