@@ -162,6 +162,15 @@ In the future it would be great to support more styles like the ones in Discord,
 </EmojiPicker>
 ```
 
+## Used by
+
+This project is currently used by:
+
+- [June](https://june.so) - An analytics product for B2B SaaS
+
+**Feel free to open a PR to add your name here if you're using the component in your project.**
+
+
 ## Credits
 
 This project was created using `bun init` in bun v1.2.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

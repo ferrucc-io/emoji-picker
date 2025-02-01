@@ -4,6 +4,7 @@ import { Playground } from './playground';
 import { Hero } from './Hero';
 import { NPM_MONTHLY_DOWNLOADS } from './constants/npmStats';
 import { TailwindSetupTabs } from './components/TailwindSetupTabs';
+import { SocialProof } from './components/SocialProof';
 import { PackageManagerTabs } from './components/PackageManagerTabs';
 import { NpmDownloadsPill } from './components/NpmDownloadsPill';
 import { Features } from './components/Features';
@@ -104,6 +105,10 @@ function App() {
           <div className="w-full">
             <Playground code={EXAMPLE_CODE} onEmojiSelect={setSelectedEmoji} />
           </div>
+        </div>
+
+        <div className="w-full px-4">
+          <SocialProof />
         </div>
 
         <div className="flex flex-col items-start gap-4 w-full px-4">

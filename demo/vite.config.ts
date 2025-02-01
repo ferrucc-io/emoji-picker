@@ -6,7 +6,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), oxlintPlugin()] as PluginOption[],
+  plugins: [
+    react(), 
+    tailwindcss(), 
+    oxlintPlugin(),
+  ] as PluginOption[],
   base: "/",
   build: {
     outDir: "dist",
