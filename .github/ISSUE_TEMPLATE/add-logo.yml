@@ -41,10 +41,5 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our project's code of conduct
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
-        - label: I confirm I have the rights to use and share this logo
+      label: I confirm I have the rights to use and share this logo
           required: true 
