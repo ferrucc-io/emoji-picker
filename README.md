@@ -111,12 +111,21 @@ In the future it would be great to support more styles like the ones in Discord,
 
 ### Linear Style
 ```tsx
-<EmojiPicker>
-  <EmojiPicker.Header className="pb-0">
-    <EmojiPicker.Input placeholder="Search emoji" />
+<EmojiPicker
+  className="border border-zinc-200 dark:border-zinc-800 rounded-lg"
+  emojisPerRow={12}
+  emojiSize={28}
+  onEmojiSelect={onEmojiSelect}
+>
+  <EmojiPicker.Header className="p-2 pb-0">
+    <EmojiPicker.Input
+      placeholder="Search emoji"
+      autoFocus={true}
+      className="focus:ring-2 focus:ring-inset ring-1 ring-transparent"
+    />
   </EmojiPicker.Header>
   <EmojiPicker.Group>
-    <EmojiPicker.List hideStickyHeader />
+    <EmojiPicker.List hideStickyHeader={true} containerHeight={400} />
   </EmojiPicker.Group>
 </EmojiPicker>
 ```
@@ -124,13 +133,14 @@ In the future it would be great to support more styles like the ones in Discord,
 ### Slack Style
 ```tsx
 <EmojiPicker 
-  className="font-['Lato'] w-[300px] border-none"
+  className="font-['Lato'] w-[380px] border-none"
   emojisPerRow={9}
   emojiSize={36}
 >
   <EmojiPicker.Header>
     <EmojiPicker.Input 
       placeholder="Search all emoji" 
+      className="h-[36px] bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 w-full rounded-[8px] text-[15px] focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] dark:focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] focus:border-transparent focus:outline-none mb-1"
       hideIcon
     />
   </EmojiPicker.Header>
