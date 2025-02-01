@@ -18,7 +18,7 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Does it support all emojis?",
-    answer: "Yes, it includes all emojis up to Unicode 15.0. You can filter out newer emojis using the maxUnicodeVersion prop for better compatibility. It should also with newer emojis versions, but I haven't tested it yet.",
+    answer: "Yes, it includes all emojis up to Unicode 15.0. You can filter out newer emojis using the maxUnicodeVersion prop for better compatibility. It should also work with newer emojis versions, but I haven't tested it yet.",
   },
   {
     question: "What is the license?",
