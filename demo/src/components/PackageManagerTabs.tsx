@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ClipboardButton } from './ClipboardButton';
 
-import type { ComponentProps } from "react";
 interface PackageManagerTabsProps {
   packageName: string;
 }
@@ -10,7 +9,7 @@ type PackageManager = "npm" | "bun" | "yarn" | "pnpm";
 
 export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
   const [activeTab, setActiveTab] = useState<PackageManager>("npm");
-  const [copied, setCopied] = useState(false);
+
 
   const commands: Record<PackageManager, string> = {
     npm: `npm install ${packageName}`,
@@ -19,15 +18,6 @@ export function PackageManagerTabs({ packageName }: PackageManagerTabsProps) {
     pnpm: `pnpm add ${packageName}`,
   };
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(commands[activeTab]);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text:", err);
-    }
-  };
 
   return (
     <div className="w-full border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
