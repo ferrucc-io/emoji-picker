@@ -42,4 +42,6 @@ body:
     id: terms
     attributes:
       label: I confirm I have the rights to use and share this logo
+      options:
+        - label: I confirm I have the rights to use and share this logo
           required: true 
