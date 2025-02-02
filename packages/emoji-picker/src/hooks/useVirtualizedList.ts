@@ -1,5 +1,7 @@
-import { useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
+
+import type { Range } from '@tanstack/react-virtual';
 
 interface UseVirtualizedListOptions<T> {
   rows: T[];
@@ -28,9 +30,31 @@ export function useVirtualizedList<T>({
     }, []);
   }, [rows, isHeader, hideStickyHeader]);
 
-  const isSticky = (index: number) => stickyIndexes.includes(index);
-  const isActiveSticky = (index: number) =>
-    !hideStickyHeader && activeStickyIndexRef.current === index;
+  const isSticky = useCallback((index: number) => stickyIndexes.includes(index), [stickyIndexes]);
+  const isActiveSticky = useCallback(
+    (index: number) => !hideStickyHeader && activeStickyIndexRef.current === index,
+    [hideStickyHeader]
+  );
+
+  const rangeExtractor = useCallback(
+    (range: Range) => {
+      if (hideStickyHeader) {
+        return defaultRangeExtractor(range);
+      }
+
+      activeStickyIndexRef.current = [...stickyIndexes]
+        .reverse()
+        .find((index) => range.startIndex >= index) ?? 0;
+
+      const next = new Set([
+        activeStickyIndexRef.current,
+        ...defaultRangeExtractor(range),
+      ]);
+
+      return [...next].sort((a, b) => a - b);
+    },
+    [hideStickyHeader, stickyIndexes]
+  );
 
   const virtualizer = useVirtualizer({
     count: rows.length,
@@ -38,20 +62,7 @@ export function useVirtualizedList<T>({
     estimateSize,
     overscan: 5,
     paddingEnd: 8,
-    rangeExtractor: (range) => {
-      if (hideStickyHeader) {
-        return defaultRangeExtractor(range);
-      }
-
-      const activeIndex = stickyIndexes.findLast((index) => range.startIndex >= index) ?? 0;
-      activeStickyIndexRef.current = activeIndex;
-
-      const defaultRange = defaultRangeExtractor(range);
-      if (defaultRange.includes(activeIndex)) {
-        return defaultRange;
-      }
-      return [activeIndex, ...defaultRange];
-    },
+    rangeExtractor,
   });
 
   return {
