@@ -167,6 +167,7 @@ In the future it would be great to support more styles like the ones in Discord,
 This project is currently used by:
 
 - [June](https://june.so) - An analytics product for B2B SaaS
+- [Typefully](https://typefully.com) - The writing app for X, LinkedIn, Threads and more
 
 **Feel free to open a PR to add your name here if you're using the component in your project.**
 

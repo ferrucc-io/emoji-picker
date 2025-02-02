@@ -1,3 +1,4 @@
+import { TypefullyLogo } from '../social-proof/typefully';
 import { JuneLogo } from '../social-proof/june';
 
 export const SocialProof = () => {
@@ -6,9 +7,12 @@ export const SocialProof = () => {
       <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
         Used in production by
       </h2>
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap items-center gap-6">
         <a href="https://june.so?ref=emoji-picker" target="_blank" rel="noopener noreferrer">
           <JuneLogo />
+        </a>
+        <a href="https://typefully.com?ref=emoji-picker" target="_blank" rel="noopener noreferrer">
+          <TypefullyLogo />
         </a>
         <a
           href="https://github.com/ferrucc-io/emoji-picker/issues/new?template=add-logo.yml"
