@@ -42,14 +42,10 @@ export function useVirtualizedList<T>({
         return defaultRangeExtractor(range);
       }
 
-      activeStickyIndexRef.current = [...stickyIndexes]
-        .reverse()
-        .find((index) => range.startIndex >= index) ?? 0;
+      activeStickyIndexRef.current =
+        [...stickyIndexes].reverse().find((index) => range.startIndex >= index) ?? 0;
 
-      const next = new Set([
-        activeStickyIndexRef.current,
-        ...defaultRangeExtractor(range),
-      ]);
+      const next = new Set([activeStickyIndexRef.current, ...defaultRangeExtractor(range)]);
 
       return [...next].sort((a, b) => a - b);
     },
