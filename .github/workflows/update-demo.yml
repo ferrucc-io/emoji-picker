@@ -3,6 +3,7 @@ name: Update Demo Site
 on:
   schedule:
     - cron: '0 0 * * 0'  # Run at midnight UTC every Sunday
+  workflow_dispatch: # Allows manual triggering
 
 permissions:
   pages: write
