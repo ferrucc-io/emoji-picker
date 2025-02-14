@@ -1,5 +1,8 @@
-import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { writeFileSync } from 'fs';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 async function updateNpmStats() {
   try {
@@ -12,7 +15,7 @@ async function updateNpmStats() {
 export const NPM_MONTHLY_DOWNLOADS = ${data.downloads};`;
 
     writeFileSync(
-      join(process.cwd(), "demo/src/constants/npmStats.ts"),
+      join(__dirname, "../src/constants/npmStats.ts"),
       statsContent,
     );
 
