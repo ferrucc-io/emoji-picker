@@ -34,7 +34,7 @@ export const EmojiPickerPreview = React.memo(function EmojiPickerPreview({
       )}
     >
       <div
-        className="flex items-center justify-between w-full"
+        className="flex items-center justify-between w-full min-w-0"
         style={{ height: `${containerHeight}px` }}
       >
         {children({ previewedEmoji })}
