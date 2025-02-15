@@ -1,0 +1,40 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    # Look for package.json files in the root directory
+    directory: "/"
+    # Check for updates once a week
+    schedule:
+      interval: "weekly"
+    # Group all updates into a single PR
+    groups:
+      all:
+        patterns: ["*"]
+
+  # Enable version updates for demo package
+  - package-ecosystem: "npm"
+    directory: "/demo"
+    schedule:
+      interval: "weekly"
+    groups:
+      all:
+        patterns: ["*"]
+
+  # Enable version updates for emoji-picker package
+  - package-ecosystem: "npm"
+    directory: "/packages/emoji-picker"
+    schedule:
+      interval: "weekly"
+    groups:
+      all:
+        patterns: ["*"]
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      all:
+        patterns: ["*"] 
