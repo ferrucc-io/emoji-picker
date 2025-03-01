@@ -1,4 +1,3 @@
-
 import { test, expect, beforeEach, afterEach } from 'bun:test';
 import { render, cleanup } from '@testing-library/react';
 import React from 'react';
@@ -28,12 +27,20 @@ const TestWrapper = ({ children }) => {
 
 test('EmojiPicker renders with React 18.2.0', () => {
   // Test the wrapper first to verify React is working
-  const { getByTestId } = render(<TestWrapper><div>Test</div></TestWrapper>);
+  const { getByTestId } = render(
+    <TestWrapper>
+      <div>Test</div>
+    </TestWrapper>
+  );
   expect(getByTestId('test-wrapper')).toBeInTheDocument();
 });
 
 test('EmojiPicker handles basic interactions', async () => {
   // Just verify React rendering works first
-  const { getByTestId } = render(<TestWrapper><button>Test</button></TestWrapper>);
+  const { getByTestId } = render(
+    <TestWrapper>
+      <button>Test</button>
+    </TestWrapper>
+  );
   expect(getByTestId('test-wrapper')).toBeInTheDocument();
 });

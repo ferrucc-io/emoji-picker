@@ -26,7 +26,7 @@ function testWithReactVersion(version: string, reactDomVersion: string) {
   console.log(`========================================\n`);
 
   const testDir = resolve(TEST_DIR, `react-${version}`);
-  
+
   // Create test directory if it doesn't exist
   if (!existsSync(testDir)) {
     mkdirSync(testDir, { recursive: true });
@@ -35,28 +35,25 @@ function testWithReactVersion(version: string, reactDomVersion: string) {
   // Create temporary package.json with specific React version
   const packageJson = {
     name: `emoji-picker-react-${version}-test`,
-    version: "1.0.0",
-    type: "module",
+    version: '1.0.0',
+    type: 'module',
     scripts: {
-      test: "bun test"
+      test: 'bun test',
     },
     dependencies: {
-      "@ferrucc-io/emoji-picker": "link:../..",
-      "react": `${version}`,
-      "react-dom": `${reactDomVersion}`
+      '@ferrucc-io/emoji-picker': 'link:../..',
+      react: `${version}`,
+      'react-dom': `${reactDomVersion}`,
     },
     devDependencies: {
-      "@testing-library/react": "^14.2.1",
-      "@happy-dom/global-registrator": "^16.7.3",
-      "@testing-library/jest-dom": "^6.4.2"
-    }
+      '@testing-library/react': '^14.2.1',
+      '@happy-dom/global-registrator': '^16.7.3',
+      '@testing-library/jest-dom': '^6.4.2',
+    },
   };
 
   // Write package.json
-  writeFileSync(
-    resolve(testDir, 'package.json'),
-    JSON.stringify(packageJson, null, 2)
-  );
+  writeFileSync(resolve(testDir, 'package.json'), JSON.stringify(packageJson, null, 2));
 
   // Create test file
   const testFile = `
@@ -107,10 +104,10 @@ test('EmojiPicker handles basic interactions', async () => {
     // Install dependencies and run tests
     console.log(`Installing dependencies for React ${version}...`);
     execSync('bun install', { cwd: testDir, stdio: 'inherit' });
-    
+
     console.log(`Running tests with React ${version}...`);
     execSync('bun test', { cwd: testDir, stdio: 'inherit' });
-    
+
     console.log(`\n✅ Tests passed with React ${version}\n`);
     return true;
   } catch (error) {
@@ -122,17 +119,17 @@ test('EmojiPicker handles basic interactions', async () => {
 
 async function main() {
   console.log('Starting React version compatibility tests...');
-  
+
   const results: Record<string, boolean> = {};
-  
+
   for (const [reactVersion, { reactDom }] of Object.entries(REACT_VERSIONS)) {
     results[reactVersion] = testWithReactVersion(reactVersion, reactDom);
   }
-  
+
   console.log('\n========================================');
   console.log('React Version Compatibility Test Results:');
   console.log('========================================');
-  
+
   for (const [version, passed] of Object.entries(results)) {
     console.log(`React ${version}: ${passed ? '✅ PASSED' : '❌ FAILED'}`);
   }
