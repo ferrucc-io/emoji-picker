@@ -1,14 +1,9 @@
-import { test, expect, beforeEach, afterEach } from 'bun:test';
-import { render, cleanup } from '@testing-library/react';
 import React from 'react';
-import { EmojiPicker } from '@ferrucc-io/emoji-picker';
-
-// Register happy-dom
-import { GlobalRegistrator } from '@happy-dom/global-registrator';
-GlobalRegistrator.register();
-
+import { afterEach, beforeEach, expect, test } from 'bun:test';
+import { cleanup, render } from '@testing-library/react';
 // Import test matchers
 import * as matchers from '@testing-library/jest-dom/matchers';
+
 expect.extend(matchers);
 
 // Setup and teardown
