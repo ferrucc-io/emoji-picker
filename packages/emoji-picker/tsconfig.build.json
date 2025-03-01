@@ -17,6 +17,7 @@
     "src/__tests__",
     "**/__tests__/**",
     "src/test",
-    "src/EmojiPicker/__tests__"
+    "src/EmojiPicker/__tests__",
+    "react-version-tests"
   ]
 }
