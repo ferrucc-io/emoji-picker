@@ -213,14 +213,6 @@ This will generate a new `emojiColors.ts` file in the package's `src/utils` dire
 # Run tests for the emoji picker package
 cd packages/emoji-picker
 bun test
-
-# Test compatibility with different React versions
-bun run test:react-versions
-
-# Analyze React 19 compatibility
-bun run analyze:react19
 ```
-
-See [REACT19-COMPATIBILITY.md](./REACT19-COMPATIBILITY.md) for details on React 19 compatibility.
 
 Contributions are welcome! Please feel free to submit a PR.
