@@ -24,6 +24,7 @@
     "test": "bun test",
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage",
+    "test:react-versions": "bun run scripts/test-react-versions.ts",
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
     "build:esm": "bunx esbuild src/index.ts --bundle --format=esm --outfile=dist/index.js --external:react --external:react-dom --jsx=automatic --jsx-factory=React.createElement --jsx-fragment=React.Fragment",
@@ -64,8 +65,8 @@
     "typescript": ">=5.0.0"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
     "tailwindcss": ">=3.0.0"
   },
   "dependencies": {
