@@ -73,6 +73,7 @@ Finally, import the component styles in your Tailwind configuration:
 - ⚡️ **Fast & Lightweight**: Virtualized list for smooth scrolling. Only renders emojis in view.
 - 🎯 **Accessible**: Full keyboard navigation support. ARIA labels and proper semantic markup.
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
+- 🔄 **React Compatibility**: Works with React 18 and React 19.
 
 
 
@@ -212,6 +213,14 @@ This will generate a new `emojiColors.ts` file in the package's `src/utils` dire
 # Run tests for the emoji picker package
 cd packages/emoji-picker
 bun test
+
+# Test compatibility with different React versions
+bun run test:react-versions
+
+# Analyze React 19 compatibility
+bun run analyze:react19
 ```
+
+See [REACT19-COMPATIBILITY.md](./REACT19-COMPATIBILITY.md) for details on React 19 compatibility.
 
 Contributions are welcome! Please feel free to submit a PR.
