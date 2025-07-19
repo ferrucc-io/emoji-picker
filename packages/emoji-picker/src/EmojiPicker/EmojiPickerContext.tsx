@@ -4,7 +4,7 @@ interface EmojiPickerContextType {
   emojisPerRow: number;
   emojiSize: number;
   maxUnicodeVersion: number;
-  onEmojiSelect?: (emoji: string) => void;
+  onEmojiSelect: (emoji: string) => void;
 }
 
 const EmojiPickerContext = createContext<EmojiPickerContextType | null>(null);
@@ -22,7 +22,7 @@ interface EmojiPickerProviderProps {
   emojisPerRow?: number;
   emojiSize?: number;
   maxUnicodeVersion: number;
-  onEmojiSelect?: (emoji: string) => void;
+  onEmojiSelect: (emoji: string) => void;
 }
 
 export function EmojiPickerProvider({
@@ -30,7 +30,7 @@ export function EmojiPickerProvider({
   emojisPerRow = 8,
   emojiSize = 32,
   maxUnicodeVersion = 15.0,
-  onEmojiSelect,
+  onEmojiSelect = () => {},
 }: EmojiPickerProviderProps) {
   const value = useMemo(
     () => ({

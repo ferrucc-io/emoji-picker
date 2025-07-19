@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Provider } from 'jotai';
 import { EmojiPickerSkinTone } from './EmojiPickerSkinTone';
 import { EmojiPickerPreview } from './EmojiPickerPreview';
@@ -36,26 +36,18 @@ function Input(props: React.ComponentProps<typeof EmojiPickerInput>) {
 export function EmojiPicker({
   children,
   className = '',
-  onEmojiSelect,
+  onEmojiSelect = () => {},
   emojisPerRow = 12,
   emojiSize = 28,
   maxUnicodeVersion = 15.0,
 }: EmojiPickerProps) {
-  const [localSelectedEmoji, setLocalSelectedEmoji] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (localSelectedEmoji && onEmojiSelect) {
-      onEmojiSelect(localSelectedEmoji);
-    }
-  }, [localSelectedEmoji, onEmojiSelect]);
-
   return (
     <Provider>
       <EmojiPickerProvider
         emojisPerRow={emojisPerRow}
         emojiSize={emojiSize}
         maxUnicodeVersion={maxUnicodeVersion}
-        onEmojiSelect={setLocalSelectedEmoji}
+        onEmojiSelect={onEmojiSelect}
       >
         <div
           tabIndex={0}
