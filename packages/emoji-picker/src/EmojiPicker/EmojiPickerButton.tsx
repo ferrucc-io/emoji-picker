@@ -70,7 +70,7 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
     e.preventDefault();
     setSelectedPosition({ row: rowIndex, column: columnIndex });
     onEmojiSelect(emojiWithSkinTone.emoji);
-  }
+  };
 
   const buttonStyle = useMemo(
     () =>
