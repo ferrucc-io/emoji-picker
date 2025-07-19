@@ -36,12 +36,10 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
       while (true) {
         nextRow = direction === 'up' ? nextRow - 1 : nextRow + 1;
 
-        // Check bounds
         if (nextRow < 0 || nextRow >= rows.length) {
           return currentRow;
         }
 
-        // Found next emoji row
         if (rows[nextRow].type === 'emojis') {
           return nextRow;
         }
@@ -50,7 +48,6 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     [rows]
   );
 
-  // Find first emoji row
   const findFirstEmojiRow = useCallback((): number => {
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].type === 'emojis') {
@@ -60,7 +57,6 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     return -1;
   }, [rows]);
 
-  // Focus first emoji when search query changes and there are results
   useEffect(() => {
     if (search.trim() && rows.length > 0) {
       const firstRow = findFirstEmojiRow();
@@ -75,11 +71,9 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     }
   }, [search, rows, findFirstEmojiRow, setSelectedPosition, setHoveredEmoji, virtualizer]);
 
-  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!selectedPosition) {
-        // If nothing is selected and arrow keys are pressed, select the first emoji
         if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
           e.preventDefault();
           const firstRow = findFirstEmojiRow();
@@ -153,9 +147,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
           const emoji = currentRow.content[selectedColumn];
           if (emoji) {
             setSelectedEmoji(emoji.emoji);
-            if (onEmojiSelect) {
-              onEmojiSelect(emoji.emoji);
-            }
+            onEmojiSelect(emoji.emoji);
           }
           break;
         }
