@@ -5,6 +5,51 @@ interface FAQItem {
 
 const FAQ_ITEMS: FAQItem[] = [
   {
+    question: "Do I need a popover component?",
+    answer: (
+      <>
+        Ferruccio's Emoji Picker provides only the emoji picker itself. If you need a popover component to trigger the picker, there are several great libraries available:
+        {" "}
+        <a
+          href="https://www.radix-ui.com/primitives/docs/components/popover"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Radix UI
+        </a>
+        ,{" "}
+        <a
+          href="https://base-ui.com/components/react-popover"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Base UI
+        </a>
+        ,{" "}
+        <a
+          href="https://headlessui.com/react/popover"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Headless UI
+        </a>
+        , and{" "}
+        <a
+          href="https://react-spectrum.adobe.com/react-aria/usePopover.html"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          React Aria
+        </a>
+        .
+      </>
+    ),
+  },
+  {
     question: "What are the peer dependencies?",
     answer: "React ≥0.14.0, React DOM ≥0.14.0 and Tailwind CSS ≥3.0.0",
   },
