@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react';
+import { DEFAULT_MAX_UNICODE_VERSION } from '../constants';
 
 interface EmojiPickerContextType {
   emojisPerRow: number;
@@ -29,7 +30,7 @@ export function EmojiPickerProvider({
   children,
   emojisPerRow = 8,
   emojiSize = 32,
-  maxUnicodeVersion = 15.0,
+  maxUnicodeVersion = DEFAULT_MAX_UNICODE_VERSION,
   onEmojiSelect = () => {},
 }: EmojiPickerProviderProps) {
   const value = useMemo(

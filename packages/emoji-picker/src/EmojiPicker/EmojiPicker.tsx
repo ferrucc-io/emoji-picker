@@ -8,6 +8,11 @@ import { EmojiPickerGroup } from './EmojiPickerGroup';
 import { EmojiPickerProvider } from './EmojiPickerContext';
 import { EmojiPickerContent } from './EmojiPickerContent';
 import { cn } from '../utils/cn';
+import {
+  DEFAULT_MAX_UNICODE_VERSION,
+  DEFAULT_EMOJIS_PER_ROW,
+  DEFAULT_EMOJI_SIZE,
+} from '../constants';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
@@ -37,9 +42,9 @@ export function EmojiPicker({
   children,
   className = '',
   onEmojiSelect = () => {},
-  emojisPerRow = 12,
-  emojiSize = 28,
-  maxUnicodeVersion = 15.0,
+  emojisPerRow = DEFAULT_EMOJIS_PER_ROW,
+  emojiSize = DEFAULT_EMOJI_SIZE,
+  maxUnicodeVersion = DEFAULT_MAX_UNICODE_VERSION,
 }: EmojiPickerProps) {
   return (
     <Provider>

@@ -86,7 +86,7 @@ describe('EmojiCategories', () => {
 
     return render(
       <Provider store={store}>
-        <EmojiPickerProvider emojisPerRow={8} emojiSize={32} maxUnicodeVersion={15.0}>
+        <EmojiPickerProvider emojisPerRow={8} emojiSize={32} maxUnicodeVersion={16.0}>
           {ui}
         </EmojiPickerProvider>
       </Provider>

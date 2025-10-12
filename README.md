@@ -98,7 +98,7 @@ interface EmojiPickerProps {
   emojisPerRow?: number;      // Number of emojis per row
   emojiSize?: number;         // Size of each emoji in pixels
   containerHeight?: number;    // Height of the emoji container
-  maxUnicodeVersion?: number; // Maximum Unicode version to include in the list of emojis (we default to 15.0)
+  maxUnicodeVersion?: number; // Maximum Unicode version to include (defaults to 16.0, matching unicode-emoji-json package). Hides unsupported emojis that render as � on the user's system
   onEmojiSelect?: (emoji: string) => void; // Callback when emoji is selected
 }
 ```

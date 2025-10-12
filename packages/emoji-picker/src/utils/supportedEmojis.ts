@@ -1,4 +1,5 @@
-import { isCompatibleEmoji, isCompatibleSkinTone } from './emojiFilters';
+import { isCompatibleSkinTone } from './emojiFilters';
+import { isEmojiFullySupported } from './emojiSupport';
 
 export type EmojiGroup = {
   name: string;
@@ -48,7 +49,7 @@ export function filterSupportedEmojis(emojiGroups: EmojiGroup[]): GroupedEmojis[
     .map((group) => ({
       category: group.name,
       emojis: group.emojis
-        .filter((emoji) => isCompatibleEmoji(emoji).isCompatible)
+        .filter((emoji) => isEmojiFullySupported(emoji))
         .map((emoji) => ({
           emoji: emoji.emoji,
           name: emoji.name,
