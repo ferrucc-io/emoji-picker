@@ -8,7 +8,11 @@ import { EmojiPickerGroup } from './EmojiPickerGroup';
 import { EmojiPickerProvider } from './EmojiPickerContext';
 import { EmojiPickerContent } from './EmojiPickerContent';
 import { cn } from '../utils/cn';
-import { DEFAULT_MAX_UNICODE_VERSION, DEFAULT_EMOJIS_PER_ROW, DEFAULT_EMOJI_SIZE } from '../constants';
+import {
+  DEFAULT_MAX_UNICODE_VERSION,
+  DEFAULT_EMOJIS_PER_ROW,
+  DEFAULT_EMOJI_SIZE,
+} from '../constants';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
