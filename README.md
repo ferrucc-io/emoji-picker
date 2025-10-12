@@ -71,7 +71,8 @@ Finally, import the component styles in your Tailwind configuration:
 
 - 🎨 **Unstyled & Composable**: Built with Tailwind CSS. Every component is minimally styled by default and fully customizable.
 - ⚡️ **Fast & Lightweight**: Virtualized list for smooth scrolling. Only renders emojis in view.
-- 🎯 **Accessible**: Full keyboard navigation support. ARIA labels and proper semantic markup.
+- 🎯 **Accessible**: Full keyboard and screen reader navigation support.
+- 🔣 **No � symbols**: Unsupported emojis are automatically hidden
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
 - 🔄 **React Compatibility**: Works with React 18 and React 19.
 
