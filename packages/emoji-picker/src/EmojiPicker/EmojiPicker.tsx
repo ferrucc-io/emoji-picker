@@ -39,7 +39,7 @@ export function EmojiPicker({
   onEmojiSelect = () => {},
   emojisPerRow = 12,
   emojiSize = 28,
-  maxUnicodeVersion = 15.0,
+  maxUnicodeVersion = 17.0,
 }: EmojiPickerProps) {
   return (
     <Provider>

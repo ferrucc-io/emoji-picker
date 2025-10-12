@@ -29,7 +29,7 @@ export function EmojiPickerProvider({
   children,
   emojisPerRow = 8,
   emojiSize = 32,
-  maxUnicodeVersion = 15.0,
+  maxUnicodeVersion = 17.0,
   onEmojiSelect = () => {},
 }: EmojiPickerProviderProps) {
   const value = useMemo(
