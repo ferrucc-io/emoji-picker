@@ -1,7 +1,7 @@
 import emojiData from 'unicode-emoji-json/data-by-group.json';
 import { atom } from 'jotai';
 import { processEmojiData, searchEmojis } from '../utils/emojiSearch';
-import { isCompatibleEmoji } from '../utils/emojiFilters';
+import { isEmojiFullySupported } from '../utils/emojiSupport';
 
 import type { EmojiMetadata, SkinTone } from '../types/emoji';
 
@@ -20,15 +20,11 @@ export const isEmojiSelectedAtom = (rowIndex: number, columnIndex: number) =>
     return selectedPos?.row === rowIndex && selectedPos?.column === columnIndex;
   });
 
-// Process emoji data once and filter compatible emojis
 const processedEmojiData = processEmojiData(emojiData);
 const defaultEmojis = Object.entries(emojiData).map(([category, group]) => ({
   category,
   emojis: (group as any).emojis
-    .filter((emoji: any) => {
-      const { isCompatible } = isCompatibleEmoji(emoji, 15.0);
-      return isCompatible;
-    })
+    .filter((emoji: any) => isEmojiFullySupported(emoji))
     .map((emoji: any) => ({
       emoji: emoji.emoji,
       name: emoji.name,

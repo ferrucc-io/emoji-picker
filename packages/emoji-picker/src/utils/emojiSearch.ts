@@ -1,5 +1,5 @@
 import { filterSupportedEmojis } from './supportedEmojis';
-import { isCompatibleEmoji } from './emojiFilters';
+import { isEmojiFullySupported } from './emojiSupport';
 
 import type {
   EmojiData,
@@ -112,17 +112,21 @@ export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): Gr
 
   const normalizedSearch = searchTerm.toLowerCase();
   const matchingEmojis = processedData.filter(
-    (emoji) =>
-      emoji.name.includes(normalizedSearch) &&
-      isCompatibleEmoji({
+    (emoji) => {
+      if (!emoji.name.includes(normalizedSearch)) {
+        return false;
+      }
+
+      return isEmojiFullySupported({
         emoji: emoji.emoji,
         name: emoji.name,
-        unicode_version: emoji.unicode_version || '',
-        emoji_version: emoji.emoji_version || '',
+        unicode_version: emoji.unicode_version,
+        emoji_version: emoji.emoji_version,
         skin_tone_support: emoji.skin_tone_support,
         skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
         slug: emoji.name.replace(/\s+/g, '_'),
-      }).isCompatible
+      });
+    }
   );
 
   if (matchingEmojis.length === 0) {
