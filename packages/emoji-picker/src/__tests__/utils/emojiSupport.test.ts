@@ -27,7 +27,7 @@ describe('Emoji Support Detection', () => {
       const newEmoji = {
         emoji: '🫠',
         name: 'melting face',
-        unicode_version: '16.0' // Future version
+        unicode_version: '16.0', // Future version
       };
       expect(isEmojiFullySupported(newEmoji)).toBe(false);
     });
@@ -36,7 +36,7 @@ describe('Emoji Support Detection', () => {
       const emoji15 = {
         emoji: '🫨',
         name: 'shaking face',
-        unicode_version: '15.0'
+        unicode_version: '15.0',
       };
       expect(isEmojiFullySupported(emoji15)).toBe(true);
     });
@@ -135,7 +135,7 @@ describe('Emoji Support Detection', () => {
       }));
 
       const startTime = performance.now();
-      emojis.forEach(emoji => isEmojiFullySupported(emoji));
+      emojis.forEach((emoji) => isEmojiFullySupported(emoji));
       const endTime = performance.now();
 
       // Should process 1000 emojis in reasonable time (< 100ms in test env)
@@ -207,7 +207,7 @@ describe('Emoji Support Detection', () => {
         { emoji: '🆕', name: 'new', unicode_version: '20.0' }, // Future version
       ];
 
-      const supported = emojiGroup.filter(e => isEmojiFullySupported(e));
+      const supported = emojiGroup.filter((e) => isEmojiFullySupported(e));
       expect(supported).toHaveLength(2);
       expect(supported[0].emoji).toBe('😀');
       expect(supported[1].emoji).toBe('🫠');

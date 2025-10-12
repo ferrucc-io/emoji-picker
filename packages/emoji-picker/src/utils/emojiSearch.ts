@@ -111,23 +111,21 @@ export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): Gr
   }
 
   const normalizedSearch = searchTerm.toLowerCase();
-  const matchingEmojis = processedData.filter(
-    (emoji) => {
-      if (!emoji.name.includes(normalizedSearch)) {
-        return false;
-      }
-
-      return isEmojiFullySupported({
-        emoji: emoji.emoji,
-        name: emoji.name,
-        unicode_version: emoji.unicode_version,
-        emoji_version: emoji.emoji_version,
-        skin_tone_support: emoji.skin_tone_support,
-        skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
-        slug: emoji.name.replace(/\s+/g, '_'),
-      });
+  const matchingEmojis = processedData.filter((emoji) => {
+    if (!emoji.name.includes(normalizedSearch)) {
+      return false;
     }
-  );
+
+    return isEmojiFullySupported({
+      emoji: emoji.emoji,
+      name: emoji.name,
+      unicode_version: emoji.unicode_version,
+      emoji_version: emoji.emoji_version,
+      skin_tone_support: emoji.skin_tone_support,
+      skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
+      slug: emoji.name.replace(/\s+/g, '_'),
+    });
+  });
 
   if (matchingEmojis.length === 0) {
     return [];

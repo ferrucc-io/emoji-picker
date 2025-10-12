@@ -1,6 +1,7 @@
 import { isCompatibleEmoji } from './emojiFilters';
 
-export const EMOJI_FONT_FAMILY = "'Apple Color Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', 'Android Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', EmojiSymbols, sans-serif";
+export const EMOJI_FONT_FAMILY =
+  "'Apple Color Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', 'Android Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', EmojiSymbols, sans-serif";
 const CANVAS_SIZE = 2;
 
 let context: CanvasRenderingContext2D | null = null;
@@ -15,9 +16,7 @@ const supportCache = new Map<string, boolean>();
  */
 function detectEmojiSupportViaCanvas(emoji: string): boolean {
   try {
-    context ??= document
-      .createElement("canvas")
-      .getContext("2d", { willReadFrequently: true });
+    context ??= document.createElement('canvas').getContext('2d', { willReadFrequently: true });
   } catch {
     // Non-browser environments - assume supported to avoid over-filtering
     return true;
@@ -38,7 +37,7 @@ function detectEmojiSupportViaCanvas(emoji: string): boolean {
   context.canvas.width = CANVAS_SIZE;
   context.canvas.height = CANVAS_SIZE;
   context.font = `2px ${EMOJI_FONT_FAMILY}`;
-  context.textBaseline = "middle";
+  context.textBaseline = 'middle';
 
   // Unsupported ZWJ sequence emojis show up as separate emojis
   // They will be wider than expected
@@ -47,7 +46,7 @@ function detectEmojiSupportViaCanvas(emoji: string): boolean {
   }
 
   // First render in blue
-  context.fillStyle = "#00f";
+  context.fillStyle = '#00f';
   context.fillText(emoji, 0, 0);
 
   const blue = context.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE).data;
@@ -55,7 +54,7 @@ function detectEmojiSupportViaCanvas(emoji: string): boolean {
   context.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
   // Then render in red
-  context.fillStyle = "#f00";
+  context.fillStyle = '#f00';
   context.fillText(emoji, 0, 0);
 
   const red = context.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE).data;
@@ -64,9 +63,9 @@ function detectEmojiSupportViaCanvas(emoji: string): boolean {
   // If the emoji is not supported, it will be rendered as text and will change color
   for (let i = 0; i < CANVAS_SIZE * CANVAS_SIZE * 4; i += 4) {
     if (
-      blue[i] !== red[i] ||         // R
+      blue[i] !== red[i] || // R
       blue[i + 1] !== red[i + 1] || // G
-      blue[i + 2] !== red[i + 2]    // B
+      blue[i + 2] !== red[i + 2] // B
     ) {
       return false;
     }
