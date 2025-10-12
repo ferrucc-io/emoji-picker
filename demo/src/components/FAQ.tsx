@@ -63,7 +63,7 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Does it support all emojis?",
-    answer: "Yes, it includes all emojis up to Unicode 17.0 by default. The maxUnicodeVersion prop (defaults to 17.0) automatically hides emojis that would render as � on the user's system. You can set it to a lower version for better compatibility with older systems.",
+    answer: "Yes, it includes all emojis up to Unicode 16.0 by default. The maxUnicodeVersion prop (defaults to 16.0) automatically hides emojis that would render as � on the user's system. You can set it to a lower version for better compatibility with older systems.",
   },
   {
     question: "What is the license?",
