@@ -69,7 +69,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
         }
       }
     }
-  }, [search, rows, findFirstEmojiRow, setSelectedPosition, setHoveredEmoji, virtualizer]);
+  }, [search, rows, setSelectedPosition, setHoveredEmoji, virtualizer, findFirstEmojiRow]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -162,6 +162,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     selectedColumn,
     selectedPosition,
     findNextEmojiRow,
+    findFirstEmojiRow,
     setSelectedPosition,
     setHoveredEmoji,
     setSelectedEmoji,

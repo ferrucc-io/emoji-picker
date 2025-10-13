@@ -5,8 +5,6 @@ import { render } from '@testing-library/react';
 import { EmojiSearchResults } from '../EmojiSearchResults';
 import { EmojiPickerProvider } from '../EmojiPickerContext';
 
-import type { EmojiMetadata } from '../../types/emoji';
-
 // Mock the virtualizer
 const mockVirtualizer = {
   getVirtualItems: () => [
@@ -14,7 +12,7 @@ const mockVirtualizer = {
     { index: 1, start: 32, size: 32, key: '1', measureElement: null },
   ],
   getTotalSize: () => 64,
-  scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' }) => {},
+  scrollToIndex: (_index: number, _options?: { align?: 'start' | 'center' | 'end' }) => {},
 };
 
 mock.module('@tanstack/react-virtual', () => ({

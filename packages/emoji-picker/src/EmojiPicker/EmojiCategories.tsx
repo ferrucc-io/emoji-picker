@@ -29,15 +29,6 @@ function EmojiCategoriesBase({
     useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
-  if (customSections.length > 0 || frequentlyUsedEmojis.length > 0) {
-    return (
-      <CustomEmojiCategories
-        hideStickyHeader={hideStickyHeader}
-        containerHeight={containerHeight}
-      />
-    );
-  }
-
   const parentRef = useRef<HTMLDivElement>(null);
 
   const rows = useMemo<Row[]>(() => {
@@ -73,6 +64,15 @@ function EmojiCategoriesBase({
   });
 
   useEmojiKeyboardNavigation({ rows, virtualizer });
+
+  if (customSections.length > 0 || frequentlyUsedEmojis.length > 0) {
+    return (
+      <CustomEmojiCategories
+        hideStickyHeader={hideStickyHeader}
+        containerHeight={containerHeight}
+      />
+    );
+  }
 
   return (
     <div

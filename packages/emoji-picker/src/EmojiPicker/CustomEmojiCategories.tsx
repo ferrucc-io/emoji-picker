@@ -13,7 +13,7 @@ import { skinToneAtom } from '../atoms/emoji';
 import { isCustomEmoji } from '../types/emoji';
 
 import type { EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
-import type { CustomEmoji, CustomSection } from '../types/emoji';
+import type { CustomEmoji } from '../types/emoji';
 
 type Row =
   | { type: 'header'; content: string }

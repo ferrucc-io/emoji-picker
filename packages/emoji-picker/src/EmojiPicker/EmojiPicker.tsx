@@ -6,8 +6,6 @@ import { EmojiPickerList } from './EmojiPickerList';
 import { EmojiPickerInput } from './EmojiPickerInput';
 import { EmojiPickerGroup } from './EmojiPickerGroup';
 import { EmojiPickerProvider } from './EmojiPickerContext';
-import { EmojiPickerContent } from './EmojiPickerContent';
-import { EmojiPickerContentWithCustom } from './EmojiPickerContentWithCustom';
 import { EmojiPickerSmartContent } from './EmojiPickerSmartContent';
 import { cn } from '../utils/cn';
 import {
