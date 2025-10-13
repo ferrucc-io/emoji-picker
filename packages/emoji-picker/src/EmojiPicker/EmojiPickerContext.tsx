@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { DEFAULT_MAX_UNICODE_VERSION } from '../constants';
-import type { CustomSection } from '../types/emoji';
+import type { CustomSection, CustomEmoji } from '../types/emoji';
 
 interface EmojiPickerContextType {
   emojisPerRow: number;
@@ -8,7 +8,7 @@ interface EmojiPickerContextType {
   maxUnicodeVersion: number;
   onEmojiSelect: (emoji: string) => void;
   customSections: CustomSection[];
-  frequentlyUsedEmojis: string[];
+  frequentlyUsedEmojis: (string | CustomEmoji)[];
 }
 
 const EmojiPickerContext = createContext<EmojiPickerContextType | null>(null);
@@ -28,7 +28,7 @@ interface EmojiPickerProviderProps {
   maxUnicodeVersion: number;
   onEmojiSelect: (emoji: string) => void;
   customSections?: CustomSection[];
-  frequentlyUsedEmojis?: string[];
+  frequentlyUsedEmojis?: (string | CustomEmoji)[];
 }
 
 export function EmojiPickerProvider({

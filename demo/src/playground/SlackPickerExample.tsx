@@ -1,5 +1,5 @@
 import { EmojiPicker } from '@ferrucc-io/emoji-picker';
-import type { CustomSection } from '@ferrucc-io/emoji-picker/dist/types/emoji';
+import type { CustomSection, CustomEmoji } from '@ferrucc-io/emoji-picker/dist/types/emoji';
 
 interface SlackPickerExampleProps {
   onEmojiSelect: (emoji: string) => void;
@@ -60,7 +60,37 @@ const customSlackEmojis: CustomSection[] = [
   },
 ];
 
-const frequentlyUsedEmojis = ['👍', '❤️', '😂', '🎉', '🔥', '👏', '💯', '✨', '🚀'];
+const frequentlyUsedEmojis: (string | CustomEmoji)[] = [
+  '👍',
+  '❤️',
+  {
+    id: 'shipitparrot-freq',
+    name: 'shipitparrot',
+    imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/shipitparrot/49b56af45fc26508.gif',
+  },
+  '😂',
+  {
+    id: 'meow_party-freq',
+    name: 'meow_party',
+    imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/meow_party/6c86d5f053c2e8e8.gif',
+  },
+  '🎉',
+  '🔥',
+  {
+    id: 'yay-freq',
+    name: 'yay',
+    imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/yay/8ca690fc93a33e19.png',
+  },
+  '👏',
+  '💯',
+  '✨',
+  {
+    id: 'blob-dance-freq',
+    name: 'blob-dance',
+    imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/blob-dance/c16e74e37e21f8b0.gif',
+  },
+  '🚀',
+];
 
 export function SlackPickerExample({ onEmojiSelect }: SlackPickerExampleProps) {
   return (

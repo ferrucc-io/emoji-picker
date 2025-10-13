@@ -45,19 +45,28 @@ export function CustomEmojiCategories({
         content: 'Frequently Used',
       });
 
-      const frequentEmojis: EmojiMetadata[] = frequentlyUsedEmojis.map(emoji => ({
-        emoji,
-        name: `frequently-used-${emoji}`,
-        slug: `frequently-used-${emoji}`,
-        skin_tone_support: false,
-      }));
+      const frequentEmojis: (EmojiMetadata | CustomEmoji)[] = frequentlyUsedEmojis.map(emoji => {
+        if (typeof emoji === 'string') {
+          return {
+            emoji,
+            name: `frequently-used-${emoji}`,
+            slug: `frequently-used-${emoji}`,
+            skin_tone_support: false,
+          } as EmojiMetadata;
+        } else {
+          return emoji;
+        }
+      });
 
       for (let i = 0; i < frequentEmojis.length; i += emojisPerRow) {
+        const emojis = frequentEmojis.slice(i, i + emojisPerRow);
+        const processedEmojis = emojis.map(emoji =>
+          isCustomEmoji(emoji) ? emoji : applySkinTone(emoji, skinTone)
+        );
+
         allRows.push({
-          type: 'emojis',
-          content: frequentEmojis
-            .slice(i, i + emojisPerRow)
-            .map((emoji) => applySkinTone(emoji, skinTone)),
+          type: 'custom-emojis',
+          content: processedEmojis,
         });
       }
     }

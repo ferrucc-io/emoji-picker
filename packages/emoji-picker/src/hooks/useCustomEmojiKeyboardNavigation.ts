@@ -76,7 +76,14 @@ export function useCustomEmojiKeyboardNavigation({
           firstRowData.content[0]
         ) {
           const firstEmoji = firstRowData.content[0];
-          if (!isCustomEmoji(firstEmoji)) {
+          if (isCustomEmoji(firstEmoji)) {
+            setHoveredEmoji({
+              emoji: `:${firstEmoji.name}:`,
+              name: firstEmoji.name,
+              slug: firstEmoji.name,
+              skin_tone_support: false,
+            });
+          } else {
             setHoveredEmoji(firstEmoji);
           }
           virtualizer.scrollToIndex(firstRow, { align: 'center' });
@@ -99,7 +106,14 @@ export function useCustomEmojiKeyboardNavigation({
             ) {
               setSelectedPosition({ row: firstRow, column: 0 });
               const firstEmoji = firstRowData.content[0];
-              if (!isCustomEmoji(firstEmoji)) {
+              if (isCustomEmoji(firstEmoji)) {
+                setHoveredEmoji({
+                  emoji: `:${firstEmoji.name}:`,
+                  name: firstEmoji.name,
+                  slug: firstEmoji.name,
+                  skin_tone_support: false,
+                });
+              } else {
                 setHoveredEmoji(firstEmoji);
               }
               virtualizer.scrollToIndex(firstRow, { align: 'center' });
@@ -155,7 +169,14 @@ export function useCustomEmojiKeyboardNavigation({
             const nextColumn = selectedColumn - 1;
             setSelectedPosition({ row: selectedRow, column: nextColumn });
             const nextEmoji = currentRow.content[nextColumn];
-            if (!isCustomEmoji(nextEmoji)) {
+            if (isCustomEmoji(nextEmoji)) {
+              setHoveredEmoji({
+                emoji: `:${nextEmoji.name}:`,
+                name: nextEmoji.name,
+                slug: nextEmoji.name,
+                skin_tone_support: false,
+              });
+            } else {
               setHoveredEmoji(nextEmoji);
             }
           }
@@ -167,7 +188,14 @@ export function useCustomEmojiKeyboardNavigation({
             const nextColumn = selectedColumn + 1;
             setSelectedPosition({ row: selectedRow, column: nextColumn });
             const nextEmoji = currentRow.content[nextColumn];
-            if (!isCustomEmoji(nextEmoji)) {
+            if (isCustomEmoji(nextEmoji)) {
+              setHoveredEmoji({
+                emoji: `:${nextEmoji.name}:`,
+                name: nextEmoji.name,
+                slug: nextEmoji.name,
+                skin_tone_support: false,
+              });
+            } else {
               setHoveredEmoji(nextEmoji);
             }
           }

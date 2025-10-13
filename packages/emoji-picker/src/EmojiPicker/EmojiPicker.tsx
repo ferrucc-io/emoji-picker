@@ -15,7 +15,7 @@ import {
   DEFAULT_EMOJIS_PER_ROW,
   DEFAULT_EMOJI_SIZE,
 } from '../constants';
-import type { CustomSection } from '../types/emoji';
+import type { CustomSection, CustomEmoji } from '../types/emoji';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
@@ -25,7 +25,7 @@ export interface EmojiPickerProps {
   emojiSize?: number;
   maxUnicodeVersion?: number;
   customSections?: CustomSection[];
-  frequentlyUsedEmojis?: string[];
+  frequentlyUsedEmojis?: (string | CustomEmoji)[];
 }
 
 interface EmojiPickerHeaderProps {
