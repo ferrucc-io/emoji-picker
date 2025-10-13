@@ -10,21 +10,7 @@ export function SlackStyleHeader({ content, isSticky }: HeaderRendererProps) {
       `}
     >
       <div
-        style={{
-          fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',
-          fontSize: '13px',
-          fontWeight: 700,
-          lineHeight: '26px',
-          letterSpacing: 'normal',
-          userSelect: 'none',
-          WebkitFontSmoothing: 'antialiased',
-          color: 'rgb(29, 28, 29)',
-          paddingLeft: '12px',
-          paddingRight: '12px',
-          paddingTop: '2px',
-          paddingBottom: '2px',
-        }}
-        className="dark:text-zinc-300"
+        className="dark:text-zinc-300 text-[13px] font-bold font-['Lato'] text-[#1D1C1D] px-3 py-[3.25px]"
         data-testid="emoji-picker-list-header"
       >
         {content}

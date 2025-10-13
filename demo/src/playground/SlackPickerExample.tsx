@@ -9,7 +9,7 @@ interface SlackPickerExampleProps {
 const customSlackEmojis: CustomSection[] = [
   {
     id: 'slack-custom',
-    name: 'Custom Slack Emojis',
+    name: 'Custom',
     priority: 1,
     emojis: [
       {
@@ -23,39 +23,29 @@ const customSlackEmojis: CustomSection[] = [
         imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/pepecry/d8ca543ec102424b.jpg',
       },
       {
-        id: 'partyblob',
-        name: 'partyblob',
-        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/partyblob/cad0bbfb092a7984.gif',
+        id: 'batman_banana_dance',
+        name: 'batman_banana_dance',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/batman_banana_dance/a94ee2a8cb4cfb8a.gif',
       },
       {
-        id: 'meow_party',
-        name: 'meow_party',
-        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/meow_party/6c86d5f053c2e8e8.gif',
+        id: 'aaw_yeah',
+        name: 'aaw_yeah',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/aaw_yeah/5ee9624f67349629.gif',
       },
       {
-        id: 'dancing-penguin',
-        name: 'dancing-penguin',
-        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/dancing-penguin/c3f3045a58e0302f.gif',
+        id: 'heartfrog',
+        name: 'heartfrog',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/heartfrog/b0a7a829097e6154.png',
       },
       {
-        id: 'yay',
-        name: 'yay',
-        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/yay/8ca690fc93a33e19.png',
+        id: 'amplitude-heart2',
+        name: 'amplitude-heart2',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/amplitude-heart2/d1707a0e23aa94ed.png',
       },
       {
-        id: 'blob-dance',
-        name: 'blob-dance',
-        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/blob-dance/c16e74e37e21f8b0.gif',
-      },
-      {
-        id: 'thumbsup_all',
-        name: 'thumbsup_all',
-        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/thumbsup_all/8c86d5f053c2e8e8.gif',
-      },
-      {
-        id: 'chef-kiss',
-        name: 'chef-kiss',
-        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/chef-kiss/2c3f845a58e0302f.png',
+        id: 'cry_blood',
+        name: 'cry_blood',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/cry_blood/039200726d077fc1.png',
       },
     ],
   },
@@ -70,26 +60,11 @@ const frequentlyUsedEmojis: (string | CustomEmoji)[] = [
     imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/shipitparrot/49b56af45fc26508.gif',
   },
   '😂',
-  {
-    id: 'meow_party-freq',
-    name: 'meow_party',
-    imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/meow_party/6c86d5f053c2e8e8.gif',
-  },
   '🎉',
   '🔥',
-  {
-    id: 'yay-freq',
-    name: 'yay',
-    imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/yay/8ca690fc93a33e19.png',
-  },
   '👏',
   '💯',
   '✨',
-  {
-    id: 'blob-dance-freq',
-    name: 'blob-dance',
-    imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/blob-dance/c16e74e37e21f8b0.gif',
-  },
   '🚀',
 ];
 
