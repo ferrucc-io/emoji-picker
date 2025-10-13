@@ -17,9 +17,7 @@ export function EmojiPickerContentWithCustom() {
   if (isCustomEmoji) {
     const emojiName = hoveredEmoji.emoji.slice(1, -1);
     for (const section of customSections) {
-      const found = section.emojis.find(
-        (e) => 'imageUrl' in e && e.name === emojiName
-      );
+      const found = section.emojis.find((e) => 'imageUrl' in e && e.name === emojiName);
       if (found && 'imageUrl' in found) {
         customEmojiData = found;
         break;

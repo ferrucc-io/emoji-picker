@@ -53,7 +53,15 @@ export function EmojiPickerProvider({
       frequentlyUsedEmojis,
       renderHeader,
     }),
-    [emojisPerRow, emojiSize, maxUnicodeVersion, onEmojiSelect, customSections, frequentlyUsedEmojis, renderHeader]
+    [
+      emojisPerRow,
+      emojiSize,
+      maxUnicodeVersion,
+      onEmojiSelect,
+      customSections,
+      frequentlyUsedEmojis,
+      renderHeader,
+    ]
   );
 
   return <EmojiPickerContext.Provider value={value}>{children}</EmojiPickerContext.Provider>;

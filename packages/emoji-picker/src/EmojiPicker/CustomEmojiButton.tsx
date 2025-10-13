@@ -2,11 +2,7 @@ import React, { forwardRef, useMemo, useState, useEffect, useCallback } from 're
 import { useSetAtom, useAtomValue } from 'jotai';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { cn } from '../utils/cn';
-import {
-  hoveredEmojiAtom,
-  selectedPositionAtom,
-  isEmojiSelectedAtom
-} from '../atoms/emoji';
+import { hoveredEmojiAtom, selectedPositionAtom, isEmojiSelectedAtom } from '../atoms/emoji';
 import type { CustomEmoji } from '../types/emoji';
 
 interface CustomEmojiButtonProps {
@@ -112,10 +108,7 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
             <img
               src={emoji.imageUrl}
               alt={emoji.name}
-              className={cn(
-                'object-contain',
-                imageLoaded ? 'opacity-100' : 'opacity-0 absolute'
-              )}
+              className={cn('object-contain', imageLoaded ? 'opacity-100' : 'opacity-0 absolute')}
               style={{ width: imageSize, height: imageSize }}
               loading="lazy"
               onLoad={() => setImageLoaded(true)}
