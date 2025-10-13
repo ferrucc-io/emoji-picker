@@ -41,3 +41,21 @@ export type EmojiData = {
   unicode_version: string;
   emoji_version: string;
 };
+
+export interface CustomEmoji {
+  id: string;
+  name: string;
+  imageUrl: string;
+  category?: string;
+}
+
+export interface CustomSection {
+  id: string;
+  name: string;
+  emojis: (EmojiMetadata | CustomEmoji)[];
+  priority?: number;
+}
+
+export const isCustomEmoji = (emoji: EmojiMetadata | CustomEmoji): emoji is CustomEmoji => {
+  return 'imageUrl' in emoji && typeof emoji.imageUrl === 'string';
+};

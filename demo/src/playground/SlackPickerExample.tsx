@@ -1,8 +1,66 @@
 import { EmojiPicker } from '@ferrucc-io/emoji-picker';
+import type { CustomSection } from '@ferrucc-io/emoji-picker/dist/types/emoji';
 
 interface SlackPickerExampleProps {
   onEmojiSelect: (emoji: string) => void;
 }
+
+const customSlackEmojis: CustomSection[] = [
+  {
+    id: 'slack-custom',
+    name: 'Custom Slack Emojis',
+    priority: 1,
+    emojis: [
+      {
+        id: 'shipitparrot',
+        name: 'shipitparrot',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/shipitparrot/49b56af45fc26508.gif',
+      },
+      {
+        id: 'pepecry',
+        name: 'pepecry',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/pepecry/d8ca543ec102424b.jpg',
+      },
+      {
+        id: 'partyblob',
+        name: 'partyblob',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/partyblob/cad0bbfb092a7984.gif',
+      },
+      {
+        id: 'meow_party',
+        name: 'meow_party',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/meow_party/6c86d5f053c2e8e8.gif',
+      },
+      {
+        id: 'dancing-penguin',
+        name: 'dancing-penguin',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/dancing-penguin/c3f3045a58e0302f.gif',
+      },
+      {
+        id: 'yay',
+        name: 'yay',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/yay/8ca690fc93a33e19.png',
+      },
+      {
+        id: 'blob-dance',
+        name: 'blob-dance',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/blob-dance/c16e74e37e21f8b0.gif',
+      },
+      {
+        id: 'thumbsup_all',
+        name: 'thumbsup_all',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/thumbsup_all/8c86d5f053c2e8e8.gif',
+      },
+      {
+        id: 'chef-kiss',
+        name: 'chef-kiss',
+        imageUrl: 'https://emoji.slack-edge.com/T02AKCA5Q/chef-kiss/2c3f845a58e0302f.png',
+      },
+    ],
+  },
+];
+
+const frequentlyUsedEmojis = ['👍', '❤️', '😂', '🎉', '🔥', '👏', '💯', '✨', '🚀'];
 
 export function SlackPickerExample({ onEmojiSelect }: SlackPickerExampleProps) {
   return (
@@ -12,6 +70,8 @@ export function SlackPickerExample({ onEmojiSelect }: SlackPickerExampleProps) {
         emojisPerRow={9}
         emojiSize={36}
         onEmojiSelect={onEmojiSelect}
+        customSections={customSlackEmojis}
+        frequentlyUsedEmojis={frequentlyUsedEmojis}
       >
         <EmojiPicker.Header className="w-full px-4 pt-4">
           <EmojiPicker.Input
