@@ -1,5 +1,6 @@
 import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 import type { CustomSection, CustomEmoji } from '@ferrucc-io/emoji-picker/dist/types/emoji';
+import { SlackStyleHeader } from './SlackStyleHeader';
 
 interface SlackPickerExampleProps {
   onEmojiSelect: (emoji: string) => void;
@@ -102,6 +103,7 @@ export function SlackPickerExample({ onEmojiSelect }: SlackPickerExampleProps) {
         onEmojiSelect={onEmojiSelect}
         customSections={customSlackEmojis}
         frequentlyUsedEmojis={frequentlyUsedEmojis}
+        renderHeader={SlackStyleHeader}
       >
         <EmojiPicker.Header className="w-full px-4 pt-4">
           <EmojiPicker.Input

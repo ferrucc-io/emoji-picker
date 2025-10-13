@@ -25,7 +25,7 @@ function EmojiCategoriesBase({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiCategoriesProps) {
-  const { emojisPerRow, emojiSize, customSections, frequentlyUsedEmojis } = useEmojiPicker();
+  const { emojisPerRow, emojiSize, customSections, frequentlyUsedEmojis, renderHeader } = useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
   if (customSections.length > 0 || frequentlyUsedEmojis.length > 0) {
@@ -117,7 +117,16 @@ function EmojiCategoriesBase({
               }}
             >
               {row.type === 'header' ? (
-                <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
+                renderHeader ? (
+                  renderHeader({
+                    content: row.content,
+                    emojiSize,
+                    isSticky: isActiveSticky(virtualRow.index),
+                    sectionId: row.content.toLowerCase().replace(/\s+/g, '-')
+                  })
+                ) : (
+                  <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
+                )
               ) : (
                 <div
                   className={`grid grid-cols-${emojisPerRow} px-2`}

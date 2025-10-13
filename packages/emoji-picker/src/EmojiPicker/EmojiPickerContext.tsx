@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { DEFAULT_MAX_UNICODE_VERSION } from '../constants';
-import type { CustomSection, CustomEmoji } from '../types/emoji';
+import type { CustomSection, CustomEmoji, HeaderRendererProps } from '../types/emoji';
 
 interface EmojiPickerContextType {
   emojisPerRow: number;
@@ -9,6 +9,7 @@ interface EmojiPickerContextType {
   onEmojiSelect: (emoji: string) => void;
   customSections: CustomSection[];
   frequentlyUsedEmojis: (string | CustomEmoji)[];
+  renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
 }
 
 const EmojiPickerContext = createContext<EmojiPickerContextType | null>(null);
@@ -29,6 +30,7 @@ interface EmojiPickerProviderProps {
   onEmojiSelect: (emoji: string) => void;
   customSections?: CustomSection[];
   frequentlyUsedEmojis?: (string | CustomEmoji)[];
+  renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
 }
 
 export function EmojiPickerProvider({
@@ -39,6 +41,7 @@ export function EmojiPickerProvider({
   onEmojiSelect = () => {},
   customSections = [],
   frequentlyUsedEmojis = [],
+  renderHeader,
 }: EmojiPickerProviderProps) {
   const value = useMemo(
     () => ({
@@ -48,8 +51,9 @@ export function EmojiPickerProvider({
       onEmojiSelect,
       customSections,
       frequentlyUsedEmojis,
+      renderHeader,
     }),
-    [emojisPerRow, emojiSize, maxUnicodeVersion, onEmojiSelect, customSections, frequentlyUsedEmojis]
+    [emojisPerRow, emojiSize, maxUnicodeVersion, onEmojiSelect, customSections, frequentlyUsedEmojis, renderHeader]
   );
 
   return <EmojiPickerContext.Provider value={value}>{children}</EmojiPickerContext.Provider>;

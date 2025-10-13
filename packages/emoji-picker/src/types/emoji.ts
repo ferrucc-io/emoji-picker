@@ -59,3 +59,10 @@ export interface CustomSection {
 export const isCustomEmoji = (emoji: EmojiMetadata | CustomEmoji): emoji is CustomEmoji => {
   return 'imageUrl' in emoji && typeof emoji.imageUrl === 'string';
 };
+
+export interface HeaderRendererProps {
+  content: string;
+  emojiSize: number;
+  isSticky?: boolean;
+  sectionId?: string;
+}
