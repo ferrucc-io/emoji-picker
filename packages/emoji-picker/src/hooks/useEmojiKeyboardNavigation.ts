@@ -126,9 +126,20 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
         case 'ArrowLeft': {
           e.preventDefault();
           if (selectedColumn > 0) {
-            const nextColumn = selectedColumn - 1;
-            setSelectedPosition({ row: selectedRow, column: nextColumn });
-            setHoveredEmoji(currentRow.content[nextColumn]);
+            const prevColumn = selectedColumn - 1;
+            setSelectedPosition({ row: selectedRow, column: prevColumn });
+            setHoveredEmoji(currentRow.content[prevColumn]);
+          } else {
+            const prevRow = findNextEmojiRow(selectedRow, 'up');
+            if (prevRow !== selectedRow) {
+              const prevRowData = rows[prevRow];
+              if (prevRowData.type === 'emojis') {
+                const lastColumn = prevRowData.content.length - 1;
+                setSelectedPosition({ row: prevRow, column: lastColumn });
+                setHoveredEmoji(prevRowData.content[lastColumn]);
+                virtualizer.scrollToIndex(prevRow, { align: 'center' });
+              }
+            }
           }
           break;
         }
@@ -138,6 +149,16 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
             const nextColumn = selectedColumn + 1;
             setSelectedPosition({ row: selectedRow, column: nextColumn });
             setHoveredEmoji(currentRow.content[nextColumn]);
+          } else {
+            const nextRow = findNextEmojiRow(selectedRow, 'down');
+            if (nextRow !== selectedRow) {
+              const nextRowData = rows[nextRow];
+              if (nextRowData.type === 'emojis') {
+                setSelectedPosition({ row: nextRow, column: 0 });
+                setHoveredEmoji(nextRowData.content[0]);
+                virtualizer.scrollToIndex(nextRow, { align: 'center' });
+              }
+            }
           }
           break;
         }
