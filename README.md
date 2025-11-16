@@ -11,6 +11,15 @@
   
 </div>
 
+<div align="center">
+  <img src="./public/emoji-picker-repo-asset.png" alt="Emojicn Demo" max-width="100%" />
+</div>
+
+<div align="center">
+  <h3>
+    <a href="https://emoji.ferrucc.io">Live Demo</a>
+  </h3>
+</div>
 
 ## Features
 
@@ -22,15 +31,6 @@
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
 
 
-<div align="center">
-  <img src="./public/emoji-picker-repo-asset.png" alt="Emojicn Demo" max-width="100%" />
-</div>
-
-<div align="center">
-  <h3>
-    <a href="https://emoji.ferrucc.io">Live Demo</a>
-  </h3>
-</div>
 
 ## Installation
 
