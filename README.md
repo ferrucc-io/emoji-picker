@@ -11,6 +11,17 @@
   
 </div>
 
+
+## Features
+
+- 🎨 **Unstyled & Composable**: Built with Tailwind CSS. Every component is minimally styled by default and fully customizable.
+- ⚡️ **Fast & Lightweight**: Virtualized list for smooth scrolling. Only renders emojis in view.
+- 🎯 **Accessible**: Full keyboard and screen reader navigation support.
+- 🛜 **No external network requests**: All emoji data is included as part of this dependency. So it won't cause any CSP errors.
+- 🔣 **No � symbols**: Unsupported emojis are automatically hidden
+- 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
+
+
 <div align="center">
   <img src="./public/emoji-picker-repo-asset.png" alt="Emojicn Demo" width="600" />
 </div>
@@ -66,16 +77,6 @@ Finally, import the component styles in your Tailwind configuration:
   "./node_modules/@ferrucc-io/emoji-picker/dist/**/*.{js,jsx,ts,tsx}",
 ],
 ```
-
-## Features
-
-- 🎨 **Unstyled & Composable**: Built with Tailwind CSS. Every component is minimally styled by default and fully customizable.
-- ⚡️ **Fast & Lightweight**: Virtualized list for smooth scrolling. Only renders emojis in view.
-- 🎯 **Accessible**: Full keyboard and screen reader navigation support.
-- 🔣 **No � symbols**: Unsupported emojis are automatically hidden
-- 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
-- 🔄 **React Compatibility**: Works with React 18 and React 19.
-
 
 
 ## Default Style
@@ -169,6 +170,7 @@ In the future it would be great to support more styles like the ones in Discord,
 This project is currently used by:
 
 - [June](https://june.so) - An analytics product for B2B SaaS
+- [Langfuse](https://langfuse.com) - Traces, evals, prompt management and metrics to debug and improve your LLM application.
 - [Typefully](https://typefully.com) - The writing app for X, LinkedIn, Threads and more
 
 **Feel free to open a PR to add your name here if you're using the component in your project.**
