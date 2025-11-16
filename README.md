@@ -23,7 +23,7 @@
 
 
 <div align="center">
-  <img src="./public/emoji-picker-repo-asset.png" alt="Emojicn Demo" width="600" />
+  <img src="./public/emoji-picker-repo-asset.png" alt="Emojicn Demo" max-width="100%" />
 </div>
 
 <div align="center">
