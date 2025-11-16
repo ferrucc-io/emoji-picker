@@ -106,9 +106,11 @@ function App() {
             <Playground code={EXAMPLE_CODE} onEmojiSelect={setSelectedEmoji} />
           </div>
         </div>
-
         <div className="w-full px-4">
           <SocialProof />
+        </div>
+        <div className="flex flex-col items-start w-full mt-2 px-4">
+          <Features />
         </div>
 
         <div className="flex flex-col items-start gap-4 w-full px-4">
@@ -122,8 +124,7 @@ function App() {
           <TailwindSetupTabs />
         </div>
 
-        <div className="flex flex-col items-start gap-8 w-full mt-8 px-4">
-          <Features />
+        <div className="flex flex-col items-start w-full mt-2 px-4">
           <FAQ />
         </div>
       </div>
