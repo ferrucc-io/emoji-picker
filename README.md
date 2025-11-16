@@ -17,7 +17,7 @@
 - 🎨 **Unstyled & Composable**: Built with Tailwind CSS. Every component is minimally styled by default and fully customizable.
 - ⚡️ **Fast & Lightweight**: Virtualized list for smooth scrolling. Only renders emojis in view.
 - 🎯 **Accessible**: Full keyboard and screen reader navigation support.
-- 🛜 **No external network requests**: All emoji data is included as part of this dependency. So it won't cause any CSP errors.
+- 🛜 **No external CDNs**: All emoji data is included as part of this dependency no external CDNs.
 - 🔣 **No � symbols**: Unsupported emojis are automatically hidden
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
 
