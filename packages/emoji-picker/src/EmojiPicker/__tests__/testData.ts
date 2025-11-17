@@ -1,5 +1,3 @@
-import type { EmojiMetadata } from '../../types/emoji';
-
 export const mockEmojiData = {
   'Smileys & Emotion': {
     name: 'Smileys & Emotion',

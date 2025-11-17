@@ -4,27 +4,33 @@ import { useAtomValue } from 'jotai';
 import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
+import { CustomEmojiButton } from './CustomEmojiButton';
 import { filterSupportedEmojis } from '../utils/supportedEmojis';
 import { applySkinTone } from '../utils/applySkinTone';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
-import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation';
+import { useCustomEmojiKeyboardNavigation } from '../hooks/useCustomEmojiKeyboardNavigation';
 import { skinToneAtom } from '../atoms/emoji';
-import { CustomEmojiCategories } from './CustomEmojiCategories';
+import { isCustomEmoji } from '../types/emoji';
 
 import type { EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
-type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
+import type { CustomEmoji } from '../types/emoji';
 
-interface EmojiCategoriesProps {
+type Row =
+  | { type: 'header'; content: string }
+  | { type: 'emojis'; content: EmojiMetadata[] }
+  | { type: 'custom-emojis'; content: (EmojiMetadata | CustomEmoji)[] };
+
+interface CustomEmojiCategoriesProps {
   hideStickyHeader?: boolean;
   containerHeight?: number;
 }
 
 const emojiCategories = filterSupportedEmojis(emojiData as EmojiGroup[]);
 
-function EmojiCategoriesBase({
+export function CustomEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
-}: EmojiCategoriesProps) {
+}: CustomEmojiCategoriesProps) {
   const { emojisPerRow, emojiSize, customSections, frequentlyUsedEmojis, renderHeader } =
     useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
@@ -32,25 +38,81 @@ function EmojiCategoriesBase({
   const parentRef = useRef<HTMLDivElement>(null);
 
   const rows = useMemo<Row[]>(() => {
-    return emojiCategories.flatMap((category) => {
-      const rows: Row[] = [];
+    const allRows: Row[] = [];
 
-      rows.push({
+    if (frequentlyUsedEmojis.length > 0) {
+      allRows.push({
+        type: 'header',
+        content: 'Frequently Used',
+      });
+
+      const frequentEmojis: (EmojiMetadata | CustomEmoji)[] = frequentlyUsedEmojis.map((emoji) => {
+        if (typeof emoji === 'string') {
+          return {
+            emoji,
+            name: `frequently-used-${emoji}`,
+            slug: `frequently-used-${emoji}`,
+            skin_tone_support: false,
+          } as EmojiMetadata;
+        } else {
+          return emoji;
+        }
+      });
+
+      for (let i = 0; i < frequentEmojis.length; i += emojisPerRow) {
+        const emojis = frequentEmojis.slice(i, i + emojisPerRow);
+        const processedEmojis = emojis.map((emoji) =>
+          isCustomEmoji(emoji) ? emoji : applySkinTone(emoji, skinTone)
+        );
+
+        allRows.push({
+          type: 'custom-emojis',
+          content: processedEmojis,
+        });
+      }
+    }
+
+    const sortedCustomSections = [...customSections].sort(
+      (a, b) => (a.priority || 999) - (b.priority || 999)
+    );
+
+    for (const section of sortedCustomSections) {
+      allRows.push({
+        type: 'header',
+        content: section.name,
+      });
+
+      for (let i = 0; i < section.emojis.length; i += emojisPerRow) {
+        const emojis = section.emojis.slice(i, i + emojisPerRow);
+        const processedEmojis = emojis.map((emoji) =>
+          isCustomEmoji(emoji) ? emoji : applySkinTone(emoji, skinTone)
+        );
+
+        allRows.push({
+          type: 'custom-emojis',
+          content: processedEmojis,
+        });
+      }
+    }
+
+    emojiCategories.forEach((category) => {
+      allRows.push({
         type: 'header',
         content: category.category,
       });
 
       for (let i = 0; i < category.emojis.length; i += emojisPerRow) {
-        rows.push({
+        allRows.push({
           type: 'emojis',
           content: category.emojis
             .slice(i, i + emojisPerRow)
             .map((emoji) => applySkinTone(emoji, skinTone)),
         });
       }
-      return rows;
     });
-  }, [emojisPerRow, skinTone]);
+
+    return allRows;
+  }, [emojisPerRow, skinTone, customSections, frequentlyUsedEmojis]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,
@@ -63,16 +125,7 @@ function EmojiCategoriesBase({
     hideStickyHeader,
   });
 
-  useEmojiKeyboardNavigation({ rows, virtualizer });
-
-  if (customSections.length > 0 || frequentlyUsedEmojis.length > 0) {
-    return (
-      <CustomEmojiCategories
-        hideStickyHeader={hideStickyHeader}
-        containerHeight={containerHeight}
-      />
-    );
-  }
+  useCustomEmojiKeyboardNavigation({ rows, virtualizer });
 
   return (
     <div
@@ -133,15 +186,35 @@ function EmojiCategoriesBase({
                   className={`grid grid-cols-${emojisPerRow} px-2`}
                   style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}
                 >
-                  {row.content.map((emojiData, index) => (
-                    <EmojiPickerButton
-                      key={index}
-                      emoji={emojiData}
-                      rowIndex={virtualRow.index}
-                      columnIndex={index}
-                      size={emojiSize}
-                    />
-                  ))}
+                  {row.type === 'custom-emojis'
+                    ? row.content.map((emojiData, index) =>
+                        isCustomEmoji(emojiData) ? (
+                          <CustomEmojiButton
+                            key={emojiData.id}
+                            emoji={emojiData}
+                            rowIndex={virtualRow.index}
+                            columnIndex={index}
+                            size={emojiSize}
+                          />
+                        ) : (
+                          <EmojiPickerButton
+                            key={index}
+                            emoji={emojiData}
+                            rowIndex={virtualRow.index}
+                            columnIndex={index}
+                            size={emojiSize}
+                          />
+                        )
+                      )
+                    : row.content.map((emojiData, index) => (
+                        <EmojiPickerButton
+                          key={index}
+                          emoji={emojiData}
+                          rowIndex={virtualRow.index}
+                          columnIndex={index}
+                          size={emojiSize}
+                        />
+                      ))}
                 </div>
               )}
             </div>
@@ -151,5 +224,3 @@ function EmojiCategoriesBase({
     </div>
   );
 }
-
-export const EmojiCategories = React.memo(EmojiCategoriesBase);
