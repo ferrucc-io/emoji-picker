@@ -17,6 +17,10 @@
     "test:coverage": "bun --cwd packages/emoji-picker test --coverage",
     "release:patch": "bun run --cwd packages/emoji-picker release:patch",
     "release:minor": "bun run --cwd packages/emoji-picker release:minor",
-    "release:major": "bun run --cwd packages/emoji-picker release:major"
+    "release:major": "bun run --cwd packages/emoji-picker release:major",
+    "test:e2e": "bunx playwright test --config e2e/playwright.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
   }
 }

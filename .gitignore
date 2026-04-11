@@ -131,3 +131,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 .aider*
+
+# Playwright
+test-results/
+playwright-report/
