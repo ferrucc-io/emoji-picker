@@ -31,10 +31,30 @@ mock.module('../../atoms/emoji', () => ({
 
 import { useEmojiKeyboardNavigation } from '../useEmojiKeyboardNavigation';
 
-const emoji1: EmojiMetadata = { emoji: '😀', name: 'grinning face', slug: 'grinning-face', skin_tone_support: false };
-const emoji2: EmojiMetadata = { emoji: '😃', name: 'grinning face with big eyes', slug: 'grinning-face-with-big-eyes', skin_tone_support: false };
-const emoji3: EmojiMetadata = { emoji: '✋', name: 'raised hand', slug: 'raised-hand', skin_tone_support: true };
-const emoji4: EmojiMetadata = { emoji: '👋', name: 'waving hand', slug: 'waving-hand', skin_tone_support: true };
+const emoji1: EmojiMetadata = {
+  emoji: '😀',
+  name: 'grinning face',
+  slug: 'grinning-face',
+  skin_tone_support: false,
+};
+const emoji2: EmojiMetadata = {
+  emoji: '😃',
+  name: 'grinning face with big eyes',
+  slug: 'grinning-face-with-big-eyes',
+  skin_tone_support: false,
+};
+const emoji3: EmojiMetadata = {
+  emoji: '✋',
+  name: 'raised hand',
+  slug: 'raised-hand',
+  skin_tone_support: true,
+};
+const emoji4: EmojiMetadata = {
+  emoji: '👋',
+  name: 'waving hand',
+  slug: 'waving-hand',
+  skin_tone_support: true,
+};
 
 type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
 

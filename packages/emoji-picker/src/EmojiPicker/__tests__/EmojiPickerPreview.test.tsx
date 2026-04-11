@@ -52,9 +52,7 @@ describe('EmojiPickerPreview', () => {
       <span>{previewedEmoji ? previewedEmoji.emoji : 'none'}</span>
     ));
 
-    const { container } = renderWithProviders(
-      <EmojiPickerPreview>{childFn}</EmojiPickerPreview>
-    );
+    const { container } = renderWithProviders(<EmojiPickerPreview>{childFn}</EmojiPickerPreview>);
 
     expect(childFn).toHaveBeenCalled();
     expect(container.textContent).toInclude('none');
@@ -71,9 +69,7 @@ describe('EmojiPickerPreview', () => {
 
     const { container } = renderWithProviders(
       <EmojiPickerPreview>
-        {({ previewedEmoji }) => (
-          <span>{previewedEmoji ? previewedEmoji.emoji : 'none'}</span>
-        )}
+        {({ previewedEmoji }) => <span>{previewedEmoji ? previewedEmoji.emoji : 'none'}</span>}
       </EmojiPickerPreview>
     );
 
@@ -117,9 +113,7 @@ describe('EmojiPickerPreview', () => {
   test('container height based on emoji size (minimum 44px)', () => {
     // With emojiSize=32, containerHeight = Math.max(32 * 1.1, 44) = 44
     const { container } = renderWithProviders(
-      <EmojiPickerPreview>
-        {() => <span>Preview</span>}
-      </EmojiPickerPreview>,
+      <EmojiPickerPreview>{() => <span>Preview</span>}</EmojiPickerPreview>,
       32
     );
 
@@ -130,9 +124,7 @@ describe('EmojiPickerPreview', () => {
   test('container height scales with large emoji size', () => {
     // With emojiSize=60, containerHeight = Math.max(60 * 1.1, 44) = 66
     const { container } = renderWithProviders(
-      <EmojiPickerPreview>
-        {() => <span>Preview</span>}
-      </EmojiPickerPreview>,
+      <EmojiPickerPreview>{() => <span>Preview</span>}</EmojiPickerPreview>,
       60
     );
 

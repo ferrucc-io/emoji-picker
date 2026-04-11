@@ -18,9 +18,7 @@
     "release:patch": "bun run --cwd packages/emoji-picker release:patch",
     "release:minor": "bun run --cwd packages/emoji-picker release:minor",
     "release:major": "bun run --cwd packages/emoji-picker release:major",
-    "test:e2e": "bunx playwright test --config e2e/playwright.config.ts",
-    "server:dev": "bun run --cwd packages/server dev",
-    "server:start": "bun run --cwd packages/server start"
+    "test:e2e": "bunx playwright test --config e2e/playwright.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1"

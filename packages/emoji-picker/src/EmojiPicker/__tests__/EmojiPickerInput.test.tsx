@@ -52,9 +52,7 @@ describe('EmojiPickerInput', () => {
   });
 
   test('renders with custom placeholder', () => {
-    const { container } = renderWithProviders(
-      <EmojiPickerInput placeholder="Find an emoji..." />
-    );
+    const { container } = renderWithProviders(<EmojiPickerInput placeholder="Find an emoji..." />);
     const input = container.querySelector('input');
     expect(input?.getAttribute('placeholder')).toBe('Find an emoji...');
   });
@@ -87,9 +85,7 @@ describe('EmojiPickerInput', () => {
     const onClear = mock(() => {});
     store.set(testSearchAtom, 'hello');
 
-    const { container } = renderWithProviders(
-      <EmojiPickerInput onClear={onClear} />
-    );
+    const { container } = renderWithProviders(<EmojiPickerInput onClear={onClear} />);
 
     const clearButton = container.querySelector('button')!;
     fireEvent.click(clearButton);
@@ -124,9 +120,7 @@ describe('EmojiPickerInput', () => {
   });
 
   test('autoFocus prop is forwarded', () => {
-    const { container } = renderWithProviders(
-      <EmojiPickerInput autoFocus />
-    );
+    const { container } = renderWithProviders(<EmojiPickerInput autoFocus />);
     const input = container.querySelector('input');
     // In happy-dom, the focused element should be the input when autoFocus is set
     expect(input).toBeDefined();
