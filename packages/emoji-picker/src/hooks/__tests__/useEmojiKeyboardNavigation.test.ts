@@ -4,6 +4,7 @@ import { renderHook, act } from '@testing-library/react';
 import React, { useCallback, useRef } from 'react';
 
 import type { EmojiMetadata } from '../../types/emoji';
+import { EmojiPickerProvider } from '../../EmojiPicker/EmojiPickerContext';
 
 // Create writable test atoms
 const testSearchAtom = atom('');
@@ -79,7 +80,6 @@ describe('useEmojiKeyboardNavigation', () => {
 
   // Create a stable wrapper component that memoizes the context value
   const StableWrapper = ({ children }: { children: React.ReactNode }) => {
-    const { EmojiPickerProvider } = require('../../EmojiPicker/EmojiPickerContext');
     // Use a ref-based onEmojiSelect to keep it stable
     const onEmojiSelectRef = useRef(stableOnEmojiSelect);
     const stableCallback = useCallback((emoji: string) => {
