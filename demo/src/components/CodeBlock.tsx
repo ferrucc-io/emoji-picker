@@ -23,7 +23,7 @@ export function CodeBlock({
           <div className="relative">
             {!hideCopyButton && (
               <div className="sticky right-2 top-2 float-right z-10">
-                <ClipboardButton text={code} />
+                <ClipboardButton text={code} variant="code" />
               </div>
             )}
             <pre
