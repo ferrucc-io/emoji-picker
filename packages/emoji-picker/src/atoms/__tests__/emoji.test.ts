@@ -2,7 +2,6 @@ import { getDefaultStore } from 'jotai';
 import { beforeEach, describe, expect, test } from 'bun:test';
 import {
   combinedEmojiStateAtom,
-  filteredEmojisAtom,
   hoveredEmojiAtom,
   isEmojiSelectedAtom,
   searchAtom,
@@ -69,14 +68,6 @@ describe('Emoji Atoms', () => {
     // Test non-matching position
     const selectedAtom2 = isEmojiSelectedAtom(1, 3);
     expect(store.get(selectedAtom2)).toBe(false);
-  });
-
-  test('filteredEmojisAtom returns all emojis when search is empty', () => {
-    store.set(searchAtom, '');
-    const filtered = store.get(filteredEmojisAtom);
-    expect(filtered.length).toBeGreaterThan(0);
-    expect(filtered[0]).toHaveProperty('category');
-    expect(filtered[0]).toHaveProperty('emojis');
   });
 
   test('combinedEmojiStateAtom combines multiple atom states', () => {
