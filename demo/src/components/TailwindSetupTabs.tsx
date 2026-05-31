@@ -58,7 +58,7 @@ export function TailwindSetupTabs() {
         </p>
         <div className="relative">
           <CodeBlock hideCopyButton code={TAILWIND_CONFIGS[activeTab].code} />
-          <ClipboardButton text={TAILWIND_CONFIGS[activeTab].code} />
+          <ClipboardButton text={TAILWIND_CONFIGS[activeTab].code} variant="code" />
         </div>
       </div>
     </div>
