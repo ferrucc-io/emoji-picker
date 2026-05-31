@@ -9,6 +9,7 @@ import { PackageManagerTabs } from './components/PackageManagerTabs';
 import { NpmDownloadsPill } from './components/NpmDownloadsPill';
 import { Features } from './components/Features';
 import { FAQ } from './components/FAQ';
+import { ApiReference } from './components/ApiReference';
 
 const EXAMPLE_CODE = {
   default: `<EmojiPicker onEmojiSelect={handleEmojiSelect}>
@@ -122,6 +123,10 @@ function App() {
             Tailwind Setup
           </h3>
           <TailwindSetupTabs />
+        </div>
+
+        <div className="flex flex-col items-start w-full mt-2 px-4">
+          <ApiReference />
         </div>
 
         <div className="flex flex-col items-start w-full mt-2 px-4">
