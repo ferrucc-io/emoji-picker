@@ -1,7 +1,8 @@
-import emojiData from 'unicode-emoji-json/data-by-group.json';
+import rawEmojiData from 'unicode-emoji-json/data-by-group.json';
 import { atom } from 'jotai';
 import { processEmojiData, searchEmojis } from '../utils/emojiSearch';
 import { isEmojiFullySupported } from '../utils/emojiSupport';
+import { loadJsonData } from '../utils/loadJsonData';
 
 import type { EmojiMetadata, SkinTone } from '../types/emoji';
 
@@ -19,6 +20,15 @@ export const isEmojiSelectedAtom = (rowIndex: number, columnIndex: number) =>
     const selectedPos = get(selectedPositionAtom);
     return selectedPos?.row === rowIndex && selectedPos?.column === columnIndex;
   });
+
+// Guard against bun's JSON-import loader returning an empty dataset on some
+// CI builds — see loadJsonData. data-by-group.json is an array of category
+// groups, so "empty" means zero entries.
+const emojiData = loadJsonData(
+  rawEmojiData,
+  'unicode-emoji-json/data-by-group.json',
+  (data) => Object.keys(data).length === 0
+);
 
 const processedEmojiData = processEmojiData(emojiData);
 const defaultEmojis = Object.entries(emojiData).map(([category, group]) => ({
