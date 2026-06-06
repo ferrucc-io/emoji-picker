@@ -94,7 +94,7 @@ const frequentlyUsedEmojis: (string | CustomEmoji)[] = ['👍', '❤️'];
   }}
 >
   {/* ... */}
-</EmojiPicker>
+</EmojiPicker>;
 ```
 
 Custom emojis are searchable by name, support full keyboard navigation, and show up in the preview just like standard emojis. The `CustomEmoji`, `CustomSection`, and `HeaderRendererProps` types are exported from the package, along with an `isCustomEmoji` type guard.
@@ -106,15 +106,11 @@ import type { HeaderRendererProps } from '@ferrucc-io/emoji-picker';
 
 function MyHeader({ content, isSticky }: HeaderRendererProps) {
   return (
-    <div className={isSticky ? 'bg-white/95 backdrop-blur-sm' : 'bg-transparent'}>
-      {content}
-    </div>
+    <div className={isSticky ? 'bg-white/95 backdrop-blur-sm' : 'bg-transparent'}>{content}</div>
   );
 }
 
-<EmojiPicker renderHeader={MyHeader}>
-  {/* ... */}
-</EmojiPicker>
+<EmojiPicker renderHeader={MyHeader}>{/* ... */}</EmojiPicker>;
 ```
 
 ## Examples
