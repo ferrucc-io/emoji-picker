@@ -7,7 +7,7 @@
     "dev": "bunx --bun vite",
     "build:types": "bunx --bun tsc",
     "build:stats": "bun run scripts/updateNpmStats.ts",
-    "build": "bun run build:stats && bun run build:types && bunx --bun vite build",
+    "build": "bun run build:stats && bun run build:types && bunx --bun vite build && bun run scripts/prerender.ts",
     "preview": "bunx --bun vite preview",
     "deploy": "gh-pages -d dist",
     "lint": "bunx --bun oxlint .",
@@ -16,9 +16,10 @@
   },
   "dependencies": {
     "@ferrucc-io/emoji-picker": "workspace:*",
+    "@tanstack/react-router": "^1.170.10",
     "prism-react-renderer": "^2.3.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",

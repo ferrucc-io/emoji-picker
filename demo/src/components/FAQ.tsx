@@ -16,7 +16,7 @@ const FAQ_ITEMS: FAQItem[] = [
           target="_blank"
           rel="noopener noreferrer"
         >
-          Radix UI
+          Radix UI
         </a>
         ,{" "}
         <a
@@ -25,7 +25,7 @@ const FAQ_ITEMS: FAQItem[] = [
           target="_blank"
           rel="noopener noreferrer"
         >
-          Base UI
+          Base UI
         </a>
         ,{" "}
         <a
@@ -34,7 +34,7 @@ const FAQ_ITEMS: FAQItem[] = [
           target="_blank"
           rel="noopener noreferrer"
         >
-          Headless UI
+          Headless UI
         </a>
         , and{" "}
         <a
@@ -43,7 +43,7 @@ const FAQ_ITEMS: FAQItem[] = [
           target="_blank"
           rel="noopener noreferrer"
         >
-          React Aria
+          React Aria
         </a>
         .
       </>
@@ -121,4 +121,4 @@ export function FAQ() {
       </div>
     </section>
   );
-} 
+}

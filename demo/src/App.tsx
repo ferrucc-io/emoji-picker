@@ -9,6 +9,7 @@ import { PackageManagerTabs } from './components/PackageManagerTabs';
 import { NpmDownloadsPill } from './components/NpmDownloadsPill';
 import { Features } from './components/Features';
 import { FAQ } from './components/FAQ';
+import { ApiReference } from './components/ApiReference';
 
 const EXAMPLE_CODE = {
   default: `<EmojiPicker onEmojiSelect={handleEmojiSelect}>
@@ -106,9 +107,11 @@ function App() {
             <Playground code={EXAMPLE_CODE} onEmojiSelect={setSelectedEmoji} />
           </div>
         </div>
-
         <div className="w-full px-4">
           <SocialProof />
+        </div>
+        <div className="flex flex-col items-start w-full mt-2 px-4">
+          <Features />
         </div>
 
         <div className="flex flex-col items-start gap-4 w-full px-4">
@@ -122,10 +125,25 @@ function App() {
           <TailwindSetupTabs />
         </div>
 
-        <div className="flex flex-col items-start gap-8 w-full mt-8 px-4">
-          <Features />
+        <div className="flex flex-col items-start w-full mt-2 px-4">
+          <ApiReference />
+        </div>
+
+        <div className="flex flex-col items-start w-full mt-2 px-4">
           <FAQ />
         </div>
+
+        <footer className="w-full px-4 mt-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+          <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+            Comparisons
+          </h2>
+          <a
+            href="/compare/emoji-picker-vs-frimousse/"
+            className="text-blue-600 dark:text-blue-400 hover:underline underline-offset-2 text-[15px]"
+          >
+            @ferrucc-io/emoji-picker vs Frimousse →
+          </a>
+        </footer>
       </div>
     </div>
   );

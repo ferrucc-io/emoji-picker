@@ -13,7 +13,7 @@ const FEATURES: Feature[] = [
   {
     icon: "⚡️",
     title: "Fast & Lightweight",
-    description: "Virtualized list for smooth scrolling. Only renders emojis in view.",
+    description: "Virtualized list for smooth scrolling. Only renders emojis in view. Doesn't require any external CDNs.",
   },
   {
     icon: "🎯",
