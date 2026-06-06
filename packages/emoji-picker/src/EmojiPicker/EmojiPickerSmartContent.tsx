@@ -4,9 +4,13 @@ import { EmojiPickerContent } from './EmojiPickerContent';
 import { EmojiPickerContentWithCustom } from './EmojiPickerContentWithCustom';
 
 export function EmojiPickerSmartContent() {
-  const { customSections } = useEmojiPicker();
+  const { customSections, frequentlyUsedEmojis } = useEmojiPicker();
 
-  if (customSections && customSections.length > 0) {
+  const hasCustomEmojis =
+    (customSections && customSections.length > 0) ||
+    frequentlyUsedEmojis.some((emoji) => typeof emoji !== 'string');
+
+  if (hasCustomEmojis) {
     return <EmojiPickerContentWithCustom />;
   }
 

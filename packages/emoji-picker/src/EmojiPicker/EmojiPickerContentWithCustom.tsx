@@ -4,7 +4,7 @@ import { useEmojiPicker } from './EmojiPickerContext';
 import { hoveredEmojiAtom } from '../atoms/emoji';
 
 export function EmojiPickerContentWithCustom() {
-  const { emojiSize, customSections } = useEmojiPicker();
+  const { emojiSize, customSections, frequentlyUsedEmojis } = useEmojiPicker();
   const [hoveredEmoji] = useAtom(hoveredEmojiAtom);
 
   if (!hoveredEmoji) {
@@ -16,12 +16,13 @@ export function EmojiPickerContentWithCustom() {
 
   if (isCustomEmoji) {
     const emojiName = hoveredEmoji.emoji.slice(1, -1);
-    for (const section of customSections) {
-      const found = section.emojis.find((e) => 'imageUrl' in e && e.name === emojiName);
-      if (found && 'imageUrl' in found) {
-        customEmojiData = found;
-        break;
-      }
+    const candidates = [
+      ...customSections.flatMap((section) => section.emojis),
+      ...frequentlyUsedEmojis.filter((emoji) => typeof emoji !== 'string'),
+    ];
+    const found = candidates.find((e) => 'imageUrl' in e && e.name === emojiName);
+    if (found && 'imageUrl' in found) {
+      customEmojiData = found;
     }
   }
 

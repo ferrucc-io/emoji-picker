@@ -37,20 +37,36 @@ const EXAMPLE_CODE = {
     <EmojiPicker.List hideStickyHeader={true} containerHeight={400} />
   </EmojiPicker.Group>
 </EmojiPicker>`,
-  slack: `<EmojiPicker 
+  slack: `const customSections = [
+  {
+    id: 'custom',
+    name: 'Custom',
+    priority: 1,
+    emojis: [
+      { id: 'mic-drop', name: 'mic-drop', imageUrl: '/custom-emojis/mic-drop.gif' },
+      { id: 'thisisfine', name: 'thisisfine', imageUrl: '/custom-emojis/thisisfine.gif' },
+      { id: 'typescript', name: 'typescript', imageUrl: '/custom-emojis/typescript.png' },
+    ],
+  },
+];
+
+// Custom emojis are selected as :shortcodes:, e.g. :mic-drop:
+<EmojiPicker
   className="font-['Lato'] w-[300px] border-none"
   emojisPerRow={9}
   emojiSize={36}
+  customSections={customSections}
+  frequentlyUsedEmojis={['👍', '❤️', customSections[0].emojis[1]]}
 >
-  <EmojiPicker.Header>
-    <EmojiPicker.Input 
-      placeholder="Search all emoji" 
-      className="h-[36px] bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 w-full rounded-[8px] text-[15px] focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] dark:focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] focus:border-transparent focus:outline-none mb-1"
+  <EmojiPicker.Header className="pb-1">
+    <EmojiPicker.Input
+      placeholder="Search all emoji"
+      className="h-[36px] bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 w-full rounded-[8px] text-[15px] focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] dark:focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] focus:border-transparent focus:outline-none"
       hideIcon
     />
   </EmojiPicker.Header>
   <EmojiPicker.Group>
-    <EmojiPicker.List containerHeight={320} />          
+    <EmojiPicker.List containerHeight={320} />
   </EmojiPicker.Group>
   <EmojiPicker.Preview>
     {({ previewedEmoji }) => (

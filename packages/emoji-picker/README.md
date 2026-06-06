@@ -42,6 +42,7 @@ Then in your project you can use the component like this:
 - ⚡️ **Fast & Lightweight**: Virtualized list for smooth scrolling. Only renders emojis in view.
 - 🎯 **Accessible**: Full keyboard navigation support. ARIA labels and proper semantic markup.
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
+- 🖼️ **Custom Emojis**: Add your own image-based emoji sections (like Slack custom emojis) and a frequently used section.
 
 ## Props & Customization
 
@@ -54,7 +55,66 @@ interface EmojiPickerProps {
   containerHeight?: number; // Height of the emoji container
   hideIcon?: boolean; // Hide the search icon
   onEmojiSelect?: (emoji: string) => void; // Callback when emoji is selected
+  customSections?: CustomSection[]; // Custom image-based emoji sections to show alongside the standard categories
+  frequentlyUsedEmojis?: (string | CustomEmoji)[]; // Emojis to show in a "Frequently Used" section at the top
+  renderHeader?: (props: HeaderRendererProps) => React.ReactNode; // Custom renderer for section headers
 }
+```
+
+## Custom Emojis
+
+You can add your own image-based emojis via the `customSections` prop, and pin a "Frequently Used" section at the top of the list with `frequentlyUsedEmojis`:
+
+```tsx
+import { EmojiPicker } from '@ferrucc-io/emoji-picker';
+import type { CustomEmoji, CustomSection } from '@ferrucc-io/emoji-picker';
+
+const customSections: CustomSection[] = [
+  {
+    id: 'custom',
+    name: 'Custom',
+    priority: 1, // Lower values appear first (defaults to 999)
+    emojis: [
+      { id: 'mic-drop', name: 'mic-drop', imageUrl: '/custom-emojis/mic-drop.gif' },
+      { id: 'shipitparrot', name: 'shipitparrot', imageUrl: '/custom-emojis/shipitparrot.gif' },
+    ],
+  },
+];
+
+// Mix standard emoji strings and custom emoji objects
+const frequentlyUsedEmojis: (string | CustomEmoji)[] = ['👍', '❤️'];
+
+<EmojiPicker
+  customSections={customSections}
+  frequentlyUsedEmojis={frequentlyUsedEmojis}
+  onEmojiSelect={(emoji) => {
+    // Standard emojis: the emoji character, e.g. "👍"
+    // Custom emojis: the name wrapped in colons, e.g. ":mic-drop:"
+    console.log(emoji);
+  }}
+>
+  {/* ... */}
+</EmojiPicker>
+```
+
+Custom emojis are searchable by name, support full keyboard navigation, and show up in the preview just like standard emojis. The `CustomEmoji`, `CustomSection`, and `HeaderRendererProps` types are exported from the package, along with an `isCustomEmoji` type guard.
+
+You can also customize how section headers render with the `renderHeader` prop:
+
+```tsx
+import type { HeaderRendererProps } from '@ferrucc-io/emoji-picker';
+
+function MyHeader({ content, isSticky }: HeaderRendererProps) {
+  return (
+    <div className={isSticky ? 'bg-white/95 backdrop-blur-sm' : 'bg-transparent'}>
+      {content}
+    </div>
+  );
+}
+
+<EmojiPicker renderHeader={MyHeader}>
+  {/* ... */}
+</EmojiPicker>
 ```
 
 ## Examples

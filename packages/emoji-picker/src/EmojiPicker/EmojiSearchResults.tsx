@@ -3,12 +3,17 @@ import { useAtomValue } from 'jotai';
 import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
+import { CustomEmojiButton } from './CustomEmojiButton';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
-import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation';
-import { filteredEmojisAtom } from '../atoms/emoji';
+import { useCustomEmojiKeyboardNavigation } from '../hooks/useCustomEmojiKeyboardNavigation';
+import { searchCustomEmojis } from '../utils/emojiSearch';
+import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
+import { isCustomEmoji } from '../types/emoji';
 
-import type { EmojiMetadata } from '../types/emoji';
-type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
+import type { CustomEmoji, EmojiMetadata } from '../types/emoji';
+type Row =
+  | { type: 'header'; content: string }
+  | { type: 'emojis' | 'custom-emojis'; content: (EmojiMetadata | CustomEmoji)[] };
 
 interface EmojiSearchResultsProps {
   hideStickyHeader?: boolean;
@@ -19,15 +24,20 @@ export function EmojiSearchResults({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiSearchResultsProps) {
-  const { emojisPerRow, emojiSize } = useEmojiPicker();
+  const { emojisPerRow, emojiSize, customSections, renderHeader } = useEmojiPicker();
 
+  const search = useAtomValue(searchAtom);
   const filteredEmojis = useAtomValue(filteredEmojisAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
   // Create rows from search results
   const rows = useMemo<Row[]>(() => {
-    const searchResults = filteredEmojis.flatMap((category) => category.emojis);
+    // Custom emoji matches come first, flowing into the same rows as standard results
+    const searchResults: (EmojiMetadata | CustomEmoji)[] = [
+      ...searchCustomEmojis(search, customSections),
+      ...filteredEmojis.flatMap((category) => category.emojis),
+    ];
     const rows: Row[] = [];
 
     // Add single "Search results" header
@@ -36,16 +46,16 @@ export function EmojiSearchResults({
       content: 'Search results',
     });
 
-    // Add emoji rows
     for (let i = 0; i < searchResults.length; i += emojisPerRow) {
+      const content = searchResults.slice(i, i + emojisPerRow);
       rows.push({
-        type: 'emojis',
-        content: searchResults.slice(i, i + emojisPerRow),
+        type: content.some(isCustomEmoji) ? 'custom-emojis' : 'emojis',
+        content,
       });
     }
 
     return rows;
-  }, [filteredEmojis, emojisPerRow]);
+  }, [search, customSections, filteredEmojis, emojisPerRow]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,
@@ -58,7 +68,7 @@ export function EmojiSearchResults({
     hideStickyHeader,
   });
 
-  useEmojiKeyboardNavigation({ rows, virtualizer });
+  useCustomEmojiKeyboardNavigation({ rows, virtualizer });
 
   return (
     <div
@@ -104,21 +114,40 @@ export function EmojiSearchResults({
               }}
             >
               {row.type === 'header' ? (
-                <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
+                renderHeader ? (
+                  renderHeader({
+                    content: row.content,
+                    emojiSize,
+                    isSticky: isActiveSticky(virtualRow.index),
+                    sectionId: row.content.toLowerCase().replace(/\s+/g, '-'),
+                  })
+                ) : (
+                  <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
+                )
               ) : (
                 <div
                   className={`grid grid-cols-${emojisPerRow} px-2`}
                   style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}
                 >
-                  {row.content.map((emojiData, index) => (
-                    <EmojiPickerButton
-                      key={index}
-                      emoji={emojiData}
-                      rowIndex={virtualRow.index}
-                      columnIndex={index}
-                      size={emojiSize}
-                    />
-                  ))}
+                  {row.content.map((emojiData, index) =>
+                    isCustomEmoji(emojiData) ? (
+                      <CustomEmojiButton
+                        key={emojiData.id}
+                        emoji={emojiData}
+                        rowIndex={virtualRow.index}
+                        columnIndex={index}
+                        size={emojiSize}
+                      />
+                    ) : (
+                      <EmojiPickerButton
+                        key={index}
+                        emoji={emojiData}
+                        rowIndex={virtualRow.index}
+                        columnIndex={index}
+                        size={emojiSize}
+                      />
+                    )
+                  )}
                 </div>
               )}
             </div>

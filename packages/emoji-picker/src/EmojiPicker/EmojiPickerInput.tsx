@@ -62,15 +62,12 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
         />
         {search && (
           <div className="absolute right-2 flex items-center">
-            {endIcon ? (
-              <button onClick={handleClear} className="h-4 w-4">
-                {endIcon}
-              </button>
-            ) : (
-              <button onClick={handleClear} className="h-4 w-4">
-                <ClearIcon />
-              </button>
-            )}
+            <button
+              onClick={handleClear}
+              className="h-4 w-4 flex items-center justify-center [&>svg]:block"
+            >
+              {endIcon ?? <ClearIcon />}
+            </button>
           </div>
         )}
       </div>

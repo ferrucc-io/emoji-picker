@@ -5,6 +5,7 @@ import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { EmojiPickerEmpty, EmojiPickerEmptyIcon, EmojiPickerEmptyText } from './EmojiPickerEmpty';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiCategories } from './EmojiCategories';
+import { searchCustomEmojis } from '../utils/emojiSearch';
 import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
 
 export interface EmojiPickerListProps {
@@ -16,12 +17,15 @@ function EmojiPickerListBase({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiPickerListProps) {
-  const { emojiSize } = useEmojiPicker();
+  const { emojiSize, customSections } = useEmojiPicker();
   const search = useAtomValue(searchAtom);
   const filteredEmojis = useAtomValue(filteredEmojisAtom);
 
+  const hasResults =
+    filteredEmojis.length > 0 || searchCustomEmojis(search, customSections).length > 0;
+
   const content = search.trim() ? (
-    filteredEmojis.length === 0 ? (
+    !hasResults ? (
       <div className="flex flex-col items-start justify-start h-full">
         <EmojiPickerListHeader emojiSize={emojiSize} content="Search results" />
         <EmojiPickerEmpty>

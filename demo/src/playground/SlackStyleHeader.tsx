@@ -1,5 +1,5 @@
 import React from 'react';
-import type { HeaderRendererProps } from '@ferrucc-io/emoji-picker/dist/types/emoji';
+import type { HeaderRendererProps } from '@ferrucc-io/emoji-picker';
 
 export function SlackStyleHeader({ content, isSticky }: HeaderRendererProps) {
   return (

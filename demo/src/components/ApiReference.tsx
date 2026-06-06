@@ -38,7 +38,8 @@ const COMPONENTS: ComponentDoc[] = [
       {
         name: 'onEmojiSelect',
         type: '(emoji: string) => void',
-        description: 'A callback invoked when an emoji is selected.',
+        description:
+          'A callback invoked when an emoji is selected. Receives the emoji character for standard emojis, or the name wrapped in colons (e.g. ":mic-drop:") for custom emojis.',
       },
       {
         name: 'emojisPerRow',
@@ -58,6 +59,26 @@ const COMPONENTS: ComponentDoc[] = [
         defaultValue: '16.0',
         description:
           'The maximum Unicode version of emojis to show. Use a lower value to hide newer emojis that may not render on older systems.',
+      },
+      {
+        name: 'customSections',
+        type: 'CustomSection[]',
+        defaultValue: '[]',
+        description:
+          'Custom image-based emoji sections (like Slack custom emojis) to display alongside the standard categories. Sections are sorted by their priority field (lower values appear first). Custom emojis are searchable by name and support full keyboard navigation.',
+      },
+      {
+        name: 'frequentlyUsedEmojis',
+        type: '(string | CustomEmoji)[]',
+        defaultValue: '[]',
+        description:
+          'Emojis to show in a "Frequently Used" section at the top of the list. Accepts a mix of standard emoji strings (e.g. "👍") and CustomEmoji objects.',
+      },
+      {
+        name: 'renderHeader',
+        type: '(props: HeaderRendererProps) => ReactNode',
+        description:
+          'A custom renderer for section headers. Receives the header content, the emoji size, whether the header is currently sticky, and the section id.',
       },
       {
         name: 'className',
@@ -214,6 +235,30 @@ const COMPONENTS: ComponentDoc[] = [
   },
 ];
 
+const TYPES_EXAMPLE = `import type { CustomEmoji, CustomSection, HeaderRendererProps } from '@ferrucc-io/emoji-picker';
+import { isCustomEmoji } from '@ferrucc-io/emoji-picker';
+
+interface CustomEmoji {
+  id: string;
+  name: string;
+  imageUrl: string;
+  category?: string;
+}
+
+interface CustomSection {
+  id: string;
+  name: string;
+  emojis: (EmojiMetadata | CustomEmoji)[];
+  priority?: number; // Lower values appear first (defaults to 999)
+}
+
+interface HeaderRendererProps {
+  content: string;
+  emojiSize: number;
+  isSticky?: boolean;
+  sectionId?: string;
+}`;
+
 function PropRow({ prop }: { prop: PropDoc }) {
   return (
     <div className="border-b border-zinc-200 dark:border-zinc-800 last:border-b-0 py-3">
@@ -277,6 +322,17 @@ export function ApiReference() {
         {COMPONENTS.map((component) => (
           <ComponentSection key={component.name} component={component} />
         ))}
+        <section className="w-full flex flex-col gap-3">
+          <h3 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            Types
+          </h3>
+          <p className="text-zinc-600 dark:text-zinc-300">
+            The types used by the custom emoji props are exported from the package, along with an{' '}
+            <code className="font-mono text-sm">isCustomEmoji</code> type guard for narrowing{' '}
+            <code className="font-mono text-sm">EmojiMetadata | CustomEmoji</code> unions.
+          </p>
+          <CodeBlock code={TYPES_EXAMPLE} language="tsx" hideCopyButton />
+        </section>
       </div>
     </section>
   );

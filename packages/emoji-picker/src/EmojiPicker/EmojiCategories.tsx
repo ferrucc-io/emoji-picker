@@ -21,12 +21,24 @@ interface EmojiCategoriesProps {
 
 const emojiCategories = filterSupportedEmojis(emojiData as EmojiGroup[]);
 
-function EmojiCategoriesBase({
+function EmojiCategoriesBase(props: EmojiCategoriesProps) {
+  const { customSections, frequentlyUsedEmojis } = useEmojiPicker();
+
+  // Delegate before mounting any hooks: StandardEmojiCategories registers its
+  // own document-level keyboard navigation, which would compete with the one
+  // inside CustomEmojiCategories.
+  if (customSections.length > 0 || frequentlyUsedEmojis.length > 0) {
+    return <CustomEmojiCategories {...props} />;
+  }
+
+  return <StandardEmojiCategories {...props} />;
+}
+
+function StandardEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiCategoriesProps) {
-  const { emojisPerRow, emojiSize, customSections, frequentlyUsedEmojis, renderHeader } =
-    useEmojiPicker();
+  const { emojisPerRow, emojiSize, renderHeader } = useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
@@ -64,15 +76,6 @@ function EmojiCategoriesBase({
   });
 
   useEmojiKeyboardNavigation({ rows, virtualizer });
-
-  if (customSections.length > 0 || frequentlyUsedEmojis.length > 0) {
-    return (
-      <CustomEmojiCategories
-        hideStickyHeader={hideStickyHeader}
-        containerHeight={containerHeight}
-      />
-    );
-  }
 
   return (
     <div
