@@ -107,6 +107,9 @@ export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
   return filterSupportedEmojis(groups);
 };
 
+export const sortCustomSectionsByPriority = (customSections: CustomSection[]): CustomSection[] =>
+  [...customSections].sort((a, b) => (a.priority || 999) - (b.priority || 999));
+
 export const searchCustomEmojis = (
   searchTerm: string,
   customSections: CustomSection[]
@@ -117,8 +120,7 @@ export const searchCustomEmojis = (
 
   const normalizedSearch = searchTerm.toLowerCase();
 
-  return [...customSections]
-    .sort((a, b) => (a.priority || 999) - (b.priority || 999))
+  return sortCustomSectionsByPriority(customSections)
     .flatMap((section) => section.emojis)
     .filter(
       (emoji): emoji is CustomEmoji =>

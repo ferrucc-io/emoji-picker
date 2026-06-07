@@ -1,7 +1,7 @@
 import emojiData from 'unicode-emoji-json/data-by-group.json';
 import React, { useMemo, useRef } from 'react';
 import { useAtomValue } from 'jotai';
-import { EmojiPickerListHeader } from './EmojiPickerListHeader';
+import { SectionHeader } from './SectionHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { CustomEmojiButton } from './CustomEmojiButton';
@@ -9,6 +9,7 @@ import { filterSupportedEmojis } from '../utils/supportedEmojis';
 import { applySkinTone } from '../utils/applySkinTone';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useCustomEmojiKeyboardNavigation } from '../hooks/useCustomEmojiKeyboardNavigation';
+import { sortCustomSectionsByPriority } from '../utils/emojiSearch';
 import { skinToneAtom } from '../atoms/emoji';
 import { isCustomEmoji } from '../types/emoji';
 
@@ -31,8 +32,7 @@ export function CustomEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
 }: CustomEmojiCategoriesProps) {
-  const { emojisPerRow, emojiSize, customSections, frequentlyUsedEmojis, renderHeader } =
-    useEmojiPicker();
+  const { emojisPerRow, emojiSize, customSections, frequentlyUsedEmojis } = useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
@@ -72,9 +72,7 @@ export function CustomEmojiCategories({
       }
     }
 
-    const sortedCustomSections = [...customSections].sort(
-      (a, b) => (a.priority || 999) - (b.priority || 999)
-    );
+    const sortedCustomSections = sortCustomSectionsByPriority(customSections);
 
     for (const section of sortedCustomSections) {
       allRows.push({
@@ -171,16 +169,11 @@ export function CustomEmojiCategories({
               }}
             >
               {row.type === 'header' ? (
-                renderHeader ? (
-                  renderHeader({
-                    content: row.content,
-                    emojiSize,
-                    isSticky: isActiveSticky(virtualRow.index),
-                    sectionId: row.content.toLowerCase().replace(/\s+/g, '-'),
-                  })
-                ) : (
-                  <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
-                )
+                <SectionHeader
+                  content={row.content}
+                  emojiSize={emojiSize}
+                  isSticky={isActiveSticky(virtualRow.index)}
+                />
               ) : (
                 <div
                   className={`grid grid-cols-${emojisPerRow} px-2`}

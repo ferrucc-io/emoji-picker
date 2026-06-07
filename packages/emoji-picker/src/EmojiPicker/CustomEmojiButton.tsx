@@ -39,16 +39,6 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
     useEffect(() => {
       setImageLoaded(false);
       setImageError(false);
-
-      const img = new Image();
-      img.onload = () => setImageLoaded(true);
-      img.onerror = () => setImageError(true);
-      img.src = emoji.imageUrl;
-
-      return () => {
-        img.onload = null;
-        img.onerror = null;
-      };
     }, [emoji.imageUrl]);
 
     const handleMouseEnter = useCallback(() => {

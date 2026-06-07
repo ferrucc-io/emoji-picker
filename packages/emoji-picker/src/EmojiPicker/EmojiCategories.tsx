@@ -1,7 +1,7 @@
 import emojiData from 'unicode-emoji-json/data-by-group.json';
 import React, { useMemo, useRef } from 'react';
 import { useAtomValue } from 'jotai';
-import { EmojiPickerListHeader } from './EmojiPickerListHeader';
+import { SectionHeader } from './SectionHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { filterSupportedEmojis } from '../utils/supportedEmojis';
@@ -38,7 +38,7 @@ function StandardEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiCategoriesProps) {
-  const { emojisPerRow, emojiSize, renderHeader } = useEmojiPicker();
+  const { emojisPerRow, emojiSize } = useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
@@ -121,16 +121,11 @@ function StandardEmojiCategories({
               }}
             >
               {row.type === 'header' ? (
-                renderHeader ? (
-                  renderHeader({
-                    content: row.content,
-                    emojiSize,
-                    isSticky: isActiveSticky(virtualRow.index),
-                    sectionId: row.content.toLowerCase().replace(/\s+/g, '-'),
-                  })
-                ) : (
-                  <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
-                )
+                <SectionHeader
+                  content={row.content}
+                  emojiSize={emojiSize}
+                  isSticky={isActiveSticky(virtualRow.index)}
+                />
               ) : (
                 <div
                   className={`grid grid-cols-${emojisPerRow} px-2`}

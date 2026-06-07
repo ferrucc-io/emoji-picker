@@ -1,30 +1,36 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAtom } from 'jotai';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { hoveredEmojiAtom } from '../atoms/emoji';
+import { isCustomEmoji } from '../types/emoji';
+import type { CustomEmoji } from '../types/emoji';
 
 export function EmojiPickerContentWithCustom() {
   const { emojiSize, customSections, frequentlyUsedEmojis } = useEmojiPicker();
   const [hoveredEmoji] = useAtom(hoveredEmojiAtom);
 
+  const customEmojiByName = useMemo(() => {
+    const map = new Map<string, CustomEmoji>();
+    for (const emoji of [
+      ...customSections.flatMap((section) => section.emojis),
+      ...frequentlyUsedEmojis,
+    ]) {
+      if (typeof emoji !== 'string' && isCustomEmoji(emoji)) {
+        map.set(emoji.name, emoji);
+      }
+    }
+    return map;
+  }, [customSections, frequentlyUsedEmojis]);
+
   if (!hoveredEmoji) {
     return null;
   }
 
-  const isCustomEmoji = hoveredEmoji.emoji.startsWith(':') && hoveredEmoji.emoji.endsWith(':');
-  let customEmojiData = null;
-
-  if (isCustomEmoji) {
-    const emojiName = hoveredEmoji.emoji.slice(1, -1);
-    const candidates = [
-      ...customSections.flatMap((section) => section.emojis),
-      ...frequentlyUsedEmojis.filter((emoji) => typeof emoji !== 'string'),
-    ];
-    const found = candidates.find((e) => 'imageUrl' in e && e.name === emojiName);
-    if (found && 'imageUrl' in found) {
-      customEmojiData = found;
-    }
-  }
+  const isHoveringShortcode =
+    hoveredEmoji.emoji.startsWith(':') && hoveredEmoji.emoji.endsWith(':');
+  const customEmojiData = isHoveringShortcode
+    ? customEmojiByName.get(hoveredEmoji.emoji.slice(1, -1))
+    : undefined;
 
   return (
     <div className="flex items-center gap-4 min-w-0 flex-1">
