@@ -1,0 +1,5 @@
+# To be able to run bun tests from root we need this file
+# this file is a copy of packages/emoji-picker/bunfig.toml - make sure we keep the files in sync
+
+[test]
+preload = ["./packages/emoji-picker/src/test/happydom.ts", "./packages/emoji-picker/src/test/setup.ts"]

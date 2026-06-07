@@ -141,6 +141,11 @@ export function ComparisonArticle() {
                 "Minimal primitives, you compose",
               ],
               [
+                "Custom emojis",
+                "Built-in image sections & frequently used",
+                "Standard Unicode emoji only",
+              ],
+              [
                 "Initial bundle",
                 "Larger (includes emoji data)",
                 "Smaller, tree-shakable",
@@ -314,6 +319,45 @@ export function ComparisonArticle() {
         primitives so you compose more, with nothing to override.
       </p>
 
+      <h2 className={h2}>Custom emojis &amp; frequently used</h2>
+      <p className={p}>
+        If your app has its own image-based emojis, like Slack-style custom
+        emoji,{" "}
+        <strong>@ferrucc-io/emoji-picker</strong> supports them out of the box.
+        A <code>customSections</code> prop lets you add your own image emoji
+        sections alongside the standard categories, and a{" "}
+        <code>frequentlyUsedEmojis</code> prop pins a “Frequently Used” section
+        to the top, mixing standard emoji and your custom ones. Custom emojis are
+        searchable by name, work with full keyboard navigation, and appear in the
+        preview just like Unicode emoji; a <code>renderHeader</code> prop lets you
+        fully control how section headers render.
+      </p>
+      <pre className={codeBlock}>
+        <code>{`<EmojiPicker
+  customSections={[
+    {
+      id: "custom",
+      name: "Custom",
+      priority: 1,
+      emojis: [
+        { id: "mic-drop", name: "mic-drop", imageUrl: "/mic-drop.gif" },
+      ],
+    },
+  ]}
+  frequentlyUsedEmojis={["👍", "❤️"]}
+  onEmojiSelect={handleEmojiSelect} // ":mic-drop:" for custom, "👍" for standard
+>
+  {/* ... */}
+</EmojiPicker>`}</code>
+      </pre>
+      <p className={p}>
+        <strong>Frimousse</strong> focuses on standard Unicode emoji sourced from
+        Emojibase and doesn't ship a built-in custom-emoji feature, so adding
+        Slack-style image emoji or a frequently-used section is something you'd
+        build yourself on top of its primitives. If custom emoji sections matter
+        to your product, emoji-picker covers that case directly.
+      </p>
+
       <h2 className={h2}>Dependencies, bundle size &amp; performance</h2>
       <p className={p}>
         Frimousse markets itself as dependency-free, tree-shakable, and
@@ -391,6 +435,10 @@ export function ComparisonArticle() {
               You want built-in previews, skin-tone selection and color hover.
             </li>
             <li>You want to pin the exact emoji set you ship.</li>
+            <li>
+              You need custom image-based emoji sections or a frequently-used
+              section.
+            </li>
             <li>
               You'd rather not add a third-party CDN to your security attack
               surface.

@@ -18,7 +18,7 @@ const mockVirtualizer = {
     { index: 3, start: 96, size: 32, key: '3', measureElement: null },
   ],
   getTotalSize: () => 128,
-  scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' }) => {},
+  scrollToIndex: (_index: number, _options?: { align?: 'start' | 'center' | 'end' }) => {},
 };
 
 mock.module('@tanstack/react-virtual', () => ({

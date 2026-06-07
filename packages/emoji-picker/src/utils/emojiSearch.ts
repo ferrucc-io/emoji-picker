@@ -1,7 +1,10 @@
 import { filterSupportedEmojis } from './supportedEmojis';
 import { isEmojiFullySupported } from './emojiSupport';
+import { isCustomEmoji } from '../types/emoji';
 
 import type {
+  CustomEmoji,
+  CustomSection,
   EmojiData,
   EmojiGroupData as EmojiGroup,
   EmojiMetadata,
@@ -102,6 +105,27 @@ export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
   }
 
   return filterSupportedEmojis(groups);
+};
+
+export const sortCustomSectionsByPriority = (customSections: CustomSection[]): CustomSection[] =>
+  [...customSections].sort((a, b) => (a.priority || 999) - (b.priority || 999));
+
+export const searchCustomEmojis = (
+  searchTerm: string,
+  customSections: CustomSection[]
+): CustomEmoji[] => {
+  if (!searchTerm.trim()) {
+    return [];
+  }
+
+  const normalizedSearch = searchTerm.toLowerCase();
+
+  return sortCustomSectionsByPriority(customSections)
+    .flatMap((section) => section.emojis)
+    .filter(
+      (emoji): emoji is CustomEmoji =>
+        isCustomEmoji(emoji) && emoji.name.toLowerCase().includes(normalizedSearch)
+    );
 };
 
 export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): GroupedEmojis[] => {

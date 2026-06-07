@@ -10,8 +10,6 @@ import {
   skinToneAtom,
 } from '../emoji';
 
-import type { EmojiMetadata } from '../../types/emoji';
-
 describe('Emoji Atoms', () => {
   const store = getDefaultStore();
 

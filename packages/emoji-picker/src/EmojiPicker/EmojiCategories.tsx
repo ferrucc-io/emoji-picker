@@ -1,7 +1,7 @@
 import emojiData from 'unicode-emoji-json/data-by-group.json';
 import React, { useMemo, useRef } from 'react';
 import { useAtomValue } from 'jotai';
-import { EmojiPickerListHeader } from './EmojiPickerListHeader';
+import { SectionHeader } from './SectionHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { filterSupportedEmojis } from '../utils/supportedEmojis';
@@ -9,6 +9,7 @@ import { applySkinTone } from '../utils/applySkinTone';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation';
 import { skinToneAtom } from '../atoms/emoji';
+import { CustomEmojiCategories } from './CustomEmojiCategories';
 
 import type { EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
 type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
@@ -20,7 +21,20 @@ interface EmojiCategoriesProps {
 
 const emojiCategories = filterSupportedEmojis(emojiData as EmojiGroup[]);
 
-function EmojiCategoriesBase({
+function EmojiCategoriesBase(props: EmojiCategoriesProps) {
+  const { customSections, frequentlyUsedEmojis } = useEmojiPicker();
+
+  // Delegate before mounting any hooks: StandardEmojiCategories registers its
+  // own document-level keyboard navigation, which would compete with the one
+  // inside CustomEmojiCategories.
+  if (customSections.length > 0 || frequentlyUsedEmojis.length > 0) {
+    return <CustomEmojiCategories {...props} />;
+  }
+
+  return <StandardEmojiCategories {...props} />;
+}
+
+function StandardEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiCategoriesProps) {
@@ -107,7 +121,11 @@ function EmojiCategoriesBase({
               }}
             >
               {row.type === 'header' ? (
-                <EmojiPickerListHeader content={row.content} emojiSize={emojiSize} />
+                <SectionHeader
+                  content={row.content}
+                  emojiSize={emojiSize}
+                  isSticky={isActiveSticky(virtualRow.index)}
+                />
               ) : (
                 <div
                   className={`grid grid-cols-${emojisPerRow} px-2`}

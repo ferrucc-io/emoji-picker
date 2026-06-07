@@ -42,6 +42,12 @@ export const comparisonFaqs: Faq[] = [
       "Both libraries provide only the picker itself, not a popover or trigger. You pair either one with a popover primitive such as Radix UI, Base UI, Headless UI or React Aria. Frimousse also documents a shadcn/ui registry component if you use that ecosystem.",
   },
   {
+    question:
+      "Can I add custom emojis or a frequently used section to these emoji pickers?",
+    answer:
+      "@ferrucc-io/emoji-picker supports this out of the box. A customSections prop lets you add your own image-based emoji sections (like Slack custom emojis) alongside the standard categories, and a frequentlyUsedEmojis prop pins a \"Frequently Used\" section to the top that can mix standard emoji and your custom ones. Custom emojis are searchable by name, support full keyboard navigation, and show up in the preview like any other emoji, and a renderHeader prop lets you customize section headers. Frimousse focuses on standard Unicode emoji from Emojibase and doesn't ship a built-in custom-emoji feature, so a custom or frequently-used section is something you'd build yourself on top of its primitives.",
+  },
+  {
     question: "Which emoji picker has a smaller bundle size?",
     answer:
       "Frimousse generally has a smaller initial JavaScript footprint because it is dependency-free, tree-shakable, and loads emoji data lazily from a CDN rather than bundling it. But that smaller bundle isn't free: the picker can't render its emoji until a third-party CDN responds, so the cost moves from your bundle to a runtime network request the user waits on (and that can fail). @ferrucc-io/emoji-picker includes its emoji dataset in the package, a larger one-time bundle cost in exchange for instant, offline, dependency-free rendering at runtime.",
@@ -57,9 +63,9 @@ export const comparisonMeta = {
   },
   title: "@ferrucc-io/emoji-picker vs Frimousse: React Emoji Picker Comparison",
   description:
-    "A fair, detailed comparison of @ferrucc-io/emoji-picker and Liveblocks Frimousse: styling model, bundled vs CDN emoji data, component API, dependencies, performance, and when to pick each React emoji picker.",
+    "A fair, detailed comparison of @ferrucc-io/emoji-picker and Liveblocks Frimousse: styling model, bundled vs CDN emoji data, component API, custom emoji support, dependencies, performance, and when to pick each React emoji picker.",
   datePublished: "2026-05-31",
-  dateModified: "2026-05-31",
+  dateModified: "2026-06-07",
   author: "Ferruccio Balestreri",
   faqs: comparisonFaqs,
 };

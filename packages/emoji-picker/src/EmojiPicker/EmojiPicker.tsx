@@ -6,13 +6,14 @@ import { EmojiPickerList } from './EmojiPickerList';
 import { EmojiPickerInput } from './EmojiPickerInput';
 import { EmojiPickerGroup } from './EmojiPickerGroup';
 import { EmojiPickerProvider } from './EmojiPickerContext';
-import { EmojiPickerContent } from './EmojiPickerContent';
+import { EmojiPickerSmartContent } from './EmojiPickerSmartContent';
 import { cn } from '../utils/cn';
 import {
   DEFAULT_MAX_UNICODE_VERSION,
   DEFAULT_EMOJIS_PER_ROW,
   DEFAULT_EMOJI_SIZE,
 } from '../constants';
+import type { CustomSection, CustomEmoji, HeaderRendererProps } from '../types/emoji';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
@@ -21,6 +22,9 @@ export interface EmojiPickerProps {
   emojisPerRow?: number;
   emojiSize?: number;
   maxUnicodeVersion?: number;
+  customSections?: CustomSection[];
+  frequentlyUsedEmojis?: (string | CustomEmoji)[];
+  renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
 }
 
 interface EmojiPickerHeaderProps {
@@ -45,6 +49,9 @@ export function EmojiPicker({
   emojisPerRow = DEFAULT_EMOJIS_PER_ROW,
   emojiSize = DEFAULT_EMOJI_SIZE,
   maxUnicodeVersion = DEFAULT_MAX_UNICODE_VERSION,
+  customSections = [],
+  frequentlyUsedEmojis = [],
+  renderHeader,
 }: EmojiPickerProps) {
   return (
     <Provider>
@@ -53,6 +60,9 @@ export function EmojiPicker({
         emojiSize={emojiSize}
         maxUnicodeVersion={maxUnicodeVersion}
         onEmojiSelect={onEmojiSelect}
+        customSections={customSections}
+        frequentlyUsedEmojis={frequentlyUsedEmojis}
+        renderHeader={renderHeader}
       >
         <div
           tabIndex={0}
@@ -73,5 +83,5 @@ EmojiPicker.Input = Input;
 EmojiPicker.Group = EmojiPickerGroup;
 EmojiPicker.List = EmojiPickerList;
 EmojiPicker.Preview = EmojiPickerPreview;
-EmojiPicker.Content = EmojiPickerContent;
+EmojiPicker.Content = EmojiPickerSmartContent;
 EmojiPicker.SkinTone = EmojiPickerSkinTone;

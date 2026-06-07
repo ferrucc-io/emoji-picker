@@ -15,7 +15,7 @@ const mockVirtualizer = {
     { index: 1, start: 32, size: 32, key: '1', measureElement: null },
   ],
   getTotalSize: () => 64,
-  scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' }) => {},
+  scrollToIndex: (_index: number, _options?: { align?: 'start' | 'center' | 'end' }) => {},
 };
 
 // Mock the modules
