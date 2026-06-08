@@ -41,11 +41,14 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-          
+
+      - name: Update npm for trusted publishing
+        run: npm install -g npm@latest
+
       - name: Publish to NPM
+        # Auth via OIDC trusted publishing (configured on npmjs.com).
+        # Requires the id-token: write permission set above — no token needed.
         run: cd packages/emoji-picker && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

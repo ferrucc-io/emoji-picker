@@ -1,6 +1,6 @@
 {
   "name": "@ferrucc-io/emoji-picker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A beautiful and modern emoji picker for React",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
