@@ -26,8 +26,6 @@ interface CustomEmojiCategoriesProps {
   containerHeight?: number;
 }
 
-const emojiCategories = filterSupportedEmojis(emojiData as EmojiGroup[]);
-
 export function CustomEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
@@ -36,6 +34,10 @@ export function CustomEmojiCategories({
   const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
+
+  // Deferred out of module evaluation: canvas-based support detection is
+  // expensive and must only run when the picker actually renders.
+  const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
 
   const rows = useMemo<Row[]>(() => {
     const allRows: Row[] = [];
@@ -110,7 +112,7 @@ export function CustomEmojiCategories({
     });
 
     return allRows;
-  }, [emojisPerRow, skinTone, customSections, frequentlyUsedEmojis]);
+  }, [emojiCategories, emojisPerRow, skinTone, customSections, frequentlyUsedEmojis]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,

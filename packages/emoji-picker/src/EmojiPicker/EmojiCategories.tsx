@@ -19,8 +19,6 @@ interface EmojiCategoriesProps {
   containerHeight?: number;
 }
 
-const emojiCategories = filterSupportedEmojis(emojiData as EmojiGroup[]);
-
 function EmojiCategoriesBase(props: EmojiCategoriesProps) {
   const { customSections, frequentlyUsedEmojis } = useEmojiPicker();
 
@@ -43,6 +41,10 @@ function StandardEmojiCategories({
 
   const parentRef = useRef<HTMLDivElement>(null);
 
+  // Deferred out of module evaluation: canvas-based support detection is
+  // expensive and must only run when the picker actually renders.
+  const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
+
   const rows = useMemo<Row[]>(() => {
     return emojiCategories.flatMap((category) => {
       const rows: Row[] = [];
@@ -62,7 +64,7 @@ function StandardEmojiCategories({
       }
       return rows;
     });
-  }, [emojisPerRow, skinTone]);
+  }, [emojiCategories, emojisPerRow, skinTone]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,
