@@ -32,8 +32,6 @@ const emojiData = loadJsonData(
 
 const processedEmojiData = processEmojiData(emojiData);
 
-// Deferred out of module evaluation: canvas-based support detection is
-// expensive and must only run when the picker actually renders.
 let defaultEmojis: { category: string; emojis: EmojiMetadata[] }[] | undefined;
 const getDefaultEmojis = () =>
   (defaultEmojis ??= Object.entries(emojiData).map(([category, group]) => ({

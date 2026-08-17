@@ -41,8 +41,6 @@ function StandardEmojiCategories({
 
   const parentRef = useRef<HTMLDivElement>(null);
 
-  // Deferred out of module evaluation: canvas-based support detection is
-  // expensive and must only run when the picker actually renders.
   const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
 
   const rows = useMemo<Row[]>(() => {
