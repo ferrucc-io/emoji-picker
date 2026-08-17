@@ -31,25 +31,28 @@ const emojiData = loadJsonData(
 );
 
 const processedEmojiData = processEmojiData(emojiData);
-const defaultEmojis = Object.entries(emojiData).map(([category, group]) => ({
-  category,
-  emojis: (group as any).emojis
-    .filter((emoji: any) => isEmojiFullySupported(emoji))
-    .map((emoji: any) => ({
-      emoji: emoji.emoji,
-      name: emoji.name,
-      slug: emoji.slug,
-      skin_tone_support: emoji.skin_tone_support,
-      skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
-    })),
-}));
+
+let defaultEmojis: { category: string; emojis: EmojiMetadata[] }[] | undefined;
+const getDefaultEmojis = () =>
+  (defaultEmojis ??= Object.entries(emojiData).map(([category, group]) => ({
+    category,
+    emojis: (group as any).emojis
+      .filter((emoji: any) => isEmojiFullySupported(emoji))
+      .map((emoji: any) => ({
+        emoji: emoji.emoji,
+        name: emoji.name,
+        slug: emoji.slug,
+        skin_tone_support: emoji.skin_tone_support,
+        skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
+      })),
+  })));
 
 // Derived atom for filtered emojis with memoization
 export const filteredEmojisAtom = atom((get) => {
   const search = get(searchAtom);
 
   if (!search.trim()) {
-    return defaultEmojis;
+    return getDefaultEmojis();
   }
 
   return searchEmojis(search, processedEmojiData).map((group) => ({

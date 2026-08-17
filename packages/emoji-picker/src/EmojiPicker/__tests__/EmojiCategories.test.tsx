@@ -64,6 +64,12 @@ const mockFilteredEmojis = [
   },
 ];
 
+// Mock emoji support filtering so the rendered categories are deterministic
+// regardless of which other test files have run (bun's mock.module is global)
+mock.module('../../utils/supportedEmojis', () => ({
+  filterSupportedEmojis: () => mockFilteredEmojis,
+}));
+
 const testFilteredEmojisAtom = atom(mockFilteredEmojis);
 const testSkinToneAtom = atom('medium-dark');
 
@@ -102,7 +108,7 @@ describe('EmojiCategories', () => {
 
     // Should find category headers (we have 2 categories in mockFilteredEmojis)
     const headers = container.querySelectorAll('[data-testid="emoji-picker-list-header"]');
-    expect(headers.length).toBe(1);
+    expect(headers.length).toBe(2);
 
     // Should find emoji buttons
     const emojiButtons = container.querySelectorAll('button');
