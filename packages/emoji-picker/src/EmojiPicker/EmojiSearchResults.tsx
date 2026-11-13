@@ -6,7 +6,7 @@ import { EmojiPickerButton } from './EmojiPickerButton';
 import { CustomEmojiButton } from './CustomEmojiButton';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useCustomEmojiKeyboardNavigation } from '../hooks/useCustomEmojiKeyboardNavigation';
-import { searchCustomEmojis } from '../utils/emojiSearch';
+import { rankEmojisByRelevance, searchCustomEmojis } from '../utils/emojiSearch';
 import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
 import { isCustomEmoji } from '../types/emoji';
 
@@ -33,10 +33,13 @@ export function EmojiSearchResults({
 
   // Create rows from search results
   const rows = useMemo<Row[]>(() => {
-    // Custom emoji matches come first, flowing into the same rows as standard results
+    // Custom emoji matches come first, followed by flat relevance-ranked standard results
     const searchResults: (EmojiMetadata | CustomEmoji)[] = [
       ...searchCustomEmojis(search, customSections),
-      ...filteredEmojis.flatMap((category) => category.emojis),
+      ...rankEmojisByRelevance(
+        search,
+        filteredEmojis.flatMap((category) => category.emojis)
+      ),
     ];
     const rows: Row[] = [];
 

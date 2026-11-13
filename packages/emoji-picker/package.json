@@ -26,6 +26,7 @@
     "test:coverage": "bun test --coverage",
     "test:react-versions": "bun run scripts/test-react-versions.ts",
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
+    "build:emoji-keywords": "bun run scripts/generateEmojiKeywords.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
     "build:esm": "bunx esbuild src/index.ts --bundle --format=esm --outfile=dist/index.js --external:react --external:react-dom --jsx=automatic --jsx-factory=React.createElement --jsx-fragment=React.Fragment",
     "build:cjs": "bunx esbuild src/index.ts --bundle --format=cjs --outfile=dist/index.cjs --external:react --external:react-dom --jsx=automatic --jsx-factory=React.createElement --jsx-fragment=React.Fragment",
