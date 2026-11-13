@@ -3,6 +3,7 @@ import { atom } from 'jotai';
 import { describe, expect, mock, test } from 'bun:test';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { mockEmojiData, mockFilteredEmojis } from './testData';
+import '../../atoms/emoji';
 
 const mockVirtualizer = {
   getVirtualItems: () => [
@@ -41,8 +42,6 @@ mock.module('../../atoms/emoji', () => ({
   hoveredEmojiAtom: atom(null),
   selectedEmojiAtom: atom(null),
   selectedPositionAtom: atom<{ row: number; column: number } | null>(null),
-  isEmojiSelectedAtom: (rowIndex: number, columnIndex: number) =>
-    atom(() => rowIndex === -1 && columnIndex === -1),
 }));
 
 import { EmojiPicker, LazyEmojiPicker, isCustomEmoji } from '../../lazy';
