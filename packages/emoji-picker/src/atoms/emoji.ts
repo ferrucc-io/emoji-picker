@@ -1,6 +1,6 @@
 import rawEmojiData from 'unicode-emoji-json/data-by-group.json';
 import { atom } from 'jotai';
-import { processEmojiData, searchEmojis } from '../utils/emojiSearch';
+import { processEmojiData, searchEmojis, searchEmojisRanked } from '../utils/emojiSearch';
 import { isEmojiFullySupported } from '../utils/emojiSupport';
 import { loadJsonData } from '../utils/loadJsonData';
 
@@ -59,6 +59,16 @@ export const filteredEmojisAtom = atom((get) => {
     category: group.category,
     emojis: group.emojis,
   }));
+});
+
+export const rankedFilteredEmojisAtom = atom((get) => {
+  const search = get(searchAtom);
+
+  if (!search.trim()) {
+    return getDefaultEmojis().flatMap((group) => group.emojis);
+  }
+
+  return searchEmojisRanked(search, processedEmojiData);
 });
 
 export const combinedEmojiStateAtom = atom((get) => ({
