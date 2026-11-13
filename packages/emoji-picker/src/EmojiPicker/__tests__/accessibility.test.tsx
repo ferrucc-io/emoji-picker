@@ -3,6 +3,7 @@ import { atom, createStore, Provider } from 'jotai';
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { act, fireEvent, render } from '@testing-library/react';
 import { mockEmojiData, mockFilteredEmojis } from './testData';
+import '../../atoms/emoji';
 import type { CustomSection, EmojiMetadata, SkinTone } from '../../types/emoji';
 
 const mockScrollToIndex = mock(() => {});
@@ -51,11 +52,6 @@ const testSelectedPositionAtom = atom<{ row: number; column: number } | null>(nu
 const testSearchAtom = atom<string>('');
 const testSkinToneAtom = atom<SkinTone>('default');
 const testSkinToneOnlyAtom = atom((get) => get(testSkinToneAtom));
-const testIsEmojiSelectedAtom = (rowIndex: number, columnIndex: number) =>
-  atom((get) => {
-    const pos = get(testSelectedPositionAtom);
-    return pos?.row === rowIndex && pos?.column === columnIndex;
-  });
 const testFilteredEmojisAtom = atom((get) => {
   const search = get(testSearchAtom).trim().toLowerCase();
   if (!search) {
@@ -68,11 +64,6 @@ const testFilteredEmojisAtom = atom((get) => {
     }))
     .filter((group) => group.emojis.length > 0);
 });
-const testCombinedEmojiStateAtom = atom((get) => ({
-  hoveredEmoji: get(testHoveredEmojiAtom),
-  selectedEmoji: get(testSelectedEmojiAtom),
-  skinTone: get(testSkinToneAtom),
-}));
 
 mock.module('../../atoms/emoji', () => ({
   hoveredEmojiAtom: testHoveredEmojiAtom,
@@ -81,9 +72,7 @@ mock.module('../../atoms/emoji', () => ({
   searchAtom: testSearchAtom,
   skinToneAtom: testSkinToneAtom,
   skinToneOnlyAtom: testSkinToneOnlyAtom,
-  isEmojiSelectedAtom: testIsEmojiSelectedAtom,
   filteredEmojisAtom: testFilteredEmojisAtom,
-  combinedEmojiStateAtom: testCombinedEmojiStateAtom,
 }));
 
 import { EmojiPickerProvider } from '../EmojiPickerContext';
