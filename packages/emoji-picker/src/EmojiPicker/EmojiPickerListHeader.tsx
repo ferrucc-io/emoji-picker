@@ -1,20 +1,26 @@
-import { cn } from '@/utils/cn';
+import { cn } from '../utils/cn';
 
 interface EmojiPickerListHeaderProps {
   content: string;
   emojiSize: number;
   className?: string;
+  isSticky?: boolean;
 }
 
 export function EmojiPickerListHeader({
   content,
   emojiSize,
   className = '',
+  isSticky = false,
 }: EmojiPickerListHeaderProps) {
   const textSize = emojiSize > 32 ? 'text-sm' : 'text-xs';
 
   return (
-    <div className="relative bg-white/90 dark:bg-zinc-950/90 supports-[backdrop-filter]:bg-white/50 supports-[backdrop-filter]:dark:bg-zinc-950/50 supports-[backdrop-filter]:backdrop-blur-sm">
+    <div
+      data-slot="emoji-picker-header-label"
+      data-sticky={isSticky ? '' : undefined}
+      className="relative bg-white/90 dark:bg-zinc-950/90 supports-[backdrop-filter]:bg-white/50 supports-[backdrop-filter]:dark:bg-zinc-950/50 supports-[backdrop-filter]:backdrop-blur-sm"
+    >
       <div
         className={cn(
           textSize,

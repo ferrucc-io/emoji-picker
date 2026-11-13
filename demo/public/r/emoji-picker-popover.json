@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "emoji-picker-popover",
+  "type": "registry:component",
+  "title": "Emoji Picker Popover",
+  "description": "A ready-to-use emoji picker inside a shadcn/ui Popover trigger.",
+  "registryDependencies": [
+    "popover",
+    "button",
+    "https://emoji.ferrucc.io/r/emoji-picker.json"
+  ],
+  "files": [
+    {
+      "path": "components/emoji-picker-popover.tsx",
+      "type": "registry:component",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { Button } from \"@/components/ui/button\"\nimport {\n  EmojiPicker,\n  EmojiPickerContent,\n  EmojiPickerGroup,\n  EmojiPickerHeader,\n  EmojiPickerInput,\n  EmojiPickerList,\n  EmojiPickerPreview,\n  EmojiPickerSkinTone,\n} from \"@/components/ui/emoji-picker\"\nimport {\n  Popover,\n  PopoverContent,\n  PopoverTrigger,\n} from \"@/components/ui/popover\"\n\nexport interface EmojiPickerPopoverProps {\n  value?: string\n  defaultValue?: string\n  onEmojiSelect?: (emoji: string) => void\n  placeholder?: string\n  align?: \"start\" | \"center\" | \"end\"\n  sideOffset?: number\n  className?: string\n}\n\nexport function EmojiPickerPopover({\n  value,\n  defaultValue = \"😀\",\n  onEmojiSelect,\n  placeholder = \"Search emoji...\",\n  align = \"start\",\n  sideOffset = 8,\n  className,\n}: EmojiPickerPopoverProps) {\n  const [open, setOpen] = React.useState(false)\n  const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue)\n  const selectedEmoji = value ?? uncontrolledValue\n\n  const handleEmojiSelect = React.useCallback(\n    (emoji: string) => {\n      if (value === undefined) {\n        setUncontrolledValue(emoji)\n      }\n      onEmojiSelect?.(emoji)\n      setOpen(false)\n    },\n    [onEmojiSelect, value]\n  )\n\n  return (\n    <Popover open={open} onOpenChange={setOpen}>\n      <PopoverTrigger asChild>\n        <Button\n          type=\"button\"\n          variant=\"outline\"\n          size=\"icon\"\n          aria-label=\"Select emoji\"\n          className={className}\n        >\n          <span className=\"text-lg leading-none\">{selectedEmoji}</span>\n        </Button>\n      </PopoverTrigger>\n      <PopoverContent\n        align={align}\n        sideOffset={sideOffset}\n        className=\"w-auto border-none bg-transparent p-0 shadow-none\"\n      >\n        <EmojiPicker onEmojiSelect={handleEmojiSelect}>\n          <EmojiPickerHeader>\n            <EmojiPickerInput autoFocus placeholder={placeholder} />\n          </EmojiPickerHeader>\n          <EmojiPickerGroup>\n            <EmojiPickerList containerHeight={320} />\n          </EmojiPickerGroup>\n          <EmojiPickerPreview>\n            {({ previewedEmoji }) => (\n              <>\n                {previewedEmoji ? (\n                  <EmojiPickerContent />\n                ) : (\n                  <span className=\"px-1 text-xs text-muted-foreground\">\n                    Pick an emoji…\n                  </span>\n                )}\n                <EmojiPickerSkinTone />\n              </>\n            )}\n          </EmojiPickerPreview>\n        </EmojiPicker>\n      </PopoverContent>\n    </Popover>\n  )\n}\n"
+    }
+  ]
+}

@@ -64,6 +64,8 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
       <button
         ref={ref}
         type="button"
+        data-slot="emoji-picker-button"
+        data-selected={isSelected ? '' : undefined}
         className={cn(
           'flex items-center justify-center transition-colors rounded focus:outline-none relative',
           'emoji-button',

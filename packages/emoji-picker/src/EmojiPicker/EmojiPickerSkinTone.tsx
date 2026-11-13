@@ -21,11 +21,12 @@ export function EmojiPickerSkinTone() {
 
   if (isPickerOpen) {
     return (
-      <div>
+      <div data-slot="emoji-picker-skin-tone" data-state="open">
         <div className="flex flex-nowrap gap-0.5 p-1 rounded-sm">
           {skinTones.map((tone) => (
             <button
               key={tone.tone}
+              type="button"
               className="flex-shrink-0 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
               onClick={() => {
                 setSkinTone(tone.tone);
@@ -45,6 +46,8 @@ export function EmojiPickerSkinTone() {
 
   return (
     <button
+      type="button"
+      data-slot="emoji-picker-skin-tone"
       className="text-md font-semibold text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-3 py-1.5 transition-colors"
       onClick={() => setIsPickerOpen(true)}
     >

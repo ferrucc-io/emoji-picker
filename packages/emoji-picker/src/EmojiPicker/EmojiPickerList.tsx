@@ -26,7 +26,7 @@ function EmojiPickerListBase({
 
   const content = search.trim() ? (
     !hasResults ? (
-      <div className="flex flex-col items-start justify-start h-full">
+      <div data-slot="emoji-picker-list" className="flex flex-col items-start justify-start h-full">
         <EmojiPickerListHeader emojiSize={emojiSize} content="Search results" />
         <EmojiPickerEmpty>
           <EmojiPickerEmptyIcon />

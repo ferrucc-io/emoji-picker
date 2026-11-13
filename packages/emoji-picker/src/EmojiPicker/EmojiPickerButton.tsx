@@ -86,6 +86,8 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   return (
     <button
       type="button"
+      data-slot="emoji-picker-button"
+      data-selected={isSelected ? '' : undefined}
       className={`aspect-square focus:ring-[var(--emoji-hover-color)] focus:ring-2 flex items-center justify-center text-sm rounded-lg ${
         isSelected
           ? 'bg-[var(--emoji-hover-color)]'

@@ -6,7 +6,12 @@ export interface EmojiPickerEmptyProps {
 
 export function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 w-full">{children}</div>
+    <div
+      data-slot="emoji-picker-empty"
+      className="flex flex-col items-center justify-center py-12 px-4 w-full"
+    >
+      {children}
+    </div>
   );
 }
 

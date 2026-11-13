@@ -9,8 +9,9 @@ export interface EmojiPickerGroupProps {
 
 export function EmojiPickerGroup({ children, className }: EmojiPickerGroupProps) {
   return (
-    <div className="flex-1 overflow-hidden">
+    <div data-slot="emoji-picker-group" className="flex-1 overflow-hidden">
       <div
+        data-slot="emoji-picker-viewport"
         className={cn('h-full overflow-y-auto overscroll-contain will-change-scroll', className)}
       >
         {children}

@@ -1,0 +1,420 @@
+/*
+ * @ferrucc-io/emoji-picker standalone stylesheet
+ *
+ * Every rule uses :where(...) with (0, 0, 0) specificity so apps without
+ * Tailwind CSS get a complete light + dark theme out of the box, while any
+ * Tailwind utility or custom className overrides cleanly with zero specificity
+ * conflicts.
+ */
+
+:where([data-slot='emoji-picker']) {
+  --ep-bg: #ffffff;
+  --ep-fg: #18181b;
+  --ep-muted-bg: #f4f4f5;
+  --ep-subtle-bg: #fafafa;
+  --ep-muted-fg: #71717a;
+  --ep-icon-fg: #a1a1aa;
+  --ep-icon-hover-fg: #71717a;
+  --ep-border: #e4e4e7;
+  --ep-ring: #6366f1;
+  --ep-header-bg: rgba(255, 255, 255, 0.9);
+  --ep-header-backdrop-bg: rgba(255, 255, 255, 0.5);
+  --ep-hover-bg: #f4f4f5;
+  --ep-skeleton-bg: #e5e7eb;
+  --fallback-hover-color: rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 100%;
+  background-color: var(--ep-bg);
+  color: var(--ep-fg);
+  border: 1px solid var(--ep-border);
+  border-radius: 0.5rem;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  outline: none;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :where(
+    [data-slot='emoji-picker']:not(.light, .light *, [data-theme='light'], [data-theme='light'] *)
+  ) {
+    --ep-bg: #09090b;
+    --ep-fg: #f4f4f5;
+    --ep-muted-bg: #27272a;
+    --ep-subtle-bg: #18181b;
+    --ep-muted-fg: #a1a1aa;
+    --ep-icon-fg: #e4e4e7;
+    --ep-icon-hover-fg: #a1a1aa;
+    --ep-border: #27272a;
+    --ep-ring: #6366f1;
+    --ep-header-bg: rgba(9, 9, 11, 0.9);
+    --ep-header-backdrop-bg: rgba(9, 9, 11, 0.5);
+    --ep-hover-bg: #27272a;
+    --ep-skeleton-bg: #374151;
+    --fallback-hover-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+:where(.dark, [data-theme='dark']) :where([data-slot='emoji-picker']),
+:where([data-slot='emoji-picker']:is(.dark, [data-theme='dark'])) {
+  --ep-bg: #09090b;
+  --ep-fg: #f4f4f5;
+  --ep-muted-bg: #27272a;
+  --ep-subtle-bg: #18181b;
+  --ep-muted-fg: #a1a1aa;
+  --ep-icon-fg: #e4e4e7;
+  --ep-icon-hover-fg: #a1a1aa;
+  --ep-border: #27272a;
+  --ep-ring: #6366f1;
+  --ep-header-bg: rgba(9, 9, 11, 0.9);
+  --ep-header-backdrop-bg: rgba(9, 9, 11, 0.5);
+  --ep-hover-bg: #27272a;
+  --ep-skeleton-bg: #374151;
+  --fallback-hover-color: rgba(255, 255, 255, 0.12);
+}
+
+:where([data-slot='emoji-picker'] *) {
+  box-sizing: border-box;
+}
+
+:where([data-slot='emoji-picker'] *)::before,
+:where([data-slot='emoji-picker'] *)::after {
+  box-sizing: border-box;
+}
+
+:where([data-slot='emoji-picker']:focus-visible) {
+  box-shadow:
+    0 0 0 1px var(--ep-ring, #6366f1),
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+:where([data-slot='emoji-picker-header']) {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem 0.25rem;
+}
+
+:where([data-slot='emoji-picker-search-wrapper']) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+:where([data-slot='emoji-picker-search-wrapper'] > .pointer-events-none) {
+  position: absolute;
+  left: 0.5rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  color: var(--ep-icon-fg, #a1a1aa);
+}
+
+:where([data-slot='emoji-picker-search-wrapper'] > div:last-child:not(.pointer-events-none)) {
+  position: absolute;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+:where([data-slot='emoji-picker-search-wrapper'] svg) {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+  flex-shrink: 0;
+}
+
+:where([data-slot='emoji-picker-input']) {
+  appearance: none;
+  height: 1.75rem;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0.375rem;
+  background-color: var(--ep-muted-bg, #f4f4f5);
+  color: var(--ep-fg, #18181b);
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0 1.75rem;
+  outline: none;
+}
+
+:where(
+  [data-slot='emoji-picker-search-wrapper']:not(:has(> .pointer-events-none))
+    > [data-slot='emoji-picker-input']
+) {
+  padding-left: 0.5rem;
+}
+
+:where([data-slot='emoji-picker-input'])::placeholder {
+  color: var(--ep-muted-fg, #71717a);
+}
+
+:where([data-slot='emoji-picker-input']:focus) {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ep-ring, #6366f1);
+}
+
+:where([data-slot='emoji-picker-clear']) {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ep-icon-fg, #a1a1aa);
+  cursor: pointer;
+}
+
+:where([data-slot='emoji-picker-clear']:hover) {
+  color: var(--ep-icon-hover-fg, #71717a);
+}
+
+:where([data-slot='emoji-picker-group']) {
+  flex: 1 1 0%;
+  overflow: hidden;
+}
+
+:where([data-slot='emoji-picker-viewport']) {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  will-change: scroll-position;
+}
+
+:where([data-slot='emoji-picker-list']) {
+  position: relative;
+  width: 100%;
+  overflow-y: auto;
+  outline: none;
+}
+
+:where([data-slot='emoji-picker-row']) {
+  display: grid;
+  grid-template-columns: repeat(var(--emoji-picker-cols, 12), minmax(0, 1fr));
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+:where([data-slot='emoji-picker-header-label']) {
+  position: relative;
+  width: 100%;
+  background-color: var(--ep-header-bg, rgba(255, 255, 255, 0.9));
+}
+
+@supports ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+  :where([data-slot='emoji-picker-header-label']) {
+    background-color: var(--ep-header-backdrop-bg, rgba(255, 255, 255, 0.5));
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+}
+
+:where([data-slot='emoji-picker-header-label'][data-sticky]) {
+  z-index: 1;
+}
+
+:where([data-slot='emoji-picker-header-label'] > div) {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--ep-muted-fg, #71717a);
+  padding: 0.375rem 0.75rem;
+}
+
+:where([data-slot='emoji-picker-button']) {
+  appearance: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  width: var(--emoji-picker-size, 28px);
+  height: var(--emoji-picker-size, 28px);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  font-family: inherit;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: background-color 150ms ease;
+}
+
+:where(
+  [data-slot='emoji-picker-button']:hover,
+  [data-slot='emoji-picker-button']:focus,
+  [data-slot='emoji-picker-button'][data-selected]
+) {
+  background-color: var(--emoji-hover-color, var(--ep-hover-bg, rgba(0, 0, 0, 0.08)));
+}
+
+:where([data-slot='emoji-picker-button']:focus-visible) {
+  box-shadow: 0 0 0 2px var(--emoji-hover-color, var(--ep-ring, #6366f1));
+}
+
+:where([data-slot='emoji-picker-button'] img) {
+  display: block;
+  object-fit: contain;
+}
+
+:where([data-slot='emoji-picker-preview']) {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--ep-border, #e4e4e7);
+  background-color: var(--ep-subtle-bg, #fafafa);
+  padding: 0.5rem;
+}
+
+:where([data-slot='emoji-picker-preview'] > div) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+}
+
+:where([data-slot='emoji-picker-content']) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  flex: 1 1 0%;
+}
+
+:where([data-slot='emoji-picker-content'] > span) {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+:where([data-slot='emoji-picker-content'] > div) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  flex: 1 1 0%;
+}
+
+:where([data-slot='emoji-picker-content'] > div > span:first-child) {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--ep-fg, #18181b);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:where([data-slot='emoji-picker-content'] > div > span:last-child) {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--ep-muted-fg, #71717a);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:where(button[data-slot='emoji-picker-skin-tone']) {
+  appearance: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--ep-muted-fg, #71717a);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+:where(button[data-slot='emoji-picker-skin-tone']:hover) {
+  background-color: var(--ep-hover-bg, #f4f4f5);
+}
+
+:where(div[data-slot='emoji-picker-skin-tone'] > div:first-child) {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.125rem;
+  padding: 0.25rem;
+  border-radius: 0.125rem;
+}
+
+:where(div[data-slot='emoji-picker-skin-tone'] button) {
+  appearance: none;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.125rem 0.25rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+:where(div[data-slot='emoji-picker-skin-tone'] button:hover) {
+  background-color: var(--ep-hover-bg, #f4f4f5);
+}
+
+:where(div[data-slot='emoji-picker-skin-tone'] > div:last-child) {
+  font-size: 10px;
+  line-height: 14px;
+  color: var(--ep-muted-fg, #71717a);
+  text-align: center;
+  white-space: nowrap;
+}
+
+:where([data-slot='emoji-picker-empty']) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 3rem 1rem;
+  color: var(--ep-muted-fg, #71717a);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+:where([data-slot='emoji-picker-empty'] > div:first-child) {
+  color: var(--ep-icon-fg, #a1a1aa);
+  margin-bottom: 0.5rem;
+}
+
+:where([data-slot='emoji-picker-empty'] svg) {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}

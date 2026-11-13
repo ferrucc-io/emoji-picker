@@ -18,6 +18,7 @@ import type { CustomSection, CustomEmoji, HeaderRendererProps } from '../types/e
 export interface EmojiPickerProps {
   children?: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   onEmojiSelect?: (emoji: string) => void;
   emojisPerRow?: number;
   emojiSize?: number;
@@ -34,7 +35,12 @@ interface EmojiPickerHeaderProps {
 
 function Header({ children, className = '' }: EmojiPickerHeaderProps) {
   return (
-    <div className={cn('flex w-full items-center gap-2 px-2 pt-2 pb-1', className)}>{children}</div>
+    <div
+      data-slot="emoji-picker-header"
+      className={cn('flex w-full items-center gap-2 px-2 pt-2 pb-1', className)}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -45,6 +51,7 @@ function Input(props: React.ComponentProps<typeof EmojiPickerInput>) {
 export function EmojiPicker({
   children,
   className = '',
+  style,
   onEmojiSelect = () => {},
   emojisPerRow = DEFAULT_EMOJIS_PER_ROW,
   emojiSize = DEFAULT_EMOJI_SIZE,
@@ -65,9 +72,17 @@ export function EmojiPicker({
         renderHeader={renderHeader}
       >
         <div
+          data-slot="emoji-picker"
           tabIndex={0}
+          style={
+            {
+              '--emoji-picker-cols': emojisPerRow,
+              '--emoji-picker-size': `${emojiSize}px`,
+              ...style,
+            } as React.CSSProperties
+          }
           className={cn(
-            'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-full outline-none focus:ring-1 focus:ring-indigo-500',
+            'flex flex-col bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-full outline-none focus:ring-1 focus:ring-indigo-500',
             className
           )}
         >
