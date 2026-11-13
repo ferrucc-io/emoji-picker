@@ -66,16 +66,6 @@ beforeAll(() => {
     hoveredEmojiAtom: testHoveredEmojiAtom,
     selectedEmojiAtom: testSelectedEmojiAtom,
     selectedPositionAtom: testSelectedPositionAtom,
-    isEmojiSelectedAtom: (rowIndex: number, columnIndex: number) =>
-      atom((get) => {
-        const pos = get(testSelectedPositionAtom);
-        return pos !== null && pos.row === rowIndex && pos.column === columnIndex;
-      }),
-    combinedEmojiStateAtom: atom((get) => ({
-      hoveredEmoji: get(testHoveredEmojiAtom),
-      selectedEmoji: get(testSelectedEmojiAtom),
-      skinTone: get(testSkinToneAtom),
-    })),
   }));
 });
 
