@@ -5,7 +5,7 @@ import { cn } from '../utils/cn';
 import { searchAtom } from '../atoms/emoji';
 
 import type { ReactNode } from 'react';
-interface EmojiPickerInputProps
+export interface EmojiPickerInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   placeholder?: string;
   endIcon?: ReactNode;

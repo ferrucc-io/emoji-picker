@@ -16,6 +16,12 @@
       "require": "./dist/index.cjs",
       "default": "./dist/index.js"
     },
+    "./lazy": {
+      "types": "./dist/lazy.d.ts",
+      "import": "./dist/lazy.js",
+      "require": "./dist/lazy.cjs",
+      "default": "./dist/lazy.js"
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -27,9 +33,9 @@
     "test:react-versions": "bun run scripts/test-react-versions.ts",
     "build:emoji-colors": "bun run scripts/generateEmojiColors.ts",
     "build:types": "bunx --bun tsc -p tsconfig.build.json",
-    "build:esm": "bunx esbuild src/index.ts --bundle --format=esm --outfile=dist/index.js --external:react --external:react-dom --jsx=automatic --jsx-factory=React.createElement --jsx-fragment=React.Fragment",
-    "build:cjs": "bunx esbuild src/index.ts --bundle --format=cjs --outfile=dist/index.cjs --external:react --external:react-dom --jsx=automatic --jsx-factory=React.createElement --jsx-fragment=React.Fragment",
-    "build": "rm -rf dist && bun run build:types && bun run build:esm && bun run build:cjs",
+    "build:esm": "bun run build.ts --format=esm",
+    "build:cjs": "bun run build.ts --format=cjs",
+    "build": "rm -rf dist && bun run build:types && bun run build.ts",
     "prepublishOnly": "cp ../../README.md . && bun run build",
     "clean": "rm -rf dist",
     "release:patch": "bun run scripts/release.ts patch",
@@ -49,7 +55,6 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@types/bun": "latest",
-    "@types/node-emoji": "^2.1.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
@@ -76,7 +81,6 @@
     "@tanstack/react-virtual": "^3.11.2",
     "clsx": "^2.1.1",
     "jotai": "^2.11.1",
-    "node-emoji": "^2.1.3",
     "tailwind-merge": "^3.4.0",
     "unicode-emoji-json": "^0.8.0"
   },
@@ -88,7 +92,7 @@
     "emoji-picker-react-component",
     "shadcn-emoji-picker"
   ],
-  "author": "Your Name",
+  "author": "Ferruccio Balestreri",
   "license": "MIT",
   "repository": {
     "type": "git",
