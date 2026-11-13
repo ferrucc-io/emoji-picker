@@ -1,3 +1,5 @@
+import type React from 'react';
+
 export type SkinTone = 'light' | 'medium-light' | 'medium' | 'medium-dark' | 'dark' | 'default';
 
 export interface EmojiMetadata {
@@ -54,6 +56,23 @@ export interface CustomSection {
   name: string;
   emojis: (EmojiMetadata | CustomEmoji)[];
   priority?: number;
+  icon?: React.ReactNode;
+}
+
+export interface CategoryNavItem {
+  id: string;
+  name: string;
+  rowIndex: number;
+  isCustom?: boolean;
+  icon?: React.ReactNode;
+}
+
+export type FrequentlyUsedStrategy = 'frecency' | 'recent';
+
+export interface PersistFrequentlyUsedOptions {
+  key?: string;
+  maxEmojis?: number;
+  strategy?: FrequentlyUsedStrategy;
 }
 
 export const isCustomEmoji = (emoji: EmojiMetadata | CustomEmoji): emoji is CustomEmoji => {

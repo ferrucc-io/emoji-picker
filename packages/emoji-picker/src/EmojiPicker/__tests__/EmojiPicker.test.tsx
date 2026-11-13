@@ -71,6 +71,7 @@ describe('EmojiPicker', () => {
   test('compound component static properties exist', () => {
     expect(EmojiPicker.Header).toBeDefined();
     expect(EmojiPicker.Input).toBeDefined();
+    expect(EmojiPicker.CategoryNav).toBeDefined();
     expect(EmojiPicker.List).toBeDefined();
     expect(EmojiPicker.Preview).toBeDefined();
     expect(EmojiPicker.SkinTone).toBeDefined();

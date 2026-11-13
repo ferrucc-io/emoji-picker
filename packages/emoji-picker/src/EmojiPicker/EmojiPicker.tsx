@@ -5,6 +5,7 @@ import { EmojiPickerPreview } from './EmojiPickerPreview';
 import { EmojiPickerList } from './EmojiPickerList';
 import { EmojiPickerInput } from './EmojiPickerInput';
 import { EmojiPickerGroup } from './EmojiPickerGroup';
+import { EmojiPickerCategoryNav } from './EmojiPickerCategoryNav';
 import { EmojiPickerProvider } from './EmojiPickerContext';
 import { EmojiPickerSmartContent } from './EmojiPickerSmartContent';
 import { cn } from '../utils/cn';
@@ -13,7 +14,12 @@ import {
   DEFAULT_EMOJIS_PER_ROW,
   DEFAULT_EMOJI_SIZE,
 } from '../constants';
-import type { CustomSection, CustomEmoji, HeaderRendererProps } from '../types/emoji';
+import type {
+  CustomSection,
+  CustomEmoji,
+  HeaderRendererProps,
+  PersistFrequentlyUsedOptions,
+} from '../types/emoji';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
@@ -24,6 +30,7 @@ export interface EmojiPickerProps {
   maxUnicodeVersion?: number;
   customSections?: CustomSection[];
   frequentlyUsedEmojis?: (string | CustomEmoji)[];
+  persistFrequentlyUsed?: boolean | PersistFrequentlyUsedOptions;
   renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
 }
 
@@ -51,6 +58,7 @@ export function EmojiPicker({
   maxUnicodeVersion = DEFAULT_MAX_UNICODE_VERSION,
   customSections = [],
   frequentlyUsedEmojis = [],
+  persistFrequentlyUsed,
   renderHeader,
 }: EmojiPickerProps) {
   return (
@@ -62,6 +70,7 @@ export function EmojiPicker({
         onEmojiSelect={onEmojiSelect}
         customSections={customSections}
         frequentlyUsedEmojis={frequentlyUsedEmojis}
+        persistFrequentlyUsed={persistFrequentlyUsed}
         renderHeader={renderHeader}
       >
         <div
@@ -80,6 +89,7 @@ export function EmojiPicker({
 
 EmojiPicker.Header = Header;
 EmojiPicker.Input = Input;
+EmojiPicker.CategoryNav = EmojiPickerCategoryNav;
 EmojiPicker.Group = EmojiPickerGroup;
 EmojiPicker.List = EmojiPickerList;
 EmojiPicker.Preview = EmojiPickerPreview;
