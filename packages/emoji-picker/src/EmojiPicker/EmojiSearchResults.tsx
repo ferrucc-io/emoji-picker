@@ -13,7 +13,11 @@ import { isCustomEmoji } from '../types/emoji';
 import type { CustomEmoji, EmojiMetadata } from '../types/emoji';
 type Row =
   | { type: 'header'; content: string }
-  | { type: 'emojis' | 'custom-emojis'; content: (EmojiMetadata | CustomEmoji)[] };
+  | {
+      type: 'emojis' | 'custom-emojis';
+      content: (EmojiMetadata | CustomEmoji)[];
+      ariaRowIndex: number;
+    };
 
 interface EmojiSearchResultsProps {
   hideStickyHeader?: boolean;
@@ -32,29 +36,32 @@ export function EmojiSearchResults({
   const parentRef = useRef<HTMLDivElement>(null);
 
   // Create rows from search results
-  const rows = useMemo<Row[]>(() => {
+  const { rows, totalEmojiRowsCount } = useMemo(() => {
     // Custom emoji matches come first, flowing into the same rows as standard results
     const searchResults: (EmojiMetadata | CustomEmoji)[] = [
       ...searchCustomEmojis(search, customSections),
       ...filteredEmojis.flatMap((category) => category.emojis),
     ];
-    const rows: Row[] = [];
+    const allRows: Row[] = [];
+    let emojiRowIndex = 0;
 
     // Add single "Search results" header
-    rows.push({
+    allRows.push({
       type: 'header',
       content: 'Search results',
     });
 
     for (let i = 0; i < searchResults.length; i += emojisPerRow) {
       const content = searchResults.slice(i, i + emojisPerRow);
-      rows.push({
+      emojiRowIndex += 1;
+      allRows.push({
         type: content.some(isCustomEmoji) ? 'custom-emojis' : 'emojis',
+        ariaRowIndex: emojiRowIndex,
         content,
       });
     }
 
-    return rows;
+    return { rows: allRows, totalEmojiRowsCount: emojiRowIndex };
   }, [search, customSections, filteredEmojis, emojisPerRow]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
@@ -73,6 +80,10 @@ export function EmojiSearchResults({
   return (
     <div
       ref={parentRef}
+      role="grid"
+      aria-label="Emoji picker"
+      aria-colcount={emojisPerRow}
+      aria-rowcount={totalEmojiRowsCount}
       className="overflow-y-auto relative outline-none"
       style={{
         height: `${containerHeight}px`,
@@ -80,6 +91,7 @@ export function EmojiSearchResults({
       tabIndex={0}
     >
       <div
+        role="presentation"
         style={{
           height: `${virtualizer.getTotalSize()}px`,
           width: '100%',
@@ -92,6 +104,7 @@ export function EmojiSearchResults({
           return (
             <div
               key={virtualRow.index}
+              role="presentation"
               data-type={row.type}
               style={{
                 ...(isSticky(virtualRow.index)
@@ -121,6 +134,8 @@ export function EmojiSearchResults({
                 />
               ) : (
                 <div
+                  role="row"
+                  aria-rowindex={row.ariaRowIndex}
                   className={`grid grid-cols-${emojisPerRow} px-2`}
                   style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}
                 >

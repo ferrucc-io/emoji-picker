@@ -14,7 +14,10 @@ type Row = { type: 'header'; content: string } | { type: 'emojis'; content: Emoj
 interface UseEmojiKeyboardNavigationProps {
   rows: Row[];
   virtualizer: {
-    scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' }) => void;
+    scrollToIndex: (
+      index: number,
+      options?: { align?: 'start' | 'center' | 'end' | 'auto' }
+    ) => void;
   };
 }
 
@@ -57,6 +60,21 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     return -1;
   }, [rows]);
 
+  const scrollRowIntoView = useCallback(
+    (targetRow: number, direction: 'up' | 'down' | 'initial') => {
+      if (
+        (direction === 'up' || direction === 'initial') &&
+        targetRow > 0 &&
+        rows[targetRow - 1]?.type === 'header'
+      ) {
+        virtualizer.scrollToIndex(targetRow - 1, { align: 'auto' });
+      } else {
+        virtualizer.scrollToIndex(targetRow, { align: 'auto' });
+      }
+    },
+    [rows, virtualizer]
+  );
+
   useEffect(() => {
     if (search.trim() && rows.length > 0) {
       const firstRow = findFirstEmojiRow();
@@ -65,7 +83,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
         const firstRowData = rows[firstRow];
         if (firstRowData?.type === 'emojis' && firstRowData.content[0]) {
           setHoveredEmoji(firstRowData.content[0]);
-          virtualizer.scrollToIndex(firstRow, { align: 'center' });
+          virtualizer.scrollToIndex(0, { align: 'start' });
         }
       }
     }
@@ -82,7 +100,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
             if (firstRowData?.type === 'emojis' && firstRowData.content[0]) {
               setSelectedPosition({ row: firstRow, column: 0 });
               setHoveredEmoji(firstRowData.content[0]);
-              virtualizer.scrollToIndex(firstRow, { align: 'center' });
+              scrollRowIntoView(firstRow, 'initial');
             }
           }
         }
@@ -104,7 +122,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
               const nextColumn = Math.min(selectedColumn, nextRowData.content.length - 1);
               setSelectedPosition({ row: nextRow, column: nextColumn });
               setHoveredEmoji(nextRowData.content[nextColumn]);
-              virtualizer.scrollToIndex(nextRow, { align: 'center' });
+              scrollRowIntoView(nextRow, 'up');
             }
           }
           break;
@@ -118,7 +136,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
               const nextColumn = Math.min(selectedColumn, nextRowData.content.length - 1);
               setSelectedPosition({ row: nextRow, column: nextColumn });
               setHoveredEmoji(nextRowData.content[nextColumn]);
-              virtualizer.scrollToIndex(nextRow, { align: 'center' });
+              scrollRowIntoView(nextRow, 'down');
             }
           }
           break;
@@ -137,7 +155,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
                 const lastColumn = prevRowData.content.length - 1;
                 setSelectedPosition({ row: prevRow, column: lastColumn });
                 setHoveredEmoji(prevRowData.content[lastColumn]);
-                virtualizer.scrollToIndex(prevRow, { align: 'center' });
+                scrollRowIntoView(prevRow, 'up');
               }
             }
           }
@@ -156,7 +174,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
               if (nextRowData.type === 'emojis') {
                 setSelectedPosition({ row: nextRow, column: 0 });
                 setHoveredEmoji(nextRowData.content[0]);
-                virtualizer.scrollToIndex(nextRow, { align: 'center' });
+                scrollRowIntoView(nextRow, 'down');
               }
             }
           }
@@ -184,10 +202,10 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     selectedPosition,
     findNextEmojiRow,
     findFirstEmojiRow,
+    scrollRowIntoView,
     setSelectedPosition,
     setHoveredEmoji,
     setSelectedEmoji,
-    virtualizer,
     onEmojiSelect,
   ]);
 }

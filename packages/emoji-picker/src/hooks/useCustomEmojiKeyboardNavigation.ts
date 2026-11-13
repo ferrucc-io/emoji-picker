@@ -18,7 +18,10 @@ type Row =
 interface UseCustomEmojiKeyboardNavigationProps {
   rows: Row[];
   virtualizer: {
-    scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' }) => void;
+    scrollToIndex: (
+      index: number,
+      options?: { align?: 'start' | 'center' | 'end' | 'auto' }
+    ) => void;
   };
 }
 
@@ -80,6 +83,21 @@ export function useCustomEmojiKeyboardNavigation({
     return -1;
   }, [rows]);
 
+  const scrollRowIntoView = useCallback(
+    (targetRow: number, direction: 'up' | 'down' | 'initial') => {
+      if (
+        (direction === 'up' || direction === 'initial') &&
+        targetRow > 0 &&
+        rows[targetRow - 1]?.type === 'header'
+      ) {
+        virtualizer.scrollToIndex(targetRow - 1, { align: 'auto' });
+      } else {
+        virtualizer.scrollToIndex(targetRow, { align: 'auto' });
+      }
+    },
+    [rows, virtualizer]
+  );
+
   useEffect(() => {
     if (search.trim() && rows.length > 0) {
       const firstRow = findFirstEmojiRow();
@@ -91,7 +109,7 @@ export function useCustomEmojiKeyboardNavigation({
           firstRowData.content[0]
         ) {
           hoverEmoji(firstRowData.content[0]);
-          virtualizer.scrollToIndex(firstRow, { align: 'center' });
+          virtualizer.scrollToIndex(0, { align: 'start' });
         }
       }
     }
@@ -111,7 +129,7 @@ export function useCustomEmojiKeyboardNavigation({
             ) {
               setSelectedPosition({ row: firstRow, column: 0 });
               hoverEmoji(firstRowData.content[0]);
-              virtualizer.scrollToIndex(firstRow, { align: 'center' });
+              scrollRowIntoView(firstRow, 'initial');
             }
           }
         }
@@ -133,7 +151,7 @@ export function useCustomEmojiKeyboardNavigation({
               const nextColumn = Math.min(selectedColumn, nextRowData.content.length - 1);
               setSelectedPosition({ row: nextRow, column: nextColumn });
               hoverEmoji(nextRowData.content[nextColumn]);
-              virtualizer.scrollToIndex(nextRow, { align: 'center' });
+              scrollRowIntoView(nextRow, 'up');
             }
           }
           break;
@@ -147,7 +165,7 @@ export function useCustomEmojiKeyboardNavigation({
               const nextColumn = Math.min(selectedColumn, nextRowData.content.length - 1);
               setSelectedPosition({ row: nextRow, column: nextColumn });
               hoverEmoji(nextRowData.content[nextColumn]);
-              virtualizer.scrollToIndex(nextRow, { align: 'center' });
+              scrollRowIntoView(nextRow, 'down');
             }
           }
           break;
@@ -166,7 +184,7 @@ export function useCustomEmojiKeyboardNavigation({
                 const lastColumn = prevRowData.content.length - 1;
                 setSelectedPosition({ row: prevRow, column: lastColumn });
                 hoverEmoji(prevRowData.content[lastColumn]);
-                virtualizer.scrollToIndex(prevRow, { align: 'center' });
+                scrollRowIntoView(prevRow, 'up');
               }
             }
           }
@@ -185,7 +203,7 @@ export function useCustomEmojiKeyboardNavigation({
               if (nextRowData?.type === 'emojis' || nextRowData?.type === 'custom-emojis') {
                 setSelectedPosition({ row: nextRow, column: 0 });
                 hoverEmoji(nextRowData.content[0]);
-                virtualizer.scrollToIndex(nextRow, { align: 'center' });
+                scrollRowIntoView(nextRow, 'down');
               }
             }
           }
@@ -217,10 +235,10 @@ export function useCustomEmojiKeyboardNavigation({
     selectedPosition,
     findNextEmojiRow,
     findFirstEmojiRow,
+    scrollRowIntoView,
     setSelectedPosition,
     hoverEmoji,
     setSelectedEmoji,
-    virtualizer,
     onEmojiSelect,
   ]);
 }

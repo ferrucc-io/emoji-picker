@@ -6,7 +6,9 @@ export interface EmojiPickerEmptyProps {
 
 export function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 w-full">{children}</div>
+    <div role="status" className="flex flex-col items-center justify-center py-12 px-4 w-full">
+      {children}
+    </div>
   );
 }
 
@@ -14,6 +16,7 @@ export function EmojiPickerEmptyIcon() {
   return (
     <div className="text-zinc-400 dark:text-zinc-600 mb-2">
       <svg
+        aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

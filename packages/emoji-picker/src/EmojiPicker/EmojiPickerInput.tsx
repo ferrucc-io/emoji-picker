@@ -31,22 +31,26 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
       if (e.key === 'Escape') {
         handleClear();
       }
+      props.onKeyDown?.(e);
     };
 
     return (
       <div className="relative flex items-center w-full">
         {!hideIcon && (
-          <div className="absolute left-2 flex items-center pointer-events-none">
-            <SearchIcon />
+          <div className="absolute left-2 flex items-center pointer-events-none" aria-hidden="true">
+            <SearchIcon aria-hidden="true" />
           </div>
         )}
         <input
+          type="text"
+          autoComplete="off"
+          spellCheck={false}
+          aria-label={props['aria-label'] || placeholder || 'Search emoji'}
           {...props}
           ref={ref}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={handleKeyDown}
-          type="text"
           autoFocus={autoFocus}
           placeholder={placeholder || 'Search emoji'}
           className={cn(
@@ -63,10 +67,12 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
         {search && (
           <div className="absolute right-2 flex items-center">
             <button
+              type="button"
+              aria-label="Clear search"
               onClick={handleClear}
               className="h-4 w-4 flex items-center justify-center [&>svg]:block"
             >
-              {endIcon ?? <ClearIcon />}
+              {endIcon ?? <ClearIcon aria-hidden="true" />}
             </button>
           </div>
         )}

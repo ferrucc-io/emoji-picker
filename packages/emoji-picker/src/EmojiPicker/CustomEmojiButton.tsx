@@ -64,6 +64,12 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
       <button
         ref={ref}
         type="button"
+        role="gridcell"
+        aria-colindex={columnIndex + 1}
+        aria-label={`Custom emoji: ${emoji.name}`}
+        aria-selected={isSelected || undefined}
+        data-active={isSelected ? '' : undefined}
+        tabIndex={isSelected ? 0 : -1}
         className={cn(
           'flex items-center justify-center transition-colors rounded focus:outline-none relative',
           'emoji-button',
@@ -80,7 +86,6 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
         data-custom-emoji="true"
         data-row={rowIndex}
         data-column={columnIndex}
-        aria-label={`Custom emoji: ${emoji.name}`}
       >
         {imageError ? (
           <div

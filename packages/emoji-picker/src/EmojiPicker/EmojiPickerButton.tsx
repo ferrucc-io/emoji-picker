@@ -25,6 +25,7 @@ interface EmojiPickerButtonProps {
 function buttonPropsAreEqual(prevProps: EmojiPickerButtonProps, nextProps: EmojiPickerButtonProps) {
   return (
     prevProps.emoji.emoji === nextProps.emoji.emoji &&
+    prevProps.emoji.name === nextProps.emoji.name &&
     prevProps.rowIndex === nextProps.rowIndex &&
     prevProps.columnIndex === nextProps.columnIndex &&
     prevProps.size === nextProps.size
@@ -86,6 +87,12 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   return (
     <button
       type="button"
+      role="gridcell"
+      aria-colindex={columnIndex + 1}
+      aria-label={emoji.name}
+      aria-selected={isSelected || undefined}
+      data-active={isSelected ? '' : undefined}
+      tabIndex={isSelected ? 0 : -1}
       className={`aspect-square focus:ring-[var(--emoji-hover-color)] focus:ring-2 flex items-center justify-center text-sm rounded-lg ${
         isSelected
           ? 'bg-[var(--emoji-hover-color)]'

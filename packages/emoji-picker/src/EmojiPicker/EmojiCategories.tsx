@@ -12,7 +12,9 @@ import { skinToneAtom } from '../atoms/emoji';
 import { CustomEmojiCategories } from './CustomEmojiCategories';
 
 import type { EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
-type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
+type Row =
+  | { type: 'header'; content: string }
+  | { type: 'emojis'; content: EmojiMetadata[]; ariaRowIndex: number };
 
 interface EmojiCategoriesProps {
   hideStickyHeader?: boolean;
@@ -43,25 +45,29 @@ function StandardEmojiCategories({
 
   const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
 
-  const rows = useMemo<Row[]>(() => {
-    return emojiCategories.flatMap((category) => {
-      const rows: Row[] = [];
+  const { rows, totalEmojiRowsCount } = useMemo(() => {
+    let emojiRowIndex = 0;
+    const allRows: Row[] = [];
 
-      rows.push({
+    for (const category of emojiCategories) {
+      allRows.push({
         type: 'header',
         content: category.category,
       });
 
       for (let i = 0; i < category.emojis.length; i += emojisPerRow) {
-        rows.push({
+        emojiRowIndex += 1;
+        allRows.push({
           type: 'emojis',
+          ariaRowIndex: emojiRowIndex,
           content: category.emojis
             .slice(i, i + emojisPerRow)
             .map((emoji) => applySkinTone(emoji, skinTone)),
         });
       }
-      return rows;
-    });
+    }
+
+    return { rows: allRows, totalEmojiRowsCount: emojiRowIndex };
   }, [emojiCategories, emojisPerRow, skinTone]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
@@ -80,6 +86,10 @@ function StandardEmojiCategories({
   return (
     <div
       ref={parentRef}
+      role="grid"
+      aria-label="Emoji picker"
+      aria-colcount={emojisPerRow}
+      aria-rowcount={totalEmojiRowsCount}
       className="overflow-y-auto relative outline-none"
       style={{
         height: `${containerHeight}px`,
@@ -87,6 +97,7 @@ function StandardEmojiCategories({
       tabIndex={0}
     >
       <div
+        role="presentation"
         style={{
           height: `${virtualizer.getTotalSize()}px`,
           width: '100%',
@@ -99,6 +110,7 @@ function StandardEmojiCategories({
           return (
             <div
               key={virtualRow.index}
+              role="presentation"
               data-type={row.type}
               style={{
                 ...(isSticky(virtualRow.index)
@@ -128,6 +140,8 @@ function StandardEmojiCategories({
                 />
               ) : (
                 <div
+                  role="row"
+                  aria-rowindex={row.ariaRowIndex}
                   className={`grid grid-cols-${emojisPerRow} px-2`}
                   style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}
                 >
