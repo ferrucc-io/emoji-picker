@@ -5,8 +5,8 @@ import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { EmojiPickerEmpty, EmojiPickerEmptyIcon, EmojiPickerEmptyText } from './EmojiPickerEmpty';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiCategories } from './EmojiCategories';
-import { searchCustomEmojis } from '../utils/emojiSearch';
-import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
+import { searchCustomEmojis, searchStandardEmojis } from '../utils/emojiSearch';
+import { searchAtom } from '../atoms/emoji';
 
 export interface EmojiPickerListProps {
   hideStickyHeader?: boolean;
@@ -17,12 +17,13 @@ function EmojiPickerListBase({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiPickerListProps) {
-  const { emojiSize, customSections } = useEmojiPicker();
+  const { emojiSize, customSections, maxUnicodeVersion } = useEmojiPicker();
   const search = useAtomValue(searchAtom);
-  const filteredEmojis = useAtomValue(filteredEmojisAtom);
 
-  const hasResults =
-    filteredEmojis.length > 0 || searchCustomEmojis(search, customSections).length > 0;
+  const hasResults = search.trim()
+    ? searchStandardEmojis(search, maxUnicodeVersion).length > 0 ||
+      searchCustomEmojis(search, customSections).length > 0
+    : true;
 
   const content = search.trim() ? (
     !hasResults ? (

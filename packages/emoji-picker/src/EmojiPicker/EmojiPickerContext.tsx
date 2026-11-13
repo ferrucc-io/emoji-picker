@@ -10,6 +10,7 @@ interface EmojiPickerContextType {
   customSections: CustomSection[];
   frequentlyUsedEmojis: (string | CustomEmoji)[];
   renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
+  rootRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const EmojiPickerContext = createContext<EmojiPickerContextType | null>(null);
@@ -26,11 +27,12 @@ interface EmojiPickerProviderProps {
   children: React.ReactNode;
   emojisPerRow?: number;
   emojiSize?: number;
-  maxUnicodeVersion: number;
-  onEmojiSelect: (emoji: string) => void;
+  maxUnicodeVersion?: number;
+  onEmojiSelect?: (emoji: string) => void;
   customSections?: CustomSection[];
   frequentlyUsedEmojis?: (string | CustomEmoji)[];
   renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
+  rootRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export function EmojiPickerProvider({
@@ -42,6 +44,7 @@ export function EmojiPickerProvider({
   customSections = [],
   frequentlyUsedEmojis = [],
   renderHeader,
+  rootRef,
 }: EmojiPickerProviderProps) {
   const value = useMemo(
     () => ({
@@ -52,6 +55,7 @@ export function EmojiPickerProvider({
       customSections,
       frequentlyUsedEmojis,
       renderHeader,
+      rootRef,
     }),
     [
       emojisPerRow,
@@ -61,6 +65,7 @@ export function EmojiPickerProvider({
       customSections,
       frequentlyUsedEmojis,
       renderHeader,
+      rootRef,
     ]
   );
 

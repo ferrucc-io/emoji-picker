@@ -6,6 +6,7 @@ import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { filterSupportedEmojis } from '../utils/supportedEmojis';
 import { applySkinTone } from '../utils/applySkinTone';
+import { loadJsonData } from '../utils/loadJsonData';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation';
 import { skinToneAtom } from '../atoms/emoji';
@@ -36,12 +37,19 @@ function StandardEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiCategoriesProps) {
-  const { emojisPerRow, emojiSize } = useEmojiPicker();
+  const { emojisPerRow, emojiSize, maxUnicodeVersion } = useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
-  const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
+  const emojiCategories = useMemo(() => {
+    const loadedData = loadJsonData(
+      emojiData,
+      'unicode-emoji-json/data-by-group.json',
+      (data) => !data || Object.keys(data).length === 0
+    );
+    return filterSupportedEmojis(loadedData as EmojiGroup[], maxUnicodeVersion);
+  }, [maxUnicodeVersion]);
 
   const rows = useMemo<Row[]>(() => {
     return emojiCategories.flatMap((category) => {

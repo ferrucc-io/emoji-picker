@@ -84,7 +84,8 @@ export function isEmojiFullySupported(
     name?: string;
     slug?: string;
   },
-  emoji?: string
+  emoji?: string,
+  maxVersion: number = 15.0
 ): boolean {
   const emojiChar = emoji || emojiData.emoji;
 
@@ -104,7 +105,7 @@ export function isEmojiFullySupported(
         skin_tone_support_unicode_version: emojiData.skin_tone_support_unicode_version,
         slug: emojiData.slug,
       },
-      15.0 // Max Unicode version (Emoji 15.0)
+      maxVersion
     );
 
     if (!isCompatible) {

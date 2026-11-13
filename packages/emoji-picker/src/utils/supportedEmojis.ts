@@ -40,7 +40,10 @@ export type EmojiData = {
   emoji_version?: string;
 };
 
-export function filterSupportedEmojis(emojiGroups: EmojiGroup[]): GroupedEmojis[] {
+export function filterSupportedEmojis(
+  emojiGroups: EmojiGroup[],
+  maxVersion: number = 15.0
+): GroupedEmojis[] {
   if (!Array.isArray(emojiGroups)) {
     return [];
   }
@@ -49,12 +52,12 @@ export function filterSupportedEmojis(emojiGroups: EmojiGroup[]): GroupedEmojis[
     .map((group) => ({
       category: group.name,
       emojis: group.emojis
-        .filter((emoji) => isEmojiFullySupported(emoji))
+        .filter((emoji) => isEmojiFullySupported(emoji, undefined, maxVersion))
         .map((emoji) => ({
           emoji: emoji.emoji,
           name: emoji.name,
           slug: emoji.slug,
-          skin_tone_support: isCompatibleSkinTone(emoji),
+          skin_tone_support: isCompatibleSkinTone(emoji, maxVersion),
           skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
         })),
     }))

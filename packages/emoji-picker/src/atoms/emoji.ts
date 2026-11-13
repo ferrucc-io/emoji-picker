@@ -1,5 +1,7 @@
 import rawEmojiData from 'unicode-emoji-json/data-by-group.json';
 import { atom } from 'jotai';
+import { DEFAULT_MAX_UNICODE_VERSION } from '../constants';
+import { isCompatibleSkinTone } from '../utils/emojiFilters';
 import { processEmojiData, searchEmojis } from '../utils/emojiSearch';
 import { isEmojiFullySupported } from '../utils/emojiSupport';
 import { loadJsonData } from '../utils/loadJsonData';
@@ -35,14 +37,14 @@ const processedEmojiData = processEmojiData(emojiData);
 let defaultEmojis: { category: string; emojis: EmojiMetadata[] }[] | undefined;
 const getDefaultEmojis = () =>
   (defaultEmojis ??= Object.entries(emojiData).map(([category, group]) => ({
-    category,
+    category: (group as any).name || category,
     emojis: (group as any).emojis
-      .filter((emoji: any) => isEmojiFullySupported(emoji))
+      .filter((emoji: any) => isEmojiFullySupported(emoji, undefined, DEFAULT_MAX_UNICODE_VERSION))
       .map((emoji: any) => ({
         emoji: emoji.emoji,
         name: emoji.name,
         slug: emoji.slug,
-        skin_tone_support: emoji.skin_tone_support,
+        skin_tone_support: isCompatibleSkinTone(emoji, DEFAULT_MAX_UNICODE_VERSION),
         skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
       })),
   })));
@@ -55,7 +57,7 @@ export const filteredEmojisAtom = atom((get) => {
     return getDefaultEmojis();
   }
 
-  return searchEmojis(search, processedEmojiData).map((group) => ({
+  return searchEmojis(search, processedEmojiData, DEFAULT_MAX_UNICODE_VERSION).map((group) => ({
     category: group.category,
     emojis: group.emojis,
   }));

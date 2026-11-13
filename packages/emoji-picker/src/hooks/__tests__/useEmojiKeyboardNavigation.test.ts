@@ -284,4 +284,28 @@ describe('useEmojiKeyboardNavigation', () => {
     const pos = store.get(testSelectedPositionAtom);
     expect(pos).toEqual({ row: 1, column: 0 });
   });
+
+  test('Space inside an input element does not trigger onEmojiSelect', () => {
+    store.set(testSelectedPositionAtom, { row: 1, column: 0 });
+    renderNavHook();
+
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+
+    let defaultPrevented = false;
+    act(() => {
+      const event = new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+        cancelable: true,
+      });
+      input.dispatchEvent(event);
+      defaultPrevented = event.defaultPrevented;
+    });
+
+    document.body.removeChild(input);
+
+    expect(defaultPrevented).toBe(false);
+    expect(onEmojiSelectCalls).toHaveLength(0);
+  });
 });

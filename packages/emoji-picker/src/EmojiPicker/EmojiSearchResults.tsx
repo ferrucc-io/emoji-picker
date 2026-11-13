@@ -6,8 +6,9 @@ import { EmojiPickerButton } from './EmojiPickerButton';
 import { CustomEmojiButton } from './CustomEmojiButton';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useCustomEmojiKeyboardNavigation } from '../hooks/useCustomEmojiKeyboardNavigation';
-import { searchCustomEmojis } from '../utils/emojiSearch';
-import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
+import { searchCustomEmojis, searchStandardEmojis } from '../utils/emojiSearch';
+import { applySkinTone } from '../utils/applySkinTone';
+import { filteredEmojisAtom, searchAtom, skinToneAtom } from '../atoms/emoji';
 import { isCustomEmoji } from '../types/emoji';
 
 import type { CustomEmoji, EmojiMetadata } from '../types/emoji';
@@ -24,20 +25,25 @@ export function EmojiSearchResults({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiSearchResultsProps) {
-  const { emojisPerRow, emojiSize, customSections } = useEmojiPicker();
+  const { emojisPerRow, emojiSize, customSections, maxUnicodeVersion } = useEmojiPicker();
 
   const search = useAtomValue(searchAtom);
-  const filteredEmojis = useAtomValue(filteredEmojisAtom);
+  const atomFilteredEmojis = useAtomValue(filteredEmojisAtom);
+  const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
   // Create rows from search results
   const rows = useMemo<Row[]>(() => {
+    const standardEmojis = search.trim()
+      ? searchStandardEmojis(search, maxUnicodeVersion)
+      : atomFilteredEmojis;
+
     // Custom emoji matches come first, flowing into the same rows as standard results
     const searchResults: (EmojiMetadata | CustomEmoji)[] = [
       ...searchCustomEmojis(search, customSections),
-      ...filteredEmojis.flatMap((category) => category.emojis),
-    ];
+      ...standardEmojis.flatMap((category) => category.emojis),
+    ].map((emoji) => (isCustomEmoji(emoji) ? emoji : applySkinTone(emoji, skinTone)));
     const rows: Row[] = [];
 
     // Add single "Search results" header
@@ -55,7 +61,7 @@ export function EmojiSearchResults({
     }
 
     return rows;
-  }, [search, customSections, filteredEmojis, emojisPerRow]);
+  }, [search, maxUnicodeVersion, atomFilteredEmojis, customSections, emojisPerRow, skinTone]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,

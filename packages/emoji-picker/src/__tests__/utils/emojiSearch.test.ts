@@ -80,4 +80,14 @@ describe('Emoji Search', () => {
     const results = searchEmojis('shaking', processed);
     expect(results).toHaveLength(0);
   });
+
+  test('searchEmojis respects explicit maxVersion parameter', () => {
+    const processed = processEmojiData(mockEmojiData);
+    const results16 = searchEmojis('shaking', processed, 16.0);
+    expect(results16).toHaveLength(1);
+    expect(results16[0].emojis[0].emoji).toBe('🫨');
+
+    const results14 = searchEmojis('grinning', processed, 5.0);
+    expect(results14).toHaveLength(0);
+  });
 });
