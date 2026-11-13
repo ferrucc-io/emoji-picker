@@ -5,6 +5,7 @@ import { EmojiPickerListHeader } from './EmojiPickerListHeader';
 import { EmojiPickerEmpty, EmojiPickerEmptyIcon, EmojiPickerEmptyText } from './EmojiPickerEmpty';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiCategories } from './EmojiCategories';
+import { ActiveEmojiAnnouncer } from './ActiveEmojiAnnouncer';
 import { searchCustomEmojis } from '../utils/emojiSearch';
 import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
 
@@ -40,7 +41,12 @@ function EmojiPickerListBase({
     <EmojiCategories hideStickyHeader={hideStickyHeader} containerHeight={containerHeight} />
   );
 
-  return content;
+  return (
+    <>
+      {content}
+      <ActiveEmojiAnnouncer />
+    </>
+  );
 }
 
 function propsAreEqual(prevProps: EmojiPickerListProps, nextProps: EmojiPickerListProps) {

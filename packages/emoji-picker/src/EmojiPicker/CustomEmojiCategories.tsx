@@ -18,8 +18,8 @@ import type { CustomEmoji } from '../types/emoji';
 
 type Row =
   | { type: 'header'; content: string }
-  | { type: 'emojis'; content: EmojiMetadata[] }
-  | { type: 'custom-emojis'; content: (EmojiMetadata | CustomEmoji)[] };
+  | { type: 'emojis'; content: EmojiMetadata[]; ariaRowIndex: number }
+  | { type: 'custom-emojis'; content: (EmojiMetadata | CustomEmoji)[]; ariaRowIndex: number };
 
 interface CustomEmojiCategoriesProps {
   hideStickyHeader?: boolean;
@@ -37,8 +37,9 @@ export function CustomEmojiCategories({
 
   const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
 
-  const rows = useMemo<Row[]>(() => {
+  const { rows, totalEmojiRowsCount } = useMemo(() => {
     const allRows: Row[] = [];
+    let emojiRowIndex = 0;
 
     if (frequentlyUsedEmojis.length > 0) {
       allRows.push({
@@ -65,8 +66,10 @@ export function CustomEmojiCategories({
           isCustomEmoji(emoji) ? emoji : applySkinTone(emoji, skinTone)
         );
 
+        emojiRowIndex += 1;
         allRows.push({
           type: 'custom-emojis',
+          ariaRowIndex: emojiRowIndex,
           content: processedEmojis,
         });
       }
@@ -86,8 +89,10 @@ export function CustomEmojiCategories({
           isCustomEmoji(emoji) ? emoji : applySkinTone(emoji, skinTone)
         );
 
+        emojiRowIndex += 1;
         allRows.push({
           type: 'custom-emojis',
+          ariaRowIndex: emojiRowIndex,
           content: processedEmojis,
         });
       }
@@ -100,8 +105,10 @@ export function CustomEmojiCategories({
       });
 
       for (let i = 0; i < category.emojis.length; i += emojisPerRow) {
+        emojiRowIndex += 1;
         allRows.push({
           type: 'emojis',
+          ariaRowIndex: emojiRowIndex,
           content: category.emojis
             .slice(i, i + emojisPerRow)
             .map((emoji) => applySkinTone(emoji, skinTone)),
@@ -109,7 +116,7 @@ export function CustomEmojiCategories({
       }
     });
 
-    return allRows;
+    return { rows: allRows, totalEmojiRowsCount: emojiRowIndex };
   }, [emojiCategories, emojisPerRow, skinTone, customSections, frequentlyUsedEmojis]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
@@ -128,6 +135,10 @@ export function CustomEmojiCategories({
   return (
     <div
       ref={parentRef}
+      role="grid"
+      aria-label="Emoji picker"
+      aria-colcount={emojisPerRow}
+      aria-rowcount={totalEmojiRowsCount}
       className="overflow-y-auto relative outline-none"
       style={{
         height: `${containerHeight}px`,
@@ -135,6 +146,7 @@ export function CustomEmojiCategories({
       tabIndex={0}
     >
       <div
+        role="presentation"
         style={{
           height: `${virtualizer.getTotalSize()}px`,
           width: '100%',
@@ -147,6 +159,7 @@ export function CustomEmojiCategories({
           return (
             <div
               key={virtualRow.index}
+              role="presentation"
               data-type={row.type}
               style={{
                 ...(isSticky(virtualRow.index)
@@ -176,6 +189,8 @@ export function CustomEmojiCategories({
                 />
               ) : (
                 <div
+                  role="row"
+                  aria-rowindex={row.ariaRowIndex}
                   className={`grid grid-cols-${emojisPerRow} px-2`}
                   style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}
                 >
