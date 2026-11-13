@@ -118,14 +118,19 @@ export const searchCustomEmojis = (
     return [];
   }
 
-  const normalizedSearch = searchTerm.toLowerCase();
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+  const strippedColons = normalizedSearch.replace(/^:+|:+$/g, '').trim();
 
   return sortCustomSectionsByPriority(customSections)
     .flatMap((section) => section.emojis)
-    .filter(
-      (emoji): emoji is CustomEmoji =>
-        isCustomEmoji(emoji) && emoji.name.toLowerCase().includes(normalizedSearch)
-    );
+    .filter((emoji): emoji is CustomEmoji => {
+      if (!isCustomEmoji(emoji)) return false;
+      const lowerName = emoji.name.toLowerCase();
+      return (
+        lowerName.includes(normalizedSearch) ||
+        (strippedColons.length > 0 && lowerName.includes(strippedColons))
+      );
+    });
 };
 
 export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): GroupedEmojis[] => {

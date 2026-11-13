@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react';
 import { useAtom } from 'jotai';
 import { ClearIcon, SearchIcon } from './icons';
+import { useOptionalEmojiPicker } from './EmojiPickerContext';
+import { resolveLabel } from '../utils/emojiData';
 import { cn } from '../utils/cn';
 import { searchAtom } from '../atoms/emoji';
 
@@ -21,6 +23,16 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
     ref
   ) => {
     const [search, setSearch] = useAtom(searchAtom);
+    const pickerContext = useOptionalEmojiPicker();
+
+    const resolvedPlaceholder =
+      placeholder ||
+      resolveLabel(
+        'searchPlaceholder',
+        'Search emoji',
+        pickerContext?.labels,
+        pickerContext?.localeData
+      );
 
     const handleClear = () => {
       setSearch('');
@@ -48,7 +60,7 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
           onKeyDown={handleKeyDown}
           type="text"
           autoFocus={autoFocus}
-          placeholder={placeholder || 'Search emoji'}
+          placeholder={resolvedPlaceholder}
           className={cn(
             'h-7 w-full bg-zinc-100 dark:bg-zinc-800 rounded-md text-sm',
             'text-zinc-900 dark:text-zinc-100',

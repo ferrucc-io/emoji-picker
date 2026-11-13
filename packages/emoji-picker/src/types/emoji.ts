@@ -66,3 +66,40 @@ export interface HeaderRendererProps {
   isSticky?: boolean;
   sectionId?: string;
 }
+
+export interface EmojiPickerLabels {
+  searchPlaceholder?: string;
+  searchResultsHeader?: string;
+  emptyState?: string;
+  frequentlyUsedHeader?: string;
+  chooseSkinTone?: string;
+  categories?: Record<string, string>;
+}
+
+export interface EmojiLocaleData {
+  locale: string;
+  categories?: Record<string, string>;
+  emojis?: Record<string, { name: string; keywords?: string[] }>;
+  labels?: EmojiPickerLabels;
+}
+
+export interface EmojiDetails {
+  emoji: string;
+  baseEmoji: string;
+  name: string;
+  slug: string;
+  shortcode: string;
+  category: string;
+  unicodeVersion: string;
+  emojiVersion: string;
+  skinToneSupport: boolean;
+  skinTone: SkinTone;
+  isCustom: boolean;
+  imageUrl?: string;
+}
+
+export interface GetEmojiDetailsOptions {
+  customEmojis?: CustomEmoji[];
+  customSections?: CustomSection[];
+  localeData?: EmojiLocaleData;
+}

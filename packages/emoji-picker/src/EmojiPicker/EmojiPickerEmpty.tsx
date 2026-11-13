@@ -1,4 +1,6 @@
 import React from 'react';
+import { useOptionalEmojiPicker } from './EmojiPickerContext';
+import { resolveLabel } from '../utils/emojiData';
 
 export interface EmojiPickerEmptyProps {
   children: React.ReactNode;
@@ -31,6 +33,11 @@ export function EmojiPickerEmptyIcon() {
   );
 }
 
-export function EmojiPickerEmptyText() {
-  return <div className="text-sm text-zinc-500 dark:text-zinc-400">No emojis found</div>;
+export function EmojiPickerEmptyText({ children }: { children?: React.ReactNode } = {}) {
+  const pickerContext = useOptionalEmojiPicker();
+  const text =
+    children ??
+    resolveLabel('emptyState', 'No emojis found', pickerContext?.labels, pickerContext?.localeData);
+
+  return <div className="text-sm text-zinc-500 dark:text-zinc-400">{text}</div>;
 }

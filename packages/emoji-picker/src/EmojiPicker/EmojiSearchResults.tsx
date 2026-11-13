@@ -6,6 +6,7 @@ import { EmojiPickerButton } from './EmojiPickerButton';
 import { CustomEmojiButton } from './CustomEmojiButton';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useCustomEmojiKeyboardNavigation } from '../hooks/useCustomEmojiKeyboardNavigation';
+import { resolveLabel, searchCuratedEmojis } from '../utils/emojiData';
 import { searchCustomEmojis } from '../utils/emojiSearch';
 import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
 import { isCustomEmoji } from '../types/emoji';
@@ -24,10 +25,50 @@ export function EmojiSearchResults({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiSearchResultsProps) {
-  const { emojisPerRow, emojiSize, customSections } = useEmojiPicker();
+  const {
+    emojisPerRow,
+    emojiSize,
+    customSections,
+    labels,
+    localeData,
+    englishSearchFallback,
+    filterEmoji,
+    categories,
+  } = useEmojiPicker();
 
   const search = useAtomValue(searchAtom);
-  const filteredEmojis = useAtomValue(filteredEmojisAtom);
+  const atomFilteredEmojis = useAtomValue(filteredEmojisAtom);
+
+  const useCuratedSearch = Boolean(
+    labels || localeData || filterEmoji || categories || englishSearchFallback !== undefined
+  );
+
+  const filteredEmojis = useMemo(() => {
+    if (!useCuratedSearch) {
+      return atomFilteredEmojis;
+    }
+    return searchCuratedEmojis(search, {
+      localeData,
+      englishSearchFallback,
+      filterEmoji,
+      categories,
+    });
+  }, [
+    useCuratedSearch,
+    atomFilteredEmojis,
+    search,
+    localeData,
+    englishSearchFallback,
+    filterEmoji,
+    categories,
+  ]);
+
+  const searchResultsHeader = resolveLabel(
+    'searchResultsHeader',
+    'Search results',
+    labels,
+    localeData
+  );
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +84,7 @@ export function EmojiSearchResults({
     // Add single "Search results" header
     rows.push({
       type: 'header',
-      content: 'Search results',
+      content: searchResultsHeader,
     });
 
     for (let i = 0; i < searchResults.length; i += emojisPerRow) {
@@ -55,7 +96,7 @@ export function EmojiSearchResults({
     }
 
     return rows;
-  }, [search, customSections, filteredEmojis, emojisPerRow]);
+  }, [search, customSections, filteredEmojis, emojisPerRow, searchResultsHeader]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,
@@ -88,6 +129,7 @@ export function EmojiSearchResults({
       >
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const row = rows[virtualRow.index];
+          if (!row) return null;
 
           return (
             <div
