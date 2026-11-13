@@ -12,7 +12,7 @@ export function EmojiPickerContent() {
   }
 
   return (
-    <div className="flex items-center gap-4 min-w-0 flex-1">
+    <div data-slot="emoji-picker-content" className="flex items-center gap-4 min-w-0 flex-1">
       <span className="flex-shrink-0" style={{ fontSize: `${Math.floor(emojiSize * 1.1)}px` }}>
         {hoveredEmoji.emoji}
       </span>

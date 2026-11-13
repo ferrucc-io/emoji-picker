@@ -17,5 +17,5 @@ export function SectionHeader({ content, emojiSize, isSticky }: SectionHeaderPro
     return <>{renderHeader({ content, emojiSize, isSticky, sectionId: slugify(content) })}</>;
   }
 
-  return <EmojiPickerListHeader content={content} emojiSize={emojiSize} />;
+  return <EmojiPickerListHeader content={content} emojiSize={emojiSize} isSticky={isSticky} />;
 }

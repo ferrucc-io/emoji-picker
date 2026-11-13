@@ -80,6 +80,7 @@ function StandardEmojiCategories({
   return (
     <div
       ref={parentRef}
+      data-slot="emoji-picker-list"
       className="overflow-y-auto relative outline-none"
       style={{
         height: `${containerHeight}px`,
@@ -128,6 +129,7 @@ function StandardEmojiCategories({
                 />
               ) : (
                 <div
+                  data-slot="emoji-picker-row"
                   className={`grid grid-cols-${emojisPerRow} px-2`}
                   style={{ gridTemplateColumns: `repeat(${emojisPerRow}, minmax(0, 1fr))` }}
                 >

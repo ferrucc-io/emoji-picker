@@ -34,7 +34,7 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
     };
 
     return (
-      <div className="relative flex items-center w-full">
+      <div data-slot="emoji-picker-search-wrapper" className="relative flex items-center w-full">
         {!hideIcon && (
           <div className="absolute left-2 flex items-center pointer-events-none">
             <SearchIcon />
@@ -43,6 +43,7 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
         <input
           {...props}
           ref={ref}
+          data-slot="emoji-picker-input"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -63,6 +64,8 @@ export const EmojiPickerInput = forwardRef<HTMLInputElement, EmojiPickerInputPro
         {search && (
           <div className="absolute right-2 flex items-center">
             <button
+              type="button"
+              data-slot="emoji-picker-clear"
               onClick={handleClear}
               className="h-4 w-4 flex items-center justify-center [&>svg]:block"
             >

@@ -31,13 +31,21 @@
 - 🌈 **Dominant Color Hover**: Built-in dominant color hover for supported emojis.
 - 🖼️ **Custom Emojis**: Add your own image-based emoji sections (like Slack custom emojis) and a frequently used section.
 
-
-
 ## Installation
 
-To use this component your project must be using React and Tailwind.
+Works with **shadcn/ui**, **Tailwind CSS** (v3 & v4), or **plain CSS** (no Tailwind required).
 
-To install the component:
+### With shadcn/ui CLI
+
+Install the `EmojiPicker` UI primitive or a ready-to-use `EmojiPickerPopover` directly into your project:
+
+```bash
+npx shadcn@latest add https://emoji.ferrucc.io/r/emoji-picker.json
+# or with a Popover trigger included:
+npx shadcn@latest add https://emoji.ferrucc.io/r/emoji-picker-popover.json
+```
+
+### Manual Installation
 
 ```bash
 bun add @ferrucc-io/emoji-picker
@@ -62,7 +70,19 @@ Then in your project you can use the component like this:
 </EmojiPicker>
 ```
 
-Finally, import the component styles in your Tailwind configuration:
+#### Option A: Without Tailwind CSS (Standalone Stylesheet)
+
+Import the zero-specificity prebuilt stylesheet once in your app entry (includes light & dark mode, sticky blurred headers, and dominant-color hover states):
+
+```tsx
+import "@ferrucc-io/emoji-picker/styles.css";
+```
+
+Every component part also exposes a `[data-slot="emoji-picker-*"]` attribute and `--emoji-picker-cols` / `--emoji-picker-size` CSS variables for custom CSS or CSS Modules styling.
+
+#### Option B: With Tailwind CSS
+
+Configure Tailwind to scan the package classes:
 
 ```tsx
 // If you're using Tailwind v4.x
@@ -79,8 +99,8 @@ Finally, import the component styles in your Tailwind configuration:
 ],
 ```
 
-
 ## Default Style
+
 ```tsx
 <EmojiPicker onEmojiSelect={handleEmojiSelect}>
   <EmojiPicker.Header>
@@ -98,9 +118,9 @@ The base component accepts several props for customization:
 
 ```tsx
 interface EmojiPickerProps {
-  emojisPerRow?: number;      // Number of emojis per row
-  emojiSize?: number;         // Size of each emoji in pixels
-  containerHeight?: number;    // Height of the emoji container
+  emojisPerRow?: number; // Number of emojis per row
+  emojiSize?: number; // Size of each emoji in pixels
+  containerHeight?: number; // Height of the emoji container
   maxUnicodeVersion?: number; // Maximum Unicode version to include (defaults to 16.0, matching unicode-emoji-json package). Hides unsupported emojis that render as � on the user's system
   onEmojiSelect?: (emoji: string) => void; // Callback when emoji is selected
   customSections?: CustomSection[]; // Custom image-based emoji sections to show alongside the standard categories
@@ -114,26 +134,38 @@ interface EmojiPickerProps {
 You can add your own image-based emojis (like Slack custom emojis) via the `customSections` prop, and pin a "Frequently Used" section at the top of the list with `frequentlyUsedEmojis`:
 
 ```tsx
-import { EmojiPicker } from '@ferrucc-io/emoji-picker';
-import type { CustomEmoji, CustomSection } from '@ferrucc-io/emoji-picker';
+import { EmojiPicker } from "@ferrucc-io/emoji-picker";
+import type { CustomEmoji, CustomSection } from "@ferrucc-io/emoji-picker";
 
 const customSections: CustomSection[] = [
   {
-    id: 'custom',
-    name: 'Custom',
+    id: "custom",
+    name: "Custom",
     priority: 1, // Lower values appear first (defaults to 999)
     emojis: [
-      { id: 'mic-drop', name: 'mic-drop', imageUrl: '/custom-emojis/mic-drop.gif' },
-      { id: 'shipitparrot', name: 'shipitparrot', imageUrl: '/custom-emojis/shipitparrot.gif' },
+      {
+        id: "mic-drop",
+        name: "mic-drop",
+        imageUrl: "/custom-emojis/mic-drop.gif",
+      },
+      {
+        id: "shipitparrot",
+        name: "shipitparrot",
+        imageUrl: "/custom-emojis/shipitparrot.gif",
+      },
     ],
   },
 ];
 
 // Mix standard emoji strings and custom emoji objects
 const frequentlyUsedEmojis: (string | CustomEmoji)[] = [
-  '👍',
-  '❤️',
-  { id: 'thisisfine', name: 'thisisfine', imageUrl: '/custom-emojis/thisisfine.gif' },
+  "👍",
+  "❤️",
+  {
+    id: "thisisfine",
+    name: "thisisfine",
+    imageUrl: "/custom-emojis/thisisfine.gif",
+  },
 ];
 
 <EmojiPicker
@@ -146,7 +178,7 @@ const frequentlyUsedEmojis: (string | CustomEmoji)[] = [
   }}
 >
   {/* ... */}
-</EmojiPicker>
+</EmojiPicker>;
 ```
 
 Custom emojis are searchable by name, support full keyboard navigation, and show up in the preview just like standard emojis.
@@ -174,19 +206,19 @@ interface CustomSection {
 Use the `renderHeader` prop to take full control of how section headers are rendered:
 
 ```tsx
-import type { HeaderRendererProps } from '@ferrucc-io/emoji-picker';
+import type { HeaderRendererProps } from "@ferrucc-io/emoji-picker";
 
 function MyHeader({ content, isSticky }: HeaderRendererProps) {
   return (
-    <div className={isSticky ? 'bg-white/95 backdrop-blur-sm' : 'bg-transparent'}>
+    <div
+      className={isSticky ? "bg-white/95 backdrop-blur-sm" : "bg-transparent"}
+    >
       {content}
     </div>
   );
 }
 
-<EmojiPicker renderHeader={MyHeader}>
-  {/* ... */}
-</EmojiPicker>
+<EmojiPicker renderHeader={MyHeader}>{/* ... */}</EmojiPicker>;
 ```
 
 ## Examples
@@ -195,8 +227,8 @@ The main idea behind the component is to be able to support as many different st
 
 In the future it would be great to support more styles like the ones in Discord, Whatsapp, Notion etc.
 
-
 ### Linear Style
+
 ```tsx
 <EmojiPicker
   className="border border-zinc-200 dark:border-zinc-800 rounded-lg"
@@ -218,30 +250,27 @@ In the future it would be great to support more styles like the ones in Discord,
 ```
 
 ### Slack Style
+
 ```tsx
-<EmojiPicker 
+<EmojiPicker
   className="font-['Lato'] w-[380px] border-none"
   emojisPerRow={9}
   emojiSize={36}
 >
   <EmojiPicker.Header>
-    <EmojiPicker.Input 
-      placeholder="Search all emoji" 
+    <EmojiPicker.Input
+      placeholder="Search all emoji"
       className="h-[36px] bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 w-full rounded-[8px] text-[15px] focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] dark:focus:shadow-[0_0_0_1px_#1d9bd1,0_0_0_6px_rgba(29,155,209,0.3)] focus:border-transparent focus:outline-none mb-1"
       hideIcon
     />
   </EmojiPicker.Header>
   <EmojiPicker.Group>
-    <EmojiPicker.List containerHeight={320} />          
+    <EmojiPicker.List containerHeight={320} />
   </EmojiPicker.Group>
   <EmojiPicker.Preview>
     {({ previewedEmoji }) => (
       <>
-        {previewedEmoji ? 
-          <EmojiPicker.Content />
-          :
-          <button>Add Emoji</button>
-        }
+        {previewedEmoji ? <EmojiPicker.Content /> : <button>Add Emoji</button>}
         <EmojiPicker.SkinTone />
       </>
     )}
@@ -259,15 +288,14 @@ This project is currently used by:
 
 **Feel free to open a PR to add your name here if you're using the component in your project.**
 
-
 ## Credits
 
 This project was created using `bun init` in bun v1.2.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
-
 ## Contributing
 
 This project is structured as a monorepo with two main parts:
+
 - `packages/emoji-picker`: The main package containing the emoji picker component
 - `demo`: A demo application showcasing different uses of the component
 

@@ -28,6 +28,7 @@ export const EmojiPickerPreview = React.memo(function EmojiPickerPreview({
 
   return (
     <div
+      data-slot="emoji-picker-preview"
       className={cn(
         'flex items-center border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-2',
         className
