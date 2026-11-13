@@ -89,13 +89,6 @@ export const emojiColors: Record<string, string> = ${JSON.stringify(colorMap, nu
   console.log('Emoji colors generated successfully!');
 }
 
-main().catch(console.error);
-
-const port = 3456;
-const url = `http://localhost:${port}`;
-
-console.log(`Starting server on ${url}`);
-
 // Function to open browser based on platform
 async function openBrowser(url: string) {
   const platform = process.platform;
@@ -115,37 +108,46 @@ async function openBrowser(url: string) {
   }
 }
 
-// Start server
-serve({
-  port,
-  async fetch(req) {
-    const url = new URL(req.url);
+if (import.meta.main) {
+  main().catch(console.error);
 
-    // Serve the HTML file
-    if (url.pathname === '/') {
-      return new Response(Bun.file('scripts/generateEmojiColors.html'));
-    }
+  const port = 3456;
+  const url = `http://localhost:${port}`;
 
-    // Serve the emoji data
-    if (url.pathname === '/emoji-data') {
-      return new Response(JSON.stringify(filterEmojis(emojiData)), {
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+  console.log(`Starting server on ${url}`);
 
-    // Handle saving the results
-    if (url.pathname === '/save' && req.method === 'POST') {
-      const data = await req.text();
-      const outputPath = join(import.meta.dir, '../src/utils/emojiColors.ts');
-      writeFileSync(outputPath, data);
-      return new Response('Colors saved successfully!');
-    }
+  // Start server
+  serve({
+    port,
+    async fetch(req) {
+      const url = new URL(req.url);
 
-    return new Response('Not found', { status: 404 });
-  },
-});
+      // Serve the HTML file
+      if (url.pathname === '/') {
+        return new Response(Bun.file('scripts/generateEmojiColors.html'));
+      }
 
-// Open browser after a short delay to ensure server is ready
-setTimeout(() => {
-  openBrowser(url);
-}, 500);
+      // Serve the emoji data
+      if (url.pathname === '/emoji-data') {
+        return new Response(JSON.stringify(filterEmojis(emojiData)), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Handle saving the results
+      if (url.pathname === '/save' && req.method === 'POST') {
+        const data = await req.text();
+        const outputPath = join(import.meta.dir, '../src/utils/emojiColors.ts');
+        writeFileSync(outputPath, data);
+        return new Response('Colors saved successfully!');
+      }
+
+      return new Response('Not found', { status: 404 });
+    },
+  });
+
+  // Open browser after a short delay to ensure server is ready
+  setTimeout(() => {
+    openBrowser(url);
+  }, 500);
+}

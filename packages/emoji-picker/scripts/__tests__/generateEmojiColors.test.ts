@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, unlinkSync, writeFileSync } from 'fs';
 import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { filterEmojis } from '../generateEmojiColors';
 
@@ -24,6 +24,12 @@ describe('emoji color generation', () => {
       writeFileSync(testColorFilePath, content);
     } catch (error) {
       // No backup to restore, that's ok
+    }
+
+    try {
+      unlinkSync(backupFilePath);
+    } catch (error) {
+      // Backup file might not exist, that's ok
     }
   });
 

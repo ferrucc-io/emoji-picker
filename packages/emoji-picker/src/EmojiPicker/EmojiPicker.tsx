@@ -27,7 +27,7 @@ export interface EmojiPickerProps {
   renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
 }
 
-interface EmojiPickerHeaderProps {
+export interface EmojiPickerHeaderProps {
   children?: React.ReactNode;
   className?: string;
 }
@@ -36,10 +36,6 @@ function Header({ children, className = '' }: EmojiPickerHeaderProps) {
   return (
     <div className={cn('flex w-full items-center gap-2 px-2 pt-2 pb-1', className)}>{children}</div>
   );
-}
-
-function Input(props: React.ComponentProps<typeof EmojiPickerInput>) {
-  return <EmojiPickerInput {...props} />;
 }
 
 export function EmojiPicker({
@@ -79,7 +75,7 @@ export function EmojiPicker({
 }
 
 EmojiPicker.Header = Header;
-EmojiPicker.Input = Input;
+EmojiPicker.Input = EmojiPickerInput;
 EmojiPicker.Group = EmojiPickerGroup;
 EmojiPicker.List = EmojiPickerList;
 EmojiPicker.Preview = EmojiPickerPreview;
