@@ -1,5 +1,8 @@
+import rawEmojiData from 'unicode-emoji-json/data-by-group.json';
 import { filterSupportedEmojis } from './supportedEmojis';
 import { isEmojiFullySupported } from './emojiSupport';
+import { isCompatibleSkinTone } from './emojiFilters';
+import { loadJsonData } from './loadJsonData';
 import { isCustomEmoji } from '../types/emoji';
 
 import type {
@@ -55,7 +58,10 @@ export const processEmojiData = (emojiData: any): EmojiData[] => {
   return processed;
 };
 
-export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
+export const groupEmojisByCategory = (
+  emojiData: any,
+  maxVersion: number = 15.0
+): GroupedEmojis[] => {
   if (!emojiData || typeof emojiData !== 'object') {
     return [];
   }
@@ -104,7 +110,7 @@ export const groupEmojisByCategory = (emojiData: any): GroupedEmojis[] => {
     }
   }
 
-  return filterSupportedEmojis(groups);
+  return filterSupportedEmojis(groups, maxVersion);
 };
 
 export const sortCustomSectionsByPriority = (customSections: CustomSection[]): CustomSection[] =>
@@ -128,7 +134,11 @@ export const searchCustomEmojis = (
     );
 };
 
-export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): GroupedEmojis[] => {
+export const searchEmojis = (
+  searchTerm: string,
+  processedData: EmojiData[],
+  maxVersion: number = 15.0
+): GroupedEmojis[] => {
   // Return empty array for empty search
   if (!searchTerm.trim()) {
     return [];
@@ -140,15 +150,19 @@ export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): Gr
       return false;
     }
 
-    return isEmojiFullySupported({
-      emoji: emoji.emoji,
-      name: emoji.name,
-      unicode_version: emoji.unicode_version,
-      emoji_version: emoji.emoji_version,
-      skin_tone_support: emoji.skin_tone_support,
-      skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
-      slug: emoji.name.replace(/\s+/g, '_'),
-    });
+    return isEmojiFullySupported(
+      {
+        emoji: emoji.emoji,
+        name: emoji.name,
+        unicode_version: emoji.unicode_version,
+        emoji_version: emoji.emoji_version,
+        skin_tone_support: emoji.skin_tone_support,
+        skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
+        slug: emoji.name.replace(/\s+/g, '_'),
+      },
+      undefined,
+      maxVersion
+    );
   });
 
   if (matchingEmojis.length === 0) {
@@ -163,7 +177,7 @@ export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): Gr
       emoji: emoji.emoji,
       name: emoji.name,
       slug: emoji.name.replace(/\s+/g, '_'),
-      skin_tone_support: emoji.skin_tone_support,
+      skin_tone_support: isCompatibleSkinTone(emoji, maxVersion),
       skin_tone_support_unicode_version: emoji.skin_tone_support_unicode_version,
     };
 
@@ -177,4 +191,27 @@ export const searchEmojis = (searchTerm: string, processedData: EmojiData[]): Gr
     category,
     emojis,
   }));
+};
+
+let cachedSourceData: unknown = undefined;
+let cachedProcessedData: EmojiData[] = [];
+
+const getProcessedStandardEmojiData = (): EmojiData[] => {
+  const data = loadJsonData(
+    rawEmojiData,
+    'unicode-emoji-json/data-by-group.json',
+    (d) => !d || Object.keys(d).length === 0
+  );
+  if (data !== cachedSourceData) {
+    cachedSourceData = data;
+    cachedProcessedData = processEmojiData(data);
+  }
+  return cachedProcessedData;
+};
+
+export const searchStandardEmojis = (
+  searchTerm: string,
+  maxVersion: number = 15.0
+): GroupedEmojis[] => {
+  return searchEmojis(searchTerm, getProcessedStandardEmojiData(), maxVersion);
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Provider } from 'jotai';
 import { EmojiPickerSkinTone } from './EmojiPickerSkinTone';
 import { EmojiPickerPreview } from './EmojiPickerPreview';
@@ -53,6 +53,8 @@ export function EmojiPicker({
   frequentlyUsedEmojis = [],
   renderHeader,
 }: EmojiPickerProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+
   return (
     <Provider>
       <EmojiPickerProvider
@@ -63,8 +65,10 @@ export function EmojiPicker({
         customSections={customSections}
         frequentlyUsedEmojis={frequentlyUsedEmojis}
         renderHeader={renderHeader}
+        rootRef={rootRef}
       >
         <div
+          ref={rootRef}
           tabIndex={0}
           className={cn(
             'flex flex-col bg-background border border-border/50 dark:border-zinc-800 rounded-lg shadow-lg w-[400px] h-full outline-none focus:ring-1 focus:ring-indigo-500',

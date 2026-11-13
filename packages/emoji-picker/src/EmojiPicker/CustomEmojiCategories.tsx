@@ -6,6 +6,8 @@ import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
 import { CustomEmojiButton } from './CustomEmojiButton';
 import { filterSupportedEmojis } from '../utils/supportedEmojis';
+import { isCompatibleSkinTone } from '../utils/emojiFilters';
+import { loadJsonData } from '../utils/loadJsonData';
 import { applySkinTone } from '../utils/applySkinTone';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useCustomEmojiKeyboardNavigation } from '../hooks/useCustomEmojiKeyboardNavigation';
@@ -13,8 +15,16 @@ import { sortCustomSectionsByPriority } from '../utils/emojiSearch';
 import { skinToneAtom } from '../atoms/emoji';
 import { isCustomEmoji } from '../types/emoji';
 
-import type { EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
+import type { EmojiDataItem, EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
 import type { CustomEmoji } from '../types/emoji';
+
+function stripVariationSelector(value: string): string {
+  return value.replace(/\uFE0F/g, '');
+}
+
+function stripSkinToneAndVariationSelector(value: string): string {
+  return value.replace(/\p{Emoji_Modifier}/gu, '').replace(/\uFE0F/g, '');
+}
 
 type Row =
   | { type: 'header'; content: string }
@@ -30,12 +40,61 @@ export function CustomEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
 }: CustomEmojiCategoriesProps) {
-  const { emojisPerRow, emojiSize, customSections, frequentlyUsedEmojis } = useEmojiPicker();
+  const { emojisPerRow, emojiSize, maxUnicodeVersion, customSections, frequentlyUsedEmojis } =
+    useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
-  const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
+  const { emojiCategories, emojiMetadataMap } = useMemo(() => {
+    const loadedData = loadJsonData(
+      emojiData,
+      'unicode-emoji-json/data-by-group.json',
+      (data) => !data || Object.keys(data).length === 0
+    );
+
+    const metadataMap = new Map<string, EmojiMetadata>();
+    if (loadedData && typeof loadedData === 'object') {
+      for (const group of Object.values(loadedData)) {
+        if (!group || typeof group !== 'object' || !('emojis' in group)) continue;
+        const groupEmojis = (group as { emojis?: unknown }).emojis;
+        if (!groupEmojis || typeof groupEmojis !== 'object') continue;
+
+        for (const rawEmoji of Object.values(groupEmojis)) {
+          if (!rawEmoji || typeof rawEmoji !== 'object') continue;
+          const item = rawEmoji as Partial<EmojiDataItem>;
+          if (!item.emoji || !item.name) continue;
+
+          const metadata: EmojiMetadata = {
+            emoji: item.emoji,
+            name: item.name,
+            slug: item.slug || item.name.toLowerCase().replace(/\s+/g, '_'),
+            skin_tone_support: isCompatibleSkinTone(
+              {
+                emoji: item.emoji,
+                skin_tone_support: !!item.skin_tone_support,
+                skin_tone_support_unicode_version: item.skin_tone_support_unicode_version,
+                unicode_version: item.unicode_version,
+              },
+              maxUnicodeVersion
+            ),
+            skin_tone_support_unicode_version: item.skin_tone_support_unicode_version,
+          };
+
+          metadataMap.set(item.emoji, metadata);
+          const withoutVS = stripVariationSelector(item.emoji);
+          if (!metadataMap.has(withoutVS)) {
+            metadataMap.set(withoutVS, metadata);
+          }
+        }
+      }
+    }
+
+    return {
+      emojiCategories: filterSupportedEmojis(loadedData as EmojiGroup[], maxUnicodeVersion),
+      emojiMetadataMap: metadataMap,
+    };
+  }, [maxUnicodeVersion]);
 
   const rows = useMemo<Row[]>(() => {
     const allRows: Row[] = [];
@@ -48,6 +107,15 @@ export function CustomEmojiCategories({
 
       const frequentEmojis: (EmojiMetadata | CustomEmoji)[] = frequentlyUsedEmojis.map((emoji) => {
         if (typeof emoji === 'string') {
+          const matchedMetadata =
+            emojiMetadataMap.get(emoji) ??
+            emojiMetadataMap.get(stripVariationSelector(emoji)) ??
+            emojiMetadataMap.get(stripSkinToneAndVariationSelector(emoji));
+
+          if (matchedMetadata) {
+            return matchedMetadata;
+          }
+
           return {
             emoji,
             name: `frequently-used-${emoji}`,
@@ -110,7 +178,14 @@ export function CustomEmojiCategories({
     });
 
     return allRows;
-  }, [emojiCategories, emojisPerRow, skinTone, customSections, frequentlyUsedEmojis]);
+  }, [
+    emojiCategories,
+    emojiMetadataMap,
+    emojisPerRow,
+    skinTone,
+    customSections,
+    frequentlyUsedEmojis,
+  ]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,

@@ -41,6 +41,17 @@ describe('Emoji Support Detection', () => {
       expect(isEmojiFullySupported(emoji15)).toBe(true);
     });
 
+    it('respects custom maxVersion parameter when provided', () => {
+      const emoji16 = {
+        emoji: '🫩',
+        name: 'face with bags under eyes',
+        unicode_version: '16.0',
+      };
+      expect(isEmojiFullySupported(emoji16, undefined, 16.0)).toBe(true);
+      expect(isEmojiFullySupported(emoji16, undefined, 15.0)).toBe(false);
+      expect(isEmojiFullySupported(emoji16, undefined, 14.0)).toBe(false);
+    });
+
     it('handles emojis without version information', () => {
       const emoji = { emoji: '😀', name: 'grinning face' };
       expect(isEmojiFullySupported(emoji)).toBe(true);

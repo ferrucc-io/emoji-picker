@@ -25,6 +25,9 @@ interface EmojiPickerButtonProps {
 function buttonPropsAreEqual(prevProps: EmojiPickerButtonProps, nextProps: EmojiPickerButtonProps) {
   return (
     prevProps.emoji.emoji === nextProps.emoji.emoji &&
+    prevProps.emoji.name === nextProps.emoji.name &&
+    prevProps.emoji.slug === nextProps.emoji.slug &&
+    prevProps.emoji.skin_tone_support === nextProps.emoji.skin_tone_support &&
     prevProps.rowIndex === nextProps.rowIndex &&
     prevProps.columnIndex === nextProps.columnIndex &&
     prevProps.size === nextProps.size

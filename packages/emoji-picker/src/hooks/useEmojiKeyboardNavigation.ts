@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEmojiPicker } from '../EmojiPicker/EmojiPickerContext';
+import { shouldIgnoreKeyboardEvent } from '../utils/keyboardGuard';
 import {
   hoveredEmojiAtom,
   searchAtom,
@@ -24,7 +25,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
   const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
   const search = useAtomValue(searchAtom);
   const selectedPosition = useAtomValue(selectedPositionAtom);
-  const { onEmojiSelect } = useEmojiPicker();
+  const { onEmojiSelect, rootRef } = useEmojiPicker();
 
   const selectedRow = selectedPosition?.row ?? -1;
   const selectedColumn = selectedPosition?.column ?? -1;
@@ -73,6 +74,10 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (shouldIgnoreKeyboardEvent(e, rootRef?.current)) {
+        return;
+      }
+
       if (!selectedPosition) {
         if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
           e.preventDefault();
@@ -189,5 +194,6 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     setSelectedEmoji,
     virtualizer,
     onEmojiSelect,
+    rootRef,
   ]);
 }
