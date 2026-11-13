@@ -2,6 +2,7 @@ import React from 'react';
 import { atom } from 'jotai';
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { act, fireEvent, render } from '@testing-library/react';
+import '../../atoms/emoji';
 import type { CustomEmoji, CustomSection, EmojiMetadata, SkinTone } from '../../types/emoji';
 
 const scrollToIndexCalls: Array<{
@@ -125,11 +126,6 @@ mock.module('../../atoms/emoji', () => ({
   searchAtom: testSearchAtom,
   skinToneAtom: testSkinToneAtom,
   skinToneOnlyAtom: atom((get) => get(testSkinToneAtom)),
-  isEmojiSelectedAtom: (rowIndex: number, columnIndex: number) =>
-    atom((get) => {
-      const pos = get(testSelectedPositionAtom);
-      return pos?.row === rowIndex && pos?.column === columnIndex;
-    }),
   filteredEmojisAtom: atom((get) => {
     const q = get(testSearchAtom).trim().toLowerCase();
     if (!q) {
@@ -142,11 +138,6 @@ mock.module('../../atoms/emoji', () => ({
       }))
       .filter((group) => group.emojis.length > 0);
   }),
-  combinedEmojiStateAtom: atom((get) => ({
-    hoveredEmoji: get(testHoveredEmojiAtom),
-    selectedEmoji: get(testSelectedEmojiAtom),
-    skinTone: get(testSkinToneAtom),
-  })),
 }));
 
 import {
