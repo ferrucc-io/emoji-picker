@@ -4,12 +4,13 @@ import { useAtomValue } from 'jotai';
 import { SectionHeader } from './SectionHeader';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { EmojiPickerButton } from './EmojiPickerButton';
+import { CustomEmojiCategories } from './CustomEmojiCategories';
+import { getCuratedEmojiCategories, resolveCategoryLabel } from '../utils/emojiData';
 import { filterSupportedEmojis } from '../utils/supportedEmojis';
 import { applySkinTone } from '../utils/applySkinTone';
 import { useVirtualizedList } from '../hooks/useVirtualizedList';
 import { useEmojiKeyboardNavigation } from '../hooks/useEmojiKeyboardNavigation';
 import { skinToneAtom } from '../atoms/emoji';
-import { CustomEmojiCategories } from './CustomEmojiCategories';
 
 import type { EmojiGroup, EmojiMetadata } from '../utils/supportedEmojis';
 type Row = { type: 'header'; content: string } | { type: 'emojis'; content: EmojiMetadata[] };
@@ -36,12 +37,38 @@ function StandardEmojiCategories({
   hideStickyHeader = false,
   containerHeight = 364,
 }: EmojiCategoriesProps) {
-  const { emojisPerRow, emojiSize } = useEmojiPicker();
+  const {
+    emojisPerRow,
+    emojiSize,
+    labels,
+    localeData,
+    englishSearchFallback,
+    filterEmoji,
+    categories,
+  } = useEmojiPicker();
   const skinTone = useAtomValue(skinToneAtom);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
-  const emojiCategories = useMemo(() => filterSupportedEmojis(emojiData as EmojiGroup[]), []);
+  const useCuratedCategories = Boolean(
+    labels || localeData || filterEmoji || categories || englishSearchFallback !== undefined
+  );
+
+  const emojiCategories = useMemo(() => {
+    if (!useCuratedCategories) {
+      return filterSupportedEmojis(emojiData as EmojiGroup[]).map((cat) => ({
+        category: cat.category,
+        slug: undefined as string | undefined,
+        emojis: cat.emojis,
+      }));
+    }
+
+    return getCuratedEmojiCategories({
+      localeData,
+      filterEmoji,
+      categories,
+    });
+  }, [useCuratedCategories, localeData, filterEmoji, categories]);
 
   const rows = useMemo<Row[]>(() => {
     return emojiCategories.flatMap((category) => {
@@ -49,7 +76,7 @@ function StandardEmojiCategories({
 
       rows.push({
         type: 'header',
-        content: category.category,
+        content: resolveCategoryLabel(category.category, labels, localeData, category.slug),
       });
 
       for (let i = 0; i < category.emojis.length; i += emojisPerRow) {
@@ -62,7 +89,7 @@ function StandardEmojiCategories({
       }
       return rows;
     });
-  }, [emojiCategories, emojisPerRow, skinTone]);
+  }, [emojiCategories, emojisPerRow, skinTone, labels, localeData]);
 
   const { virtualizer, isSticky, isActiveSticky } = useVirtualizedList({
     rows,
@@ -95,6 +122,7 @@ function StandardEmojiCategories({
       >
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const row = rows[virtualRow.index];
+          if (!row) return null;
 
           return (
             <div

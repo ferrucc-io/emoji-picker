@@ -13,7 +13,14 @@ import {
   DEFAULT_EMOJIS_PER_ROW,
   DEFAULT_EMOJI_SIZE,
 } from '../constants';
-import type { CustomSection, CustomEmoji, HeaderRendererProps } from '../types/emoji';
+import type {
+  CustomSection,
+  CustomEmoji,
+  EmojiLocaleData,
+  EmojiMetadata,
+  EmojiPickerLabels,
+  HeaderRendererProps,
+} from '../types/emoji';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
@@ -25,6 +32,11 @@ export interface EmojiPickerProps {
   customSections?: CustomSection[];
   frequentlyUsedEmojis?: (string | CustomEmoji)[];
   renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
+  labels?: EmojiPickerLabels;
+  localeData?: EmojiLocaleData;
+  englishSearchFallback?: boolean;
+  filterEmoji?: (emoji: EmojiMetadata) => boolean;
+  categories?: string[];
 }
 
 interface EmojiPickerHeaderProps {
@@ -52,6 +64,11 @@ export function EmojiPicker({
   customSections = [],
   frequentlyUsedEmojis = [],
   renderHeader,
+  labels,
+  localeData,
+  englishSearchFallback = true,
+  filterEmoji,
+  categories,
 }: EmojiPickerProps) {
   return (
     <Provider>
@@ -63,6 +80,11 @@ export function EmojiPicker({
         customSections={customSections}
         frequentlyUsedEmojis={frequentlyUsedEmojis}
         renderHeader={renderHeader}
+        labels={labels}
+        localeData={localeData}
+        englishSearchFallback={englishSearchFallback}
+        filterEmoji={filterEmoji}
+        categories={categories}
       >
         <div
           tabIndex={0}

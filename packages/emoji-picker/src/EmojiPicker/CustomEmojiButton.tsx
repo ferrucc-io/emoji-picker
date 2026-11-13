@@ -1,9 +1,11 @@
 import React, { forwardRef, useMemo, useState, useEffect, useCallback } from 'react';
-import { useSetAtom, useAtomValue } from 'jotai';
+import { atom, useSetAtom, useAtomValue } from 'jotai';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { cn } from '../utils/cn';
 import { hoveredEmojiAtom, selectedPositionAtom, isEmojiSelectedAtom } from '../atoms/emoji';
 import type { CustomEmoji } from '../types/emoji';
+
+const fallbackUnselectedAtom = atom(false);
 
 interface CustomEmojiButtonProps {
   emoji: CustomEmoji;
@@ -21,7 +23,10 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
     const [imageError, setImageError] = useState(false);
 
     const selectedAtom = useMemo(
-      () => isEmojiSelectedAtom(rowIndex, columnIndex),
+      () =>
+        typeof isEmojiSelectedAtom === 'function'
+          ? isEmojiSelectedAtom(rowIndex, columnIndex)
+          : fallbackUnselectedAtom,
       [rowIndex, columnIndex]
     );
     const isSelected = useAtomValue(selectedAtom);

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { emojiColors } from '../utils/emojiColors';
 import { applySkinTone } from '../utils/applySkinTone';
@@ -9,6 +9,8 @@ import {
   selectedPositionAtom,
   skinToneOnlyAtom,
 } from '../atoms/emoji';
+
+const fallbackUnselectedAtom = atom(false);
 
 interface EmojiPickerButtonProps {
   emoji: {
@@ -25,6 +27,7 @@ interface EmojiPickerButtonProps {
 function buttonPropsAreEqual(prevProps: EmojiPickerButtonProps, nextProps: EmojiPickerButtonProps) {
   return (
     prevProps.emoji.emoji === nextProps.emoji.emoji &&
+    prevProps.emoji.name === nextProps.emoji.name &&
     prevProps.rowIndex === nextProps.rowIndex &&
     prevProps.columnIndex === nextProps.columnIndex &&
     prevProps.size === nextProps.size
@@ -43,7 +46,10 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   const { onEmojiSelect } = useEmojiPicker();
 
   const selectedAtom = useMemo(
-    () => isEmojiSelectedAtom(rowIndex, columnIndex),
+    () =>
+      typeof isEmojiSelectedAtom === 'function'
+        ? isEmojiSelectedAtom(rowIndex, columnIndex)
+        : fallbackUnselectedAtom,
     [rowIndex, columnIndex]
   );
   const isSelected = useAtomValue(selectedAtom);
