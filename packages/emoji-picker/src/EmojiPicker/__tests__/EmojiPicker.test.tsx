@@ -72,7 +72,9 @@ describe('EmojiPicker', () => {
     expect(EmojiPicker.Header).toBeDefined();
     expect(EmojiPicker.Input).toBeDefined();
     expect(EmojiPicker.List).toBeDefined();
+    expect(EmojiPicker.Empty).toBeDefined();
     expect(EmojiPicker.Preview).toBeDefined();
+    expect(EmojiPicker.ActiveEmoji).toBeDefined();
     expect(EmojiPicker.SkinTone).toBeDefined();
     expect(EmojiPicker.Content).toBeDefined();
     expect(EmojiPicker.Group).toBeDefined();

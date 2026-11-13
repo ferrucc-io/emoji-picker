@@ -47,6 +47,16 @@ export interface CustomEmoji {
   name: string;
   imageUrl: string;
   category?: string;
+  dominantColor?: string;
+}
+
+export interface EmojiSelectDetails {
+  emoji: string;
+  name: string;
+  slug: string;
+  skinTone: SkinTone;
+  isCustom: boolean;
+  customEmoji?: CustomEmoji;
 }
 
 export interface CustomSection {

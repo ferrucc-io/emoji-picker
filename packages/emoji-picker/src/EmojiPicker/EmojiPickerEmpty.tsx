@@ -1,13 +1,62 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { useAtomValue } from 'jotai';
+import { useOptionalEmojiPicker } from './EmojiPickerContext';
+import { cn } from '../utils/cn';
+import { searchCustomEmojis } from '../utils/emojiSearch';
+import { filteredEmojisAtom, searchAtom } from '../atoms/emoji';
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export interface EmojiPickerEmptyProps {
-  children: React.ReactNode;
+  children?: React.ReactNode | ((props: { search: string }) => React.ReactNode);
+  className?: string;
 }
 
-export function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
+export function EmojiPickerEmptyLayout({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 w-full">{children}</div>
+    <div className={cn('flex flex-col items-center justify-center py-12 px-4 w-full', className)}>
+      {children}
+    </div>
   );
+}
+
+export function EmojiPickerEmpty({ children, className }: EmojiPickerEmptyProps) {
+  const context = useOptionalEmojiPicker();
+  const registerCustomEmpty = context?.registerCustomEmpty;
+  const customSections = context?.customSections ?? [];
+  const search = useAtomValue(searchAtom);
+  const filteredEmojis = useAtomValue(filteredEmojisAtom);
+
+  useIsomorphicLayoutEffect(() => {
+    return registerCustomEmpty?.();
+  }, [registerCustomEmpty]);
+
+  const hasResults =
+    filteredEmojis.length > 0 || searchCustomEmojis(search, customSections).length > 0;
+
+  if (!search.trim() || hasResults) {
+    return null;
+  }
+
+  const content =
+    children === undefined ? (
+      <>
+        <EmojiPickerEmptyIcon />
+        <EmojiPickerEmptyText />
+      </>
+    ) : typeof children === 'function' ? (
+      children({ search })
+    ) : (
+      children
+    );
+
+  return <EmojiPickerEmptyLayout className={className}>{content}</EmojiPickerEmptyLayout>;
 }
 
 export function EmojiPickerEmptyIcon() {

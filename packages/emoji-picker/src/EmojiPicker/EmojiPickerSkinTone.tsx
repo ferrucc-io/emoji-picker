@@ -1,34 +1,24 @@
 import React, { useState } from 'react';
-import { useAtom } from 'jotai';
-import { skinToneAtom } from '../atoms/emoji';
-
-import type { SkinTone } from '../types/emoji';
-
-const skinTones: Array<{ emoji: string; tone: SkinTone }> = [
-  { emoji: '✋', tone: 'default' },
-  { emoji: '✋🏻', tone: 'light' },
-  { emoji: '✋🏼', tone: 'medium-light' },
-  { emoji: '✋🏽', tone: 'medium' },
-  { emoji: '✋🏾', tone: 'medium-dark' },
-  { emoji: '✋🏿', tone: 'dark' },
-];
+import { useSkinTone } from '../hooks/useEmojiPickerHooks';
 
 export function EmojiPickerSkinTone() {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [skinTone, setSkinTone] = useAtom(skinToneAtom);
+  const [skinTone, setSkinTone, skinToneVariations] = useSkinTone();
 
-  const currentTone = skinTones.find((t) => t.tone === skinTone) || skinTones[0];
+  const currentTone =
+    skinToneVariations.find((t) => t.skinTone === skinTone) || skinToneVariations[0];
 
   if (isPickerOpen) {
     return (
       <div>
         <div className="flex flex-nowrap gap-0.5 p-1 rounded-sm">
-          {skinTones.map((tone) => (
+          {skinToneVariations.map((tone) => (
             <button
-              key={tone.tone}
+              key={tone.skinTone}
+              type="button"
               className="flex-shrink-0 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
               onClick={() => {
-                setSkinTone(tone.tone);
+                setSkinTone(tone.skinTone);
                 setIsPickerOpen(false);
               }}
             >
@@ -45,6 +35,7 @@ export function EmojiPickerSkinTone() {
 
   return (
     <button
+      type="button"
       className="text-md font-semibold text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-3 py-1.5 transition-colors"
       onClick={() => setIsPickerOpen(true)}
     >

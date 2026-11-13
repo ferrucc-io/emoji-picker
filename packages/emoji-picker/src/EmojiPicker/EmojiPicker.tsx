@@ -1,30 +1,46 @@
-import React from 'react';
-import { Provider } from 'jotai';
+import React, { useState } from 'react';
+import { createStore, Provider } from 'jotai';
 import { EmojiPickerSkinTone } from './EmojiPickerSkinTone';
 import { EmojiPickerPreview } from './EmojiPickerPreview';
 import { EmojiPickerList } from './EmojiPickerList';
 import { EmojiPickerInput } from './EmojiPickerInput';
 import { EmojiPickerGroup } from './EmojiPickerGroup';
-import { EmojiPickerProvider } from './EmojiPickerContext';
+import { EmojiPickerEmpty } from './EmojiPickerEmpty';
+import { EmojiPickerProvider, readPersistedSkinTone } from './EmojiPickerContext';
 import { EmojiPickerSmartContent } from './EmojiPickerSmartContent';
+import { useActiveEmoji } from '../hooks/useEmojiPickerHooks';
+import { searchAtom, skinToneAtom } from '../atoms/emoji';
 import { cn } from '../utils/cn';
 import {
   DEFAULT_MAX_UNICODE_VERSION,
   DEFAULT_EMOJIS_PER_ROW,
   DEFAULT_EMOJI_SIZE,
 } from '../constants';
-import type { CustomSection, CustomEmoji, HeaderRendererProps } from '../types/emoji';
+import type {
+  CustomSection,
+  CustomEmoji,
+  EmojiSelectDetails,
+  HeaderRendererProps,
+  SkinTone,
+} from '../types/emoji';
 
 export interface EmojiPickerProps {
   children?: React.ReactNode;
   className?: string;
-  onEmojiSelect?: (emoji: string) => void;
+  onEmojiSelect?: (emoji: string, details: EmojiSelectDetails) => void;
   emojisPerRow?: number;
   emojiSize?: number;
   maxUnicodeVersion?: number;
   customSections?: CustomSection[];
   frequentlyUsedEmojis?: (string | CustomEmoji)[];
   renderHeader?: (props: HeaderRendererProps) => React.ReactNode;
+  skinTone?: SkinTone;
+  defaultSkinTone?: SkinTone;
+  onSkinToneChange?: (skinTone: SkinTone) => void;
+  persistSkinTone?: boolean | string;
+  search?: string;
+  defaultSearch?: string;
+  onSearchChange?: (search: string) => void;
 }
 
 interface EmojiPickerHeaderProps {
@@ -42,6 +58,15 @@ function Input(props: React.ComponentProps<typeof EmojiPickerInput>) {
   return <EmojiPickerInput {...props} />;
 }
 
+export interface EmojiPickerActiveEmojiProps {
+  children: (props: { emoji: ReturnType<typeof useActiveEmoji> }) => React.ReactNode;
+}
+
+function ActiveEmoji({ children }: EmojiPickerActiveEmojiProps) {
+  const emoji = useActiveEmoji();
+  return <>{children({ emoji })}</>;
+}
+
 export function EmojiPicker({
   children,
   className = '',
@@ -52,9 +77,26 @@ export function EmojiPicker({
   customSections = [],
   frequentlyUsedEmojis = [],
   renderHeader,
+  skinTone,
+  defaultSkinTone,
+  onSkinToneChange,
+  persistSkinTone,
+  search,
+  defaultSearch,
+  onSearchChange,
 }: EmojiPickerProps) {
+  const [store] = useState(() => {
+    const jotaiStore = createStore();
+    const initialSkinTone =
+      skinTone ?? readPersistedSkinTone(persistSkinTone) ?? defaultSkinTone ?? 'default';
+    const initialSearch = search ?? defaultSearch ?? '';
+    jotaiStore.set(skinToneAtom, initialSkinTone);
+    jotaiStore.set(searchAtom, initialSearch);
+    return jotaiStore;
+  });
+
   return (
-    <Provider>
+    <Provider store={store}>
       <EmojiPickerProvider
         emojisPerRow={emojisPerRow}
         emojiSize={emojiSize}
@@ -63,6 +105,13 @@ export function EmojiPicker({
         customSections={customSections}
         frequentlyUsedEmojis={frequentlyUsedEmojis}
         renderHeader={renderHeader}
+        skinTone={skinTone}
+        defaultSkinTone={defaultSkinTone}
+        onSkinToneChange={onSkinToneChange}
+        persistSkinTone={persistSkinTone}
+        search={search}
+        defaultSearch={defaultSearch}
+        onSearchChange={onSearchChange}
       >
         <div
           tabIndex={0}
@@ -82,6 +131,8 @@ EmojiPicker.Header = Header;
 EmojiPicker.Input = Input;
 EmojiPicker.Group = EmojiPickerGroup;
 EmojiPicker.List = EmojiPickerList;
+EmojiPicker.Empty = EmojiPickerEmpty;
 EmojiPicker.Preview = EmojiPickerPreview;
+EmojiPicker.ActiveEmoji = ActiveEmoji;
 EmojiPicker.Content = EmojiPickerSmartContent;
 EmojiPicker.SkinTone = EmojiPickerSkinTone;

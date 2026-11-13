@@ -7,7 +7,7 @@ import {
   hoveredEmojiAtom,
   isEmojiSelectedAtom,
   selectedPositionAtom,
-  skinToneOnlyAtom,
+  skinToneAtom,
 } from '../atoms/emoji';
 
 interface EmojiPickerButtonProps {
@@ -39,7 +39,7 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
 }: EmojiPickerButtonProps) {
   const setHoveredEmoji = useSetAtom(hoveredEmojiAtom);
   const setSelectedPosition = useSetAtom(selectedPositionAtom);
-  const skinTone = useAtomValue(skinToneOnlyAtom);
+  const skinTone = useAtomValue(skinToneAtom);
   const { onEmojiSelect } = useEmojiPicker();
 
   const selectedAtom = useMemo(
@@ -69,7 +69,13 @@ const EmojiPickerButtonBase = React.memo(function EmojiPickerButtonBase({
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setSelectedPosition({ row: rowIndex, column: columnIndex });
-    onEmojiSelect(emojiWithSkinTone.emoji);
+    onEmojiSelect(emojiWithSkinTone.emoji, {
+      emoji: emojiWithSkinTone.emoji,
+      name: emojiWithSkinTone.name,
+      slug: emojiWithSkinTone.slug,
+      skinTone,
+      isCustom: false,
+    });
   };
 
   const buttonStyle = useMemo(

@@ -2,7 +2,12 @@ import React, { forwardRef, useMemo, useState, useEffect, useCallback } from 're
 import { useSetAtom, useAtomValue } from 'jotai';
 import { useEmojiPicker } from './EmojiPickerContext';
 import { cn } from '../utils/cn';
-import { hoveredEmojiAtom, selectedPositionAtom, isEmojiSelectedAtom } from '../atoms/emoji';
+import {
+  hoveredEmojiAtom,
+  selectedPositionAtom,
+  isEmojiSelectedAtom,
+  skinToneAtom,
+} from '../atoms/emoji';
 import type { CustomEmoji } from '../types/emoji';
 
 interface CustomEmojiButtonProps {
@@ -17,6 +22,7 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
     const { onEmojiSelect } = useEmojiPicker();
     const setHoveredEmoji = useSetAtom(hoveredEmojiAtom);
     const setSelectedPosition = useSetAtom(selectedPositionAtom);
+    const skinTone = useAtomValue(skinToneAtom);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [imageError, setImageError] = useState(false);
 
@@ -26,12 +32,21 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
     );
     const isSelected = useAtomValue(selectedAtom);
 
+    const hasDominantColor = Boolean(emoji.dominantColor);
+
     const buttonStyle = useMemo(
-      () => ({
-        width: `${size}px`,
-        height: `${size}px`,
-      }),
-      [size]
+      () =>
+        (emoji.dominantColor
+          ? {
+              '--emoji-hover-color': emoji.dominantColor,
+              width: `${size}px`,
+              height: `${size}px`,
+            }
+          : {
+              width: `${size}px`,
+              height: `${size}px`,
+            }) as React.CSSProperties,
+      [emoji.dominantColor, size]
     );
 
     const imageSize = useMemo(() => Math.round(size * 0.75), [size]);
@@ -56,8 +71,16 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
+      const shortcode = `:${emoji.name}:`;
       setSelectedPosition({ row: rowIndex, column: columnIndex });
-      onEmojiSelect(`:${emoji.name}:`);
+      onEmojiSelect(shortcode, {
+        emoji: shortcode,
+        name: emoji.name,
+        slug: emoji.name,
+        skinTone,
+        isCustom: true,
+        customEmoji: emoji,
+      });
     };
 
     return (
@@ -67,9 +90,16 @@ export const CustomEmojiButton = forwardRef<HTMLButtonElement, CustomEmojiButton
         className={cn(
           'flex items-center justify-center transition-colors rounded focus:outline-none relative',
           'emoji-button',
-          isSelected
-            ? 'bg-slate-100 dark:bg-zinc-800'
-            : 'hover:bg-slate-100 dark:hover:bg-zinc-800 focus:bg-slate-100 dark:focus:bg-zinc-800'
+          hasDominantColor
+            ? [
+                'focus:ring-[var(--emoji-hover-color)] focus:ring-2',
+                isSelected
+                  ? 'bg-[var(--emoji-hover-color)]'
+                  : 'hover:bg-[var(--emoji-hover-color)] focus:bg-[var(--emoji-hover-color)]',
+              ]
+            : isSelected
+              ? 'bg-slate-100 dark:bg-zinc-800'
+              : 'hover:bg-slate-100 dark:hover:bg-zinc-800 focus:bg-slate-100 dark:focus:bg-zinc-800'
         )}
         style={buttonStyle}
         onMouseEnter={handleMouseEnter}
