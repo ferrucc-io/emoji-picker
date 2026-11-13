@@ -1,4 +1,4 @@
-import type { SkinTone } from '@/types/emoji';
+import type { SkinTone } from '../types/emoji';
 
 export interface EmojiMetadata {
   emoji: string;

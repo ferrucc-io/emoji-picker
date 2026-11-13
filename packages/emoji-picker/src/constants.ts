@@ -14,3 +14,8 @@ export const DEFAULT_EMOJIS_PER_ROW = 12;
  * Default emoji size in pixels
  */
 export const DEFAULT_EMOJI_SIZE = 28;
+
+/**
+ * Default localStorage key used when `persistSkinTone` is `true`
+ */
+export const DEFAULT_SKIN_TONE_STORAGE_KEY = '@ferrucc-io/emoji-picker:skin-tone';

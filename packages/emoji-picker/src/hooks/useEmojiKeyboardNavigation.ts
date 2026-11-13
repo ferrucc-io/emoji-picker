@@ -1,11 +1,13 @@
 import { useCallback, useEffect } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEmojiPicker } from '../EmojiPicker/EmojiPickerContext';
+import { applySkinTone } from '../utils/applySkinTone';
 import {
   hoveredEmojiAtom,
   searchAtom,
   selectedEmojiAtom,
   selectedPositionAtom,
+  skinToneAtom,
 } from '../atoms/emoji';
 
 import type { EmojiMetadata } from '../types/emoji';
@@ -24,6 +26,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
   const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
   const search = useAtomValue(searchAtom);
   const selectedPosition = useAtomValue(selectedPositionAtom);
+  const skinTone = useAtomValue(skinToneAtom);
   const { onEmojiSelect } = useEmojiPicker();
 
   const selectedRow = selectedPosition?.row ?? -1;
@@ -167,8 +170,15 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
           e.preventDefault();
           const emoji = currentRow.content[selectedColumn];
           if (emoji) {
-            setSelectedEmoji(emoji.emoji);
-            onEmojiSelect(emoji.emoji);
+            const tonedEmoji = emoji.skin_tone_support ? applySkinTone(emoji, skinTone) : emoji;
+            setSelectedEmoji(tonedEmoji.emoji);
+            onEmojiSelect(tonedEmoji.emoji, {
+              emoji: tonedEmoji.emoji,
+              name: tonedEmoji.name,
+              slug: tonedEmoji.slug,
+              skinTone,
+              isCustom: false,
+            });
           }
           break;
         }
@@ -182,6 +192,7 @@ export function useEmojiKeyboardNavigation({ rows, virtualizer }: UseEmojiKeyboa
     selectedRow,
     selectedColumn,
     selectedPosition,
+    skinTone,
     findNextEmojiRow,
     findFirstEmojiRow,
     setSelectedPosition,

@@ -1,11 +1,13 @@
 import { useCallback, useEffect } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEmojiPicker } from '../EmojiPicker/EmojiPickerContext';
+import { applySkinTone } from '../utils/applySkinTone';
 import {
   hoveredEmojiAtom,
   searchAtom,
   selectedEmojiAtom,
   selectedPositionAtom,
+  skinToneAtom,
 } from '../atoms/emoji';
 import { isCustomEmoji } from '../types/emoji';
 
@@ -31,6 +33,7 @@ export function useCustomEmojiKeyboardNavigation({
   const setSelectedEmoji = useSetAtom(selectedEmojiAtom);
   const search = useAtomValue(searchAtom);
   const selectedPosition = useAtomValue(selectedPositionAtom);
+  const skinTone = useAtomValue(skinToneAtom);
   const { onEmojiSelect } = useEmojiPicker();
 
   const selectedRow = selectedPosition?.row ?? -1;
@@ -197,10 +200,26 @@ export function useCustomEmojiKeyboardNavigation({
           const emoji = currentRow.content[selectedColumn];
           if (emoji) {
             if (isCustomEmoji(emoji)) {
-              onEmojiSelect(`:${emoji.name}:`);
+              const shortcode = `:${emoji.name}:`;
+              setSelectedEmoji(shortcode);
+              onEmojiSelect(shortcode, {
+                emoji: shortcode,
+                name: emoji.name,
+                slug: emoji.name,
+                skinTone,
+                isCustom: true,
+                customEmoji: emoji,
+              });
             } else {
-              setSelectedEmoji(emoji.emoji);
-              onEmojiSelect(emoji.emoji);
+              const tonedEmoji = emoji.skin_tone_support ? applySkinTone(emoji, skinTone) : emoji;
+              setSelectedEmoji(tonedEmoji.emoji);
+              onEmojiSelect(tonedEmoji.emoji, {
+                emoji: tonedEmoji.emoji,
+                name: tonedEmoji.name,
+                slug: tonedEmoji.slug,
+                skinTone,
+                isCustom: false,
+              });
             }
           }
           break;
@@ -215,6 +234,7 @@ export function useCustomEmojiKeyboardNavigation({
     selectedRow,
     selectedColumn,
     selectedPosition,
+    skinTone,
     findNextEmojiRow,
     findFirstEmojiRow,
     setSelectedPosition,
